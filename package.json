@@ -1,0 +1,27 @@
+{
+  "name": "contrast",
+  "version": "1.0.0",
+  "description": "Colour contrast checker and manipulator",
+  "main": "index.js",
+  "dependencies": {
+    "parcel-bundler": "^1.10.3"
+  },
+  "devDependencies": {
+    "sass": "^1.15.1"
+  },
+  "scripts": {
+    "dev": "parcel src/index.html",
+    "build": "parcel build src/index.html --out-dir prod --public-url ./"
+  },
+  "keywords": [
+    "wcag",
+    "a11y",
+    "accessibility",
+    "color",
+    "colour",
+    "contrast",
+    "check"
+  ],
+  "author": "Craig McNaughton",
+  "license": "ISC"
+}
