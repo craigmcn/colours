@@ -3,7 +3,6 @@ import '../styles/index.scss'
 /* https://developer.mozilla.org/en-US/docs/Web/API/NodeList/forEach
  * This polyfill adds compatibility to all Browsers supporting ES5
  */
-
 ;(function() {
   if (window.NodeList && !NodeList.prototype.forEach) {
     NodeList.prototype.forEach = Array.prototype.forEach
@@ -183,19 +182,19 @@ const update = () => {
         .getElementById('linkColor')
         .closest('.panel')
         .querySelector('.swatch__compare + .swatch__values > .value-hex')
-        .innerHTML || document.getElementById('linkColor').dataset.default,
+        .innerText || document.getElementById('linkColor').dataset.default,
     exText =
       document
         .getElementById('textColor')
         .closest('.panel')
         .querySelector('.swatch__compare + .swatch__values > .value-hex')
-        .innerHTML || document.getElementById('textColor').dataset.default,
+        .innerText || document.getElementById('textColor').dataset.default,
     exBg =
       document
         .getElementById('bgColor')
         .closest('.panel')
         .querySelector('.swatch__compare + .swatch__values > .value-hex')
-        .innerHTML || document.getElementById('bgColor').dataset.default,
+        .innerText || document.getElementById('bgColor').dataset.default,
     link2Body = contrastRatio(
       hex2Rgb(splitHex(exLink)),
       hex2Rgb(splitHex(exText))
@@ -210,13 +209,13 @@ const update = () => {
 
   document
     .getElementById('link2Body')
-    .querySelector('.contrast__value').innerHTML = link2Body
+    .querySelector('.contrast__value').innerText = link2Body
   document
     .getElementById('link2Bg')
-    .querySelector('.contrast__value').innerHTML = link2Bg
+    .querySelector('.contrast__value').innerText = link2Bg
   document
     .getElementById('body2Bg')
-    .querySelector('.contrast__value').innerHTML = body2Bg
+    .querySelector('.contrast__value').innerText = body2Bg
 
   if (link2Body < 3) {
     document.getElementById('link2Body').classList.remove('pass')
@@ -226,7 +225,7 @@ const update = () => {
       .classList.remove('pass')
     document
       .getElementById('link2Body')
-      .querySelector('.label--wcagA>span').innerHTML = 'Fail'
+      .querySelector('.label--wcagA>span').innerText = 'Fail'
   } else {
     document.getElementById('link2Body').classList.add('pass')
     document
@@ -235,7 +234,7 @@ const update = () => {
       .classList.add('pass')
     document
       .getElementById('link2Body')
-      .querySelector('.label--wcagA>span').innerHTML = 'Pass'
+      .querySelector('.label--wcagA>span').innerText = 'Pass'
   }
 
   if (link2Bg < 4.5) {
@@ -246,14 +245,14 @@ const update = () => {
       .classList.remove('pass')
     document
       .getElementById('link2Bg')
-      .querySelector('.label--wcagAA>span').innerHTML = 'Fail'
+      .querySelector('.label--wcagAA>span').innerText = 'Fail'
     document
       .getElementById('link2Bg')
       .querySelector('.label--wcagAAA>span')
       .classList.remove('pass')
     document
       .getElementById('link2Bg')
-      .querySelector('.label--wcagAAA>span').innerHTML = 'Fail'
+      .querySelector('.label--wcagAAA>span').innerText = 'Fail'
   } else {
     document.getElementById('link2Bg').classList.add('pass')
     document
@@ -262,7 +261,7 @@ const update = () => {
       .classList.add('pass')
     document
       .getElementById('link2Bg')
-      .querySelector('.label--wcagAA>span').innerHTML = 'Pass'
+      .querySelector('.label--wcagAA>span').innerText = 'Pass'
     if (link2Bg < 7) {
       document
         .getElementById('link2Bg')
@@ -270,7 +269,7 @@ const update = () => {
         .classList.remove('pass')
       document
         .getElementById('link2Bg')
-        .querySelector('.label--wcagAAA>span').innerHTML = 'Fail'
+        .querySelector('.label--wcagAAA>span').innerText = 'Fail'
     } else {
       document.getElementById('link2Bg').classList.add('pass')
       document
@@ -279,14 +278,14 @@ const update = () => {
         .classList.add('pass')
       document
         .getElementById('link2Bg')
-        .querySelector('.label--wcagAA>span').innerHTML = 'Pass'
+        .querySelector('.label--wcagAA>span').innerText = 'Pass'
       document
         .getElementById('link2Bg')
         .querySelector('.label--wcagAAA>span')
         .classList.add('pass')
       document
         .getElementById('link2Bg')
-        .querySelector('.label--wcagAAA>span').innerHTML = 'Pass'
+        .querySelector('.label--wcagAAA>span').innerText = 'Pass'
     }
   }
 
@@ -298,14 +297,14 @@ const update = () => {
       .classList.remove('pass')
     document
       .getElementById('body2Bg')
-      .querySelector('.label--wcagAA>span').innerHTML = 'Fail'
+      .querySelector('.label--wcagAA>span').innerText = 'Fail'
     document
       .getElementById('body2Bg')
       .querySelector('.label--wcagAAA>span')
       .classList.remove('pass')
     document
       .getElementById('body2Bg')
-      .querySelector('.label--wcagAAA>span').innerHTML = 'Fail'
+      .querySelector('.label--wcagAAA>span').innerText = 'Fail'
   } else {
     document.getElementById('body2Bg').classList.add('pass')
     document
@@ -314,7 +313,7 @@ const update = () => {
       .classList.add('pass')
     document
       .getElementById('body2Bg')
-      .querySelector('.label--wcagAA>span').innerHTML = 'Pass'
+      .querySelector('.label--wcagAA>span').innerText = 'Pass'
     if (body2Bg < 7) {
       document
         .getElementById('body2Bg')
@@ -322,7 +321,7 @@ const update = () => {
         .classList.remove('pass')
       document
         .getElementById('body2Bg')
-        .querySelector('.label--wcagAAA>span').innerHTML = 'Fail'
+        .querySelector('.label--wcagAAA>span').innerText = 'Fail'
     } else {
       document.getElementById('body2Bg').classList.add('pass')
       document
@@ -331,14 +330,14 @@ const update = () => {
         .classList.add('pass')
       document
         .getElementById('body2Bg')
-        .querySelector('.label--wcagAA>span').innerHTML = 'Pass'
+        .querySelector('.label--wcagAA>span').innerText = 'Pass'
       document
         .getElementById('body2Bg')
         .querySelector('.label--wcagAAA>span')
         .classList.add('pass')
       document
         .getElementById('body2Bg')
-        .querySelector('.label--wcagAAA>span').innerHTML = 'Pass'
+        .querySelector('.label--wcagAAA>span').innerText = 'Pass'
     }
   }
 }
@@ -351,15 +350,15 @@ Array.from(ctrlSaturation).forEach(i =>
     const swatch = e.target
       .closest('.swatches')
       .querySelector('.swatch--compare')
-    let hsl = splitHsl(swatch.querySelector('.value-hsl').innerHTML)
+    let hsl = splitHsl(swatch.querySelector('.value-hsl').innerText)
     hsl[1] = e.target.value
     const rgb = hsl2Rgb(hsl)
     const hex = rgb2Hex(rgb, false)
     hsl[1] += '%'
     hsl[2] += '%'
-    swatch.querySelector('.value-rgb').innerHTML = `rgb(${rgb.join(', ')})`
-    swatch.querySelector('.value-hsl').innerHTML = `hsl(${hsl.join(', ')})`
-    swatch.querySelector('.value-hex').innerHTML = `#${hex.join('')}`
+    swatch.querySelector('.value-rgb').innerText = `rgb(${rgb.join(', ')})`
+    swatch.querySelector('.value-hsl').innerText = `hsl(${hsl.join(', ')})`
+    swatch.querySelector('.value-hex').innerText = `#${hex.join('')}`
     swatch.querySelector(
       '.swatch__compare'
     ).style.backgroundColor = `hsl(${hsl.join(', ')})`
@@ -372,15 +371,15 @@ Array.from(ctrlLightness).forEach(i =>
     const swatch = e.target
       .closest('.swatches')
       .querySelector('.swatch--compare')
-    let hsl = splitHsl(swatch.querySelector('.value-hsl').innerHTML)
+    let hsl = splitHsl(swatch.querySelector('.value-hsl').innerText)
     hsl[2] = e.target.value
     const rgb = hsl2Rgb(hsl)
     const hex = rgb2Hex(rgb, false)
     hsl[1] += '%'
     hsl[2] += '%'
-    swatch.querySelector('.value-rgb').innerHTML = `rgb(${rgb.join(', ')})`
-    swatch.querySelector('.value-hsl').innerHTML = `hsl(${hsl.join(', ')})`
-    swatch.querySelector('.value-hex').innerHTML = `#${hex.join('')}`
+    swatch.querySelector('.value-rgb').innerText = `rgb(${rgb.join(', ')})`
+    swatch.querySelector('.value-hsl').innerText = `hsl(${hsl.join(', ')})`
+    swatch.querySelector('.value-hex').innerText = `#${hex.join('')}`
     swatch.querySelector(
       '.swatch__compare'
     ).style.backgroundColor = `hsl(${hsl.join(', ')})`
