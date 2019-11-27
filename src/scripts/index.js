@@ -126,7 +126,7 @@ const inputColor = document.querySelectorAll('.input-color')
 Array.from(inputColor).forEach(i =>
   i.addEventListener('input', e => {
     const el = e.target,
-      panel = el.closest('.panel'),
+      card = el.closest('.card'),
       val = el.value,
       match = val.match(
         /^((#)?([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3}))|(rgb\((\d{1,3}),[\s]?(\d{1,3}),[\s]?(\d{1,3})\))|(hsl\((\d{1,3}),[\s]?(\d{1,3})%,[\s]?(\d{1,3})%\))$/
@@ -149,26 +149,26 @@ Array.from(inputColor).forEach(i =>
         hsl = [match[9], match[10] + '%', match[11] + '%']
       }
     }
-    panel
+    card
       .querySelectorAll('.value-rgb')
       .forEach(val => (val.innerHTML = `rgb(${rgb.join(', ')})`))
-    panel
+    card
       .querySelectorAll('.value-hsl')
       .forEach(val => (val.innerHTML = `hsl(${hsl.join(', ')})`))
-    panel
+    card
       .querySelectorAll('.value-hex')
       .forEach(val => (val.innerHTML = `#${hex.join('')}`))
-    panel.querySelector('.swatch__source').style.backgroundColor = `#${hex.join(
+    card.querySelector('.swatch__source').style.backgroundColor = `#${hex.join(
       ''
     )}`
-    panel.querySelector(
+    card.querySelector(
       '.swatch__compare'
     ).style.backgroundColor = `hsl(${hsl.join(', ')})`
-    panel.querySelector('.saturation').value = hsl[1].substring(
+    card.querySelector('.saturation').value = hsl[1].substring(
       0,
       hsl[1].length - 1
     )
-    panel.querySelector('.lightness').value = hsl[2].substring(
+    card.querySelector('.lightness').value = hsl[2].substring(
       0,
       hsl[2].length - 1
     )
@@ -180,19 +180,19 @@ const update = () => {
   const exLink =
       document
         .getElementById('linkColor')
-        .closest('.panel')
+        .closest('.card')
         .querySelector('.swatch__compare + .swatch__values > .value-hex')
         .innerText || document.getElementById('linkColor').dataset.default,
     exText =
       document
         .getElementById('textColor')
-        .closest('.panel')
+        .closest('.card')
         .querySelector('.swatch__compare + .swatch__values > .value-hex')
         .innerText || document.getElementById('textColor').dataset.default,
     exBg =
       document
         .getElementById('bgColor')
-        .closest('.panel')
+        .closest('.card')
         .querySelector('.swatch__compare + .swatch__values > .value-hex')
         .innerText || document.getElementById('bgColor').dataset.default,
     link2Body = contrastRatio(

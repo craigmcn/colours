@@ -1,151 +1,6 @@
-/**
- * Fonts
- */
-@import url('https://fonts.googleapis.com/css?family=Raleway:400, 700|Roboto|Roboto+Mono');
-$raleway-stack: 'Raleway', 'Verdana', 'Lucida Grande', 'Gill Sans', 'Arial',
-  'Helvetica', sans-serif;
-$roboto-stack: Roboto, 'Helvetica Neue', Helvetica, Arial, sans-serif !default;
-$mono-stack: 'Roboto Mono', monospace !default;
-
-/**
-   * Colours
-   */
-$white: #fff;
-$black: #222;
 $grey: #adafaa;
-$darkgrey: #444;
-$lightgrey: #ccc;
-$silver: #f8f8f8;
-$primary: #005b99; /* https://www.canada.ca/en/treasury-board-secretariat/services/government-communications/federal-identity-program/technical-specifications/official-symbols/colour-values.html */
-$secondary: #993d00; /* 180deg from primary*/
 $green: #036803;
-$info: #03607d;
 $red: #b60202;
-$yellow: #f9d615;
-$warning: #695802;
-
-/* apply a natural box layout model to all elements, but allowing components to change */
-html {
-  box-sizing: border-box;
-}
-*,
-*:before,
-*:after {
-  box-sizing: inherit;
-}
-* {
-  margin: 0;
-  padding: 0;
-}
-
-body {
-  font-family: $roboto-stack;
-  color: $black;
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-family: $raleway-stack;
-  margin: 1em 0;
-}
-
-a {
-  color: $primary;
-  &:hover,
-  &:active {
-    color: darken($primary, 10%);
-  }
-  &:visited {
-    color: lighten($primary, 8%);
-  }
-}
-
-.header {
-  background-color: $silver;
-  border-bottom: 1px solid darken($silver, 10%);
-  color: $darkgrey;
-  height: 54px; /* text 21px, padding 16px * 2, border 1px */
-  padding: 1rem;
-
-  & h1 {
-    font-size: 1.1rem;
-    font-weight: normal;
-    margin: 0;
-  }
-}
-
-.muted {
-  color: $darkgrey;
-}
-
-.main {
-  margin: 0 auto 1rem auto;
-  padding: 0 1rem;
-  &--fixed {
-    width: 60em;
-  }
-}
-
-.container {
-  margin: 1rem 0;
-  padding: 0;
-  &--flex {
-    display: flex;
-    display: -webkit-flex;
-    flex-flow: row wrap;
-    & > * {
-      margin-right: 0.5rem;
-      flex-grow: 1;
-      &:last-child {
-        margin-right: 0;
-      }
-    }
-  }
-  &--grid {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(18.4375em, 1fr));
-    grid-gap: 10px;
-
-    .panel {
-      min-width: 18.4375em;
-    }
-
-    @media (max-width: 954px) {
-      font-size: 85%;
-    }
-
-    @media (max-width: 820px) {
-      display: block;
-    }
-  }
-}
-
-.panel {
-  border: 1px solid $grey;
-  border-radius: 0.25rem;
-  margin-bottom: 0.5rem;
-
-  &__title {
-    background-color: $silver;
-    border-bottom: 1px solid $grey;
-    padding: 1rem;
-    & > * {
-      margin: 0;
-    }
-  }
-
-  &__body {
-    padding: 1rem;
-
-    & > * {
-      margin-bottom: 1em;
-    }
-  }
-}
 
 .swatch {
   display: flex;
@@ -176,36 +31,21 @@ a {
   }
 }
 
-.input-color {
-  border: 1px solid $grey;
-  border-radius: 0.25em;
-  font-size: 1.125rem;
-  margin-bottom: 0.5rem;
-  padding: 0.25em 0.25rem;
-  width: 98%;
-}
-
 .saturation,
 .lightness {
   min-width: 81%;
-}
-
-.visually-hidden {
-  /* https://snook.ca/archives/html_and_css/hiding-content-for-accessibility */
-  position: absolute !important;
-  height: 1px;
-  width: 1px;
-  overflow: hidden;
-  clip: rect(1px 1px 1px 1px); /* IE6, IE7 */
-  clip: rect(1px, 1px, 1px, 1px);
 }
 
 .contrast {
   border: 1px solid $grey;
   border-radius: 0.25em;
   display: flex;
-  height: 4em;
+  height: 5rem;
   padding: 0.5rem;
+
+  p {
+    margin-top: 0;
+  }
 
   &.pass {
     border-color: $green;

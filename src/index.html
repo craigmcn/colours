@@ -8,34 +8,40 @@
 
   <title>Colours + Contrast</title>
 
-  <!-- <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-  <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32" />
-  <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16" />
-  <link rel="manifest" href="/manifest.json" />
-  <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#1e90ff" />
-  <meta name="theme-color" content="#1e90ff" /> -->
+  <!-- <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=wAdO0d8bp8">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png?v=wAdO0d8bp8">
+  <link rel="icon" type="image/png" sizes="194x194" href="/favicon-194x194.png?v=wAdO0d8bp8">
+  <link rel="icon" type="image/png" sizes="192x192" href="/android-chrome-192x192.png?v=wAdO0d8bp8">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png?v=wAdO0d8bp8">
+  <link rel="manifest" href="/site.webmanifest?v=wAdO0d8bp8">
+  <link rel="mask-icon" href="/safari-pinned-tab.svg?v=wAdO0d8bp8" color="#005b99">
+  <link rel="shortcut icon" href="/favicon.ico?v=wAdO0d8bp8">
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <meta name="theme-color" content="#005b99"> -->
+  
+  <link rel="stylesheet" href="https://www.craigmcn.com/albertcss/css/albert.min.css">
 
-  <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-  <![endif]-->
 </head>
 
 <body>
   <header class="header">
+    <div class="brand">
+      <!-- <img src="/nameplate.2019-11-24.png" alt=""> -->
+      craigmcn
+    </div>
     <h1>Colours + Contrast</h1>
   </header>
 
   <main class="main">
-    <section class="container container--grid">
-      <div class="panel">
-        <div class="panel__title">
+    <section class="flex flex--grid">
+      <div class="card flex__item flex__item--12 flex__item--4-lg">
+        <div class="card__title">
           <h3>Links</h3>
         </div>
-        <div class="panel__body">
-          <p class="input">
+        <div class="card__body">
+          <p class="form__group">
             <label for="linkColor" class="visually-hidden">Link color</label>
-            <input id="linkColor" class="input-color" type="text" placeholder="#0000FF, #c00, rgb(10, 20, 30), hsl(10, 20%, 30%)"
+            <input id="linkColor" class="form__control input input--large" type="text" placeholder="#0000FF, #c00, rgb(10, 20, 30), hsl(10, 20%, 30%)"
               data-default="#0000FF">
           </p>
           <div class="swatches">
@@ -63,15 +69,15 @@
             </div>
           </div><!-- ./swatches -->
         </div>
-      </div><!-- ./panel -->
-      <div class="panel">
-        <div class="panel__title">
+      </div><!-- ./card -->
+      <div class="card flex__item flex__item--12 flex__item--4-lg">
+        <div class="card__title">
           <h3>Text</h3>
         </div>
-        <div class="panel__body">
-          <p class="input">
+        <div class="card__body">
+          <p class="form__group">
             <label for="textColor" class="visually-hidden">Text color</label>
-            <input id="textColor" class="input-color form-control" type="text" placeholder="#0000FF, #c00, rgb(10, 20, 30), hsl(10, 20%, 30%)"
+            <input id="textColor" class="form__control input input--large" type="text" placeholder="#0000FF, #c00, rgb(10, 20, 30), hsl(10, 20%, 30%)"
               data-default="#000000">
           </p>
           <div class="swatches">
@@ -99,15 +105,15 @@
             </div>
           </div><!-- ./swatches -->
         </div>
-      </div><!-- ./panel -->
-      <div class="panel">
-        <div class="panel__title">
+      </div><!-- ./card -->
+      <div class="card flex__item flex__item--12 flex__item--4-lg">
+        <div class="card__title">
           <h3>Background</h3>
         </div>
-        <div class="panel__body">
-          <p class="input">
+        <div class="card__body">
+          <p class="form__group">
             <label for="bgColor" class="visually-hidden">Background color</label>
-            <input id="bgColor" class="input-color form-control" type="text" placeholder="#0000FF, #c00, rgb(10, 20, 30), hsl(10, 20%, 30%)"
+            <input id="bgColor" class="form__control input input--large" type="text" placeholder="#0000FF, #c00, rgb(10, 20, 30), hsl(10, 20%, 30%)"
               data-default="#FFFFFF">
           </p>
           <div class="swatches">
@@ -135,10 +141,10 @@
             </div>
           </div><!-- ./swatches -->
         </div>
-      </div><!-- ./panel -->
+      </div><!-- ./card -->
     </section>
 
-    <section class="container">
+    <section class="m-h-md">
       <div class="exBg" style="background-color: #ffffff; border: 1px solid #000000; font-size: 200%; margin: 0 auto; padding: 0.5em 0; text-align: center; width: 66.6667%">
         <p class="exText" style="color: #000000">Foreground text <a href="#" class="exLink" style="color: #0000ff">link
             text</a>
@@ -146,7 +152,7 @@
       </div>
     </section>
 
-    <section class="container">
+    <section class="m-h-md">
       <div id="link2Body" class="contrast">
         <div class="contrast__ratio">
           <span class="contrast__value"></span>:1
@@ -158,7 +164,7 @@
       </div>
     </section>
 
-    <section class="container">
+    <section class="m-h-md">
       <div id="link2Bg" class="contrast pass">
         <div class="contrast__ratio">
           <span class="contrast__value"></span>:1
@@ -169,9 +175,9 @@
           <p class="label--wcagAAA">WCAG AAA: <span>Fail</span></p>
         </div>
       </div>
-
     </section>
-    <section class="container">
+
+    <section class="m-h-md">
       <div id="body2Bg" class="contrast">
         <div class="contrast__ratio">
           <span class="contrast__value"></span>:1
@@ -182,9 +188,10 @@
           <p class="label--wcagAAA">WCAG AAA: <span>Fail</span></p>
         </div>
       </div>
-
     </section>
-    <p><a href="https://webaim.org/blog/wcag-2-0-and-link-colors/" target="_blank">WebAIM: WCAG 2.0 and Link Colors</a></p>
+
+    <p class="m-h-md"><a href="https://webaim.org/blog/wcag-2-0-and-link-colors/" target="_blank">WebAIM: WCAG 2.0 and Link Colors</a></p>
+
   </main>
   <script src="./scripts/index.js"></script>
 </body>
