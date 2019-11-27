@@ -122,7 +122,7 @@ const contrastRatio = ([r1, g1, b1], [r2, g2, b2]) => {
   return parseFloat((l + 0.05) / (d + 0.05)).toFixed(2)
 }
 
-const inputColor = document.querySelectorAll('.input-color')
+const inputColor = document.querySelectorAll('.js-inputColor')
 Array.from(inputColor).forEach(i =>
   i.addEventListener('input', e => {
     const el = e.target,
