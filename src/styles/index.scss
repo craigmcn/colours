@@ -80,3 +80,17 @@ $red: #b60202;
     font-weight: bold;
   }
 }
+
+.exBg {
+  border: 1px solid;
+  font-size: 200%;
+  margin: 0 auto;
+  padding: 0.5em 0;
+  text-align: center;
+}
+
+@media (min-width: 1012px)  {
+  .exBg {
+    width: 66.6667%;
+  }
+}
