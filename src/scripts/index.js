@@ -1,13 +1,13 @@
 import '../styles/index.scss'
 
-/* https://developer.mozilla.org/en-US/docs/Web/API/NodeList/forEach
- * This polyfill adds compatibility to all Browsers supporting ES5
- */
-;(function() {
-  if (window.NodeList && !NodeList.prototype.forEach) {
-    NodeList.prototype.forEach = Array.prototype.forEach
-  }
-})()
+  /* https://developer.mozilla.org/en-US/docs/Web/API/NodeList/forEach
+   * This polyfill adds compatibility to all Browsers supporting ES5
+   */
+  ; (function () {
+    if (window.NodeList && !NodeList.prototype.forEach) {
+      NodeList.prototype.forEach = Array.prototype.forEach
+    }
+  })()
 
 const splitHex = hex => {
   const h = hex.replace('#', '').toLowerCase()
@@ -83,22 +83,22 @@ const hsl2Rgb = ([h, s, l]) => {
   let r, g, b
   if (h >= 0 && h < 60) {
     r = C
-    ;(g = X), (b = 0)
+      ; (g = X), (b = 0)
   } else if (h >= 60 && h < 120) {
     r = X
-    ;(g = C), (b = 0)
+      ; (g = C), (b = 0)
   } else if (h >= 120 && h < 180) {
     r = 0
-    ;(g = C), (b = X)
+      ; (g = C), (b = X)
   } else if (h >= 180 && h < 240) {
     r = 0
-    ;(g = X), (b = C)
+      ; (g = X), (b = C)
   } else if (h >= 240 && h < 300) {
     r = X
-    ;(g = 0), (b = C)
+      ; (g = 0), (b = C)
   } else {
     r = C
-    ;(g = 0), (b = X)
+      ; (g = 0), (b = X)
   }
   return [r, g, b].map(c => Math.round((c + m) * 255, 0))
 }
@@ -178,11 +178,11 @@ Array.from(inputColor).forEach(i =>
 
 const update = () => {
   const exLink =
-      document
-        .getElementById('linkColor')
-        .closest('.card')
-        .querySelector('.swatch__compare + .swatch__values > .value-hex')
-        .innerText || document.getElementById('linkColor').dataset.default,
+    document
+      .getElementById('linkColor')
+      .closest('.card')
+      .querySelector('.swatch__compare + .swatch__values > .value-hex')
+      .innerText || document.getElementById('linkColor').dataset.default,
     exText =
       document
         .getElementById('textColor')
@@ -204,6 +204,17 @@ const update = () => {
 
   document.querySelector('.exText').style.color = exText
   document.querySelector('.exLink').style.color = exLink
+  const exLinkStyle = document.getElementById('exLinkStyle')
+  if (exLinkStyle) exLinkStyle.remove()
+  const styles = `.exLink:focus{ box-shadow: 0 0 0 0.2rem rgba(${hex2Rgb(splitHex(exLink))},0.5) }`
+  const styleTag = document.createElement('style')
+  styleTag.id = 'exLinkStyle'
+  if (styleTag.styleSheet) {
+    styleTag.styleSheet.cssText = styles;
+  } else {
+    styleTag.appendChild(document.createTextNode(styles));
+  }
+  document.getElementsByTagName('head')[0].appendChild(styleTag);
   document.querySelector('.exBg').style.backgroundColor = exBg
   document.querySelector('.exBg').style.borderColor = exText
 
