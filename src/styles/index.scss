@@ -2,6 +2,8 @@ $grey: #adafaa;
 $green: #036803;
 $red: #b60202;
 
+/* Colour + Contrast */
+
 .swatch {
   display: flex;
   flex-direction: row;
@@ -93,4 +95,17 @@ $red: #b60202;
   .exBg {
     width: 66.6667%;
   }
+}
+
+/* Opacity */
+
+.colours {
+  display: flex;
+  margin-bottom: 1rem;
+}
+
+.colour {
+  flex-grow: 1;
+  mix-blend-mode: difference;
+  padding: 1rem;
 }

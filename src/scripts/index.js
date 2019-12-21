@@ -1,126 +1,18 @@
+import { splitHex, splitHsl } from './parseValues'
+import { hex2Rgb, rgb2Hex, rgb2Hsl, hsl2Rgb } from './convertColours'
+import { contrastRatio } from './contrastRatio'
 import '../styles/index.scss'
 
-  /* https://developer.mozilla.org/en-US/docs/Web/API/NodeList/forEach
-   * This polyfill adds compatibility to all Browsers supporting ES5
-   */
-  ; (function () {
-    if (window.NodeList && !NodeList.prototype.forEach) {
-      NodeList.prototype.forEach = Array.prototype.forEach
-    }
-  })()
-
-const splitHex = hex => {
-  const h = hex.replace('#', '').toLowerCase()
-  if (!h.match(/^[a-f0-9]{3}$/) && !h.match(/^[a-f0-9]{6}$/))
-    return ['00', '00', '00']
-  if (h.length === 3) {
-    return h.split('').map(c => c + c)
-  } else {
-    const a = h.match(/^(.{2})(.{2})(.{2})$/)
-    return [a[1], a[2], a[3]]
+/* https://developer.mozilla.org/en-US/docs/Web/API/NodeList/forEach
+ * This polyfill adds compatibility to all Browsers supporting ES5
+ */
+;(function() {
+  if (window.NodeList && !NodeList.prototype.forEach) {
+    NodeList.prototype.forEach = Array.prototype.forEach
   }
-}
+})()
 
-const splitRgb = rgb => {
-  const m = rgb.match(/^rgb\((\d{1,3}),[\s]?(\d{1,3}),[\s]?(\d{1,3})\)$/)
-  return [m[1], m[2], m[3]]
-}
-
-const splitHsl = hsl => {
-  const m = hsl.match(/^hsl\((\d{1,3}),[\s]?(\d{1,3})%,[\s]?(\d{1,3})%\)$/)
-  return [m[1], m[2], m[3]]
-}
-
-const hex2Rgb = (hex = ['00', '00', '00']) =>
-  hex.reduce((r, c) => {
-    r.push(parseInt(c, 16))
-    return r
-  }, [])
-
-const rgb2Hex = (rgb = [0, 0, 0], asString = true) => {
-  const a = rgb.map(c =>
-    parseInt(c)
-      .toString(16)
-      .padStart(2, '0')
-  )
-  if (asString) {
-    return '#' + a.join('')
-  }
-  return a
-}
-
-const rgb2Hsl = ([r, g, b]) => {
-  const _r = r / 255,
-    _g = g / 255,
-    _b = b / 255,
-    cMax = Math.max(_r, _g, _b),
-    cMin = Math.min(_r, _g, _b),
-    _d = cMax - cMin,
-    l = (cMax + cMin) / 2,
-    s = _d === 0 ? 0 : _d / (1 - Math.abs(2 * l - 1))
-  let h
-  if (_d === 0) {
-    h = 0
-  } else if (cMax === _r) {
-    h = 60 * (((_g - _b) / _d) % 6)
-  } else if (cMax === _g) {
-    h = 60 * ((_b - _r) / _d + 2)
-  } else {
-    h = 60 * ((_r - _g) / _d + 4)
-  }
-  if (h < 0) h += 360
-  return [
-    Math.round(h, 0),
-    Math.round(s * 100, 0) + '%',
-    Math.round(l * 100, 0) + '%'
-  ]
-}
-
-const hsl2Rgb = ([h, s, l]) => {
-  const C = (1 - Math.abs(2 * (l / 100) - 1)) * (s / 100),
-    X = C * (1 - Math.abs(((h / 60) % 2) - 1)),
-    m = l / 100 - C / 2
-  let r, g, b
-  if (h >= 0 && h < 60) {
-    r = C
-      ; (g = X), (b = 0)
-  } else if (h >= 60 && h < 120) {
-    r = X
-      ; (g = C), (b = 0)
-  } else if (h >= 120 && h < 180) {
-    r = 0
-      ; (g = C), (b = X)
-  } else if (h >= 180 && h < 240) {
-    r = 0
-      ; (g = X), (b = C)
-  } else if (h >= 240 && h < 300) {
-    r = X
-      ; (g = 0), (b = C)
-  } else {
-    r = C
-      ; (g = 0), (b = X)
-  }
-  return [r, g, b].map(c => Math.round((c + m) * 255, 0))
-}
-
-const sRgb = c => {
-  const s = c / 255
-  if (s <= 0.03928) {
-    return s / 12.92
-  } else {
-    return Math.pow((s + 0.055) / 1.055, 2.4)
-  }
-}
-
-const rL = ([r, g, b]) => 0.2126 * sRgb(r) + 0.7152 * sRgb(g) + 0.0722 * sRgb(b)
-
-const contrastRatio = ([r1, g1, b1], [r2, g2, b2]) => {
-  const rL1 = rL([r1, g1, b1]),
-    rL2 = rL([r2, g2, b2]),
-    l = rL1 > rL2 ? rL1 : rL2,
-    d = rL1 > rL2 ? rL2 : rL1
-  return parseFloat((l + 0.05) / (d + 0.05)).toFixed(2)
-}
+let hex, rgb, hsl
 
 const inputColor = document.querySelectorAll('.js-inputColor')
 Array.from(inputColor).forEach(i =>
@@ -131,9 +23,9 @@ Array.from(inputColor).forEach(i =>
       match = val.match(
         /^((#)?([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3}))|(rgb\((\d{1,3}),[\s]?(\d{1,3}),[\s]?(\d{1,3})\))|(hsl\((\d{1,3}),[\s]?(\d{1,3})%,[\s]?(\d{1,3})%\))$/
       )
-    let hex = splitHex(el.dataset.default),
-      rgb = hex2Rgb(hex),
-      hsl = rgb2Hsl(rgb)
+    hex = splitHex(el.dataset.default)
+    rgb = hex2Rgb(hex)
+    hsl = rgb2Hsl(rgb)
     if (match) {
       if (match[1]) {
         hex = splitHex(match[3])
@@ -178,11 +70,11 @@ Array.from(inputColor).forEach(i =>
 
 const update = () => {
   const exLink =
-    document
-      .getElementById('linkColor')
-      .closest('.card')
-      .querySelector('.swatch__compare + .swatch__values > .value-hex')
-      .innerText || document.getElementById('linkColor').dataset.default,
+      document
+        .getElementById('linkColor')
+        .closest('.card')
+        .querySelector('.swatch__compare + .swatch__values > .value-hex')
+        .innerText || document.getElementById('linkColor').dataset.default,
     exText =
       document
         .getElementById('textColor')
@@ -206,15 +98,17 @@ const update = () => {
   document.querySelector('.exLink').style.color = exLink
   const exLinkStyle = document.getElementById('exLinkStyle')
   if (exLinkStyle) exLinkStyle.remove()
-  const styles = `.exLink:focus{ box-shadow: 0 0 0 0.2rem rgba(${hex2Rgb(splitHex(exLink))},0.5) }`
+  const styles = `.exLink:focus{ box-shadow: 0 0 0 0.2rem rgba(${hex2Rgb(
+    splitHex(exLink)
+  )},0.5) }`
   const styleTag = document.createElement('style')
   styleTag.id = 'exLinkStyle'
   if (styleTag.styleSheet) {
-    styleTag.styleSheet.cssText = styles;
+    styleTag.styleSheet.cssText = styles
   } else {
-    styleTag.appendChild(document.createTextNode(styles));
+    styleTag.appendChild(document.createTextNode(styles))
   }
-  document.getElementsByTagName('head')[0].appendChild(styleTag);
+  document.getElementsByTagName('head')[0].appendChild(styleTag)
   document.querySelector('.exBg').style.backgroundColor = exBg
   document.querySelector('.exBg').style.borderColor = exText
 
@@ -398,4 +292,4 @@ Array.from(ctrlLightness).forEach(i =>
   })
 )
 
-update()
+if (inputColor.length) update()

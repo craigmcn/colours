@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="x-ua-compatible" content="ie=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Colours + Contrast :: Opacity</title>
+
+  <!-- <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=wAdO0d8bp8">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png?v=wAdO0d8bp8">
+  <link rel="icon" type="image/png" sizes="194x194" href="/favicon-194x194.png?v=wAdO0d8bp8">
+  <link rel="icon" type="image/png" sizes="192x192" href="/android-chrome-192x192.png?v=wAdO0d8bp8">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png?v=wAdO0d8bp8">
+  <link rel="manifest" href="/site.webmanifest?v=wAdO0d8bp8">
+  <link rel="mask-icon" href="/safari-pinned-tab.svg?v=wAdO0d8bp8" color="#005b99">
+  <link rel="shortcut icon" href="/favicon.ico?v=wAdO0d8bp8">
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <meta name="theme-color" content="#005b99"> -->
+
+  <link rel="stylesheet" href="https://www.craigmcn.com/albertcss/css/albert.min.css">
+
+</head>
+
+<body>
+  <header class="header">
+    <div class="brand">
+      <!-- <img src="/nameplate.2019-11-24.png" alt=""> -->
+      craigmcn
+    </div>
+    <h1>Colours + Contrast</h1>
+  </header>
+
+  <main class="main main--fixed">
+
+    <h1>Calculate opacity</h1>
+
+    <div class="colours" style="display: flex;">
+      <div id="bgSwatch" class="colour"><span id="bgRGB"></span><br>
+        <span id="bgHEX"></span><br>
+        <span id="bgHSL"></span></div>
+
+      <div id="resSwatch" class="colour"><span id="resRGB"></span><br>
+        <span id="resHEX"></span><br>
+        <span id="resHSL"></span></div>
+
+      <div id="fgSwatch" class="colour"><span id="fgRGB"></span><br>
+        <span id="fgHEX"></span><br>
+        <span id="fgHSL"></span></div>
+    </div>
+
+    <div class="form__group">
+      <label class="form__label" for="bg">Background</label>
+      <input id="bg" class="form__control input input--large js-opacityColor" data-target="bgSwatch">
+    </div>
+    <div class="form__group">
+      <label class="form__label" for="fg">Foreground</label>
+      <input id="fg" class="form__control input input--large js-opacityColor" data-target="fgSwatch">
+    </div>
+    <div class="form__group">
+      <label class="form__label" for="res">Result</label>
+      <input id="res" class="form__control input input--large js-opacityColor js-calculateResult"
+        data-target="resSwatch">
+    </div>
+    <div class="form__group">
+      <label class="form__label" for="opacity">Opacity</label>
+      <input id="opacity" class="form__control input input--large js-inputOpacity js-calculateResult"
+        data-target="resSwatch">
+      <p class="text--muted text--small">
+        <span id="opacityDec"></span><br>
+        <span id="opacityPercent"></span>
+      </p>
+      </p>
+
+  </main>
+  <script src="./scripts/opacity.js"></script>
+</body>
+
+</html>
