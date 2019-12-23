@@ -37,39 +37,47 @@
     <h1>Calculate opacity</h1>
 
     <div class="colours" style="display: flex;">
-      <div id="bgSwatch" class="colour"><span id="bgRGB"></span><br>
+      <div id="bgSwatch" class="colour">
+        <strong>Background</strong><br>
         <span id="bgHEX"></span><br>
-        <span id="bgHSL"></span></div>
+        <span id="bgRGB"></span><br>
+        <span id="bgHSL"></span>
+      </div>
 
-      <div id="resSwatch" class="colour"><span id="resRGB"></span><br>
+      <div id="resSwatch" class="colour">
+        <strong>Result</strong><br>
         <span id="resHEX"></span><br>
-        <span id="resHSL"></span></div>
+        <span id="resRGB"></span><br>
+        <span id="resHSL"></span>
+      </div>
 
-      <div id="fgSwatch" class="colour"><span id="fgRGB"></span><br>
+      <div id="fgSwatch" class="colour">
+        <strong>Foreground</strong><br>
         <span id="fgHEX"></span><br>
-        <span id="fgHSL"></span></div>
+        <span id="fgRGB"></span><br>
+        <span id="fgHSL"></span>
+      </div>
     </div>
 
     <div class="form__group">
       <label class="form__label" for="bg">Background</label>
-      <input id="bg" class="form__control input input--large js-opacityColor" data-target="bgSwatch">
+      <input id="bg" class="form__control input input--large js-opacityColor" placeholder="#0000FF, #c00, rgb(10, 20, 30), hsl(10, 20%, 30%)" data-target="bgSwatch">
     </div>
     <div class="form__group">
       <label class="form__label" for="fg">Foreground</label>
-      <input id="fg" class="form__control input input--large js-opacityColor" data-target="fgSwatch">
+      <input id="fg" class="form__control input input--large js-opacityColor" placeholder="#0000FF, #c00, rgb(10, 20, 30), hsl(10, 20%, 30%)" data-target="fgSwatch">
     </div>
     <div class="form__group">
       <label class="form__label" for="res">Result</label>
-      <input id="res" class="form__control input input--large js-opacityColor js-calculateResult"
+      <input id="res" class="form__control input input--large js-opacityColor js-calculateResult" placeholder="#0000FF, #c00, rgb(10, 20, 30), hsl(10, 20%, 30%)"
         data-target="resSwatch">
     </div>
     <div class="form__group">
       <label class="form__label" for="opacity">Opacity</label>
-      <input id="opacity" class="form__control input input--large js-inputOpacity js-calculateResult"
+      <input id="opacity" class="form__control input input--large js-inputOpacity js-calculateResult" placeholder="0.25, 25%"
         data-target="resSwatch">
-      <p class="text--muted text--small">
-        <span id="opacityDec"></span><br>
-        <span id="opacityPercent"></span>
+      <p class="text--muted">
+        <span id="opacityDec">0.00</span> == <span id="opacityPercent">0.00%</span>
       </p>
       </p>
 

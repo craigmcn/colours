@@ -61,23 +61,23 @@ Array.from(opacityColor).forEach(i =>
       bgHEX = hex
       bgRGB = rgb
       bgHSL = hsl
-      document.getElementById('bgHEX').innerHTML = hex
-      document.getElementById('bgRGB').innerHTML = rgb
-      document.getElementById('bgHSL').innerHTML = hsl
+      document.getElementById('bgHEX').innerHTML = `#${hex.join('')}`
+      document.getElementById('bgRGB').innerHTML = `rgb(${rgb.join(', ')})`
+      document.getElementById('bgHSL').innerHTML = `hsl(${hsl.join(', ')})`
     } else if (el.id === 'fg') {
       fgHEX = hex
       fgRGB = rgb
       fgHSL = hsl
-      document.getElementById('fgHEX').innerHTML = hex
-      document.getElementById('fgRGB').innerHTML = rgb
-      document.getElementById('fgHSL').innerHTML = hsl
+      document.getElementById('fgHEX').innerHTML = `#${hex.join('')}`
+      document.getElementById('fgRGB').innerHTML = `rgb(${rgb.join(', ')})`
+      document.getElementById('fgHSL').innerHTML = `hsl(${hsl.join(', ')})`
     } else if (el.id === 'res') {
       resHEX = hex
       resRGB = rgb
       resHSL = hsl
-      document.getElementById('resHEX').innerHTML = hex
-      document.getElementById('resRGB').innerHTML = rgb
-      document.getElementById('resHSL').innerHTML = hsl
+      document.getElementById('resHEX').innerHTML = `#${hex.join('')}`
+      document.getElementById('resRGB').innerHTML = `rgb(${rgb.join(', ')})`
+      document.getElementById('resHSL').innerHTML = `hsl(${hsl.join(', ')})`
     }
 
     const target = document.getElementById(el.dataset.target)
@@ -91,14 +91,14 @@ Array.from(inputOpacity).forEach(i =>
     const el = e.target,
       val = +el.value
     if (val > 1) {
-      opacityDec = (val / 100).toFixed(3)
-      opacityPercent = val.toFixed(2)
+      opacityDec = (val / 100).toPrecision(3)
+      opacityPercent = val.toPrecision(3)
     } else {
-      opacityDec = val.toFixed(3)
-      opacityPercent = (val * 100).toFixed(2)
+      opacityDec = val.toPrecision(3)
+      opacityPercent = (val * 100).toPrecision(3)
     }
     document.getElementById('opacityDec').innerHTML = opacityDec
-    document.getElementById('opacityPercent').innerHTML = opacityPercent
+    document.getElementById('opacityPercent').innerHTML = `${opacityPercent}%`
   })
 )
 
@@ -109,20 +109,27 @@ Array.from(calculateResult).forEach(i =>
     if (el.id === 'res') {
       // calculate resulting opacity
       opacityDec = (bgRGB[0] - resRGB[0]) / (bgRGB[0] - fgRGB[0])
-      document.getElementById('opacityDec').innerHTML = opacityDec.toFixed(3)
-      document.getElementById('opacityPercent').innerHTML = (
+      document.getElementById('opacityDec').innerHTML = opacityDec.toPrecision(
+        3
+      )
+      document.getElementById('opacityPercent').innerHTML = `${(
         opacityDec * 100
-      ).toFixed(2)
+      ).toPrecision(3)}%`
+      document.getElementById('opacity').value = `${(
+        opacityDec * 100
+      ).toPrecision(3)}%`
     } else if (el.id === 'opacity') {
       // calculate resulting colour
       resRGB = fgRGB.map((c, i) =>
         Math.round((1 - opacityDec) * bgRGB[i] + opacityDec * c)
       )
 
-      document.getElementById('resHEX').innerHTML = rgb2Hex(resRGB)
-      document.getElementById('resRGB').innerHTML = resRGB
-      document.getElementById('resHSL').innerHTML = rgb2Hsl(resRGB)
-
+      document.getElementById('resHEX').innerHTML = `${rgb2Hex(resRGB, true)}`
+      document.getElementById('resRGB').innerHTML = `rgb(${resRGB.join(', ')})`
+      document.getElementById('resHSL').innerHTML = `hsl(${rgb2Hsl(resRGB).join(
+        ', '
+      )})`
+      document.getElementById('res').value = `rgb(${resRGB.join(', ')})`
       const target = document.getElementById(el.dataset.target)
       target.style.backgroundColor = `rgb(${resRGB.join(',')}`
       target.style.color = rL(resRGB) <= 0.1833 ? 'white' : 'black'
