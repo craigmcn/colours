@@ -105,7 +105,6 @@ $red: #b60202;
 }
 
 .colour {
-  flex-grow: 1;
-  mix-blend-mode: difference;
+  flex: 0 0 33.333%;
   padding: 1rem;
 }

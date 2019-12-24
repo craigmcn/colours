@@ -10,7 +10,6 @@ const rgb2Hex = (rgb = [0, 0, 0], asString = true) => {
       .toString(16)
       .padStart(2, '0')
   )
-  console.log(asString, typeof a)
   return asString ? '#' + a.join('') : a
 }
 

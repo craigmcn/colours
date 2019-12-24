@@ -30,6 +30,39 @@ const opacityColor = document.querySelectorAll('.js-opacityColor')
 const inputOpacity = document.querySelectorAll('.js-inputOpacity')
 const calculateResult = document.querySelectorAll('.js-calculateResult')
 
+const updateSwatch = (id, hex, rgb, hsl) => {
+  const target = document.getElementById(id)
+  target.style.backgroundColor = `rgb(${rgb.join(',')}`
+  target.style.color = rL(rgb) <= 0.1833 ? 'white' : 'black'
+  target.querySelector('.js-hex').innerHTML = `#${hex.join('')}`
+  target.querySelector('.js-rgb').innerHTML = `rgb(${rgb.join(', ')})`
+  target.querySelector('.js-hsl').innerHTML = `hsl(${hsl.join(', ')})`
+}
+
+// load foreground, background, result
+Array.from(opacityColor).forEach(el => {
+  if (el.id === 'bg' || el.id === 'fg') {
+    hex = splitHex(el.dataset.default)
+    rgb = hex2Rgb(hex)
+    hsl = rgb2Hsl(rgb)
+
+    if (el.id === 'bg') {
+      bgRGB = rgb
+    } else {
+      fgRGB = rgb
+    }
+
+    updateSwatch(el.dataset.target, hex, rgb, hsl)
+  } else {
+      // calculate resulting colour
+      resRGB = fgRGB.map((c, i) =>
+        Math.round(0.75 * bgRGB[i] + 0.25 * c) // default opacity = 0.25
+      )
+      updateSwatch(el.dataset.target, rgb2Hex(resRGB, false), resRGB, rgb2Hsl(resRGB))
+  }
+
+})
+
 Array.from(opacityColor).forEach(i =>
   i.addEventListener('input', e => {
     const el = e.target,
@@ -52,7 +85,9 @@ Array.from(opacityColor).forEach(i =>
         hsl = [match[9], match[10] + '%', match[11] + '%']
       }
     } else {
-      el.closest('div').style.backgroundColor = '#fff'
+      hex = splitHex(el.dataset.default)
+      rgb = hex2Rgb(hex)
+      hsl = rgb2Hsl(rgb)
     }
 
     if (el.id === 'bg' || el.id === 'fg') resetCalculateResult()
@@ -61,28 +96,16 @@ Array.from(opacityColor).forEach(i =>
       bgHEX = hex
       bgRGB = rgb
       bgHSL = hsl
-      document.getElementById('bgHEX').innerHTML = `#${hex.join('')}`
-      document.getElementById('bgRGB').innerHTML = `rgb(${rgb.join(', ')})`
-      document.getElementById('bgHSL').innerHTML = `hsl(${hsl.join(', ')})`
     } else if (el.id === 'fg') {
       fgHEX = hex
       fgRGB = rgb
       fgHSL = hsl
-      document.getElementById('fgHEX').innerHTML = `#${hex.join('')}`
-      document.getElementById('fgRGB').innerHTML = `rgb(${rgb.join(', ')})`
-      document.getElementById('fgHSL').innerHTML = `hsl(${hsl.join(', ')})`
     } else if (el.id === 'res') {
       resHEX = hex
       resRGB = rgb
       resHSL = hsl
-      document.getElementById('resHEX').innerHTML = `#${hex.join('')}`
-      document.getElementById('resRGB').innerHTML = `rgb(${rgb.join(', ')})`
-      document.getElementById('resHSL').innerHTML = `hsl(${hsl.join(', ')})`
     }
-
-    const target = document.getElementById(el.dataset.target)
-    target.style.backgroundColor = `rgb(${rgb.join(',')}`
-    target.style.color = rL(rgb) <= 0.1833 ? 'white' : 'black'
+    updateSwatch(el.dataset.target, hex, rgb, hsl)
   })
 )
 
@@ -90,13 +113,8 @@ Array.from(inputOpacity).forEach(i =>
   i.addEventListener('input', e => {
     const el = e.target,
       val = +el.value
-    if (val > 1) {
-      opacityDec = (val / 100).toPrecision(3)
-      opacityPercent = val.toPrecision(3)
-    } else {
-      opacityDec = val.toPrecision(3)
-      opacityPercent = (val * 100).toPrecision(3)
-    }
+    opacityDec = (val / 100).toPrecision(2)
+    opacityPercent = val.toPrecision(2)
     document.getElementById('opacityDec').innerHTML = opacityDec
     document.getElementById('opacityPercent').innerHTML = `${opacityPercent}%`
   })
@@ -114,10 +132,10 @@ Array.from(calculateResult).forEach(i =>
       )
       document.getElementById('opacityPercent').innerHTML = `${(
         opacityDec * 100
-      ).toPrecision(3)}%`
+      ).toPrecision(2)}%`
       document.getElementById('opacity').value = `${(
         opacityDec * 100
-      ).toPrecision(3)}%`
+      ).toPrecision(2)}%`
     } else if (el.id === 'opacity') {
       // calculate resulting colour
       resRGB = fgRGB.map((c, i) =>
@@ -132,16 +150,11 @@ Array.from(calculateResult).forEach(i =>
       document.getElementById('res').value = `rgb(${resRGB.join(', ')})`
       const target = document.getElementById(el.dataset.target)
       target.style.backgroundColor = `rgb(${resRGB.join(',')}`
-      target.style.color = rL(resRGB) <= 0.1833 ? 'white' : 'black'
+      target.style.color = rL(resRGB) >= 0.175 ? 'black' : 'white'
     }
   })
 )
 
 const resetCalculateResult = () => {
-  Array.from(calculateResult).forEach(i => {
-    i.value = ''
-    const div = i.closest('div')
-    div.style.backgroundColor = '#fff'
-    Array.from(div.querySelectorAll('span')).forEach(s => (s.innerHTML = ''))
-  })
+  Array.from(calculateResult).forEach(i => i.value = i.dataset.default)
 }
