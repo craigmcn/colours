@@ -1,6 +1,5 @@
 **/.DS_Store
 **/._**
 **/.cache
-**/.vscode
 **/node_modules
-**/dist
+/tmp
