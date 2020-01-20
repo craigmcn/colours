@@ -29,7 +29,17 @@
       <!-- <img src="/nameplate.2019-11-24.png" alt=""> -->
       craigmcn
     </div>
-    <h1>Colours + Contrast</h1>
+    <h1><a class="header__link" href="./index.html">Colours</a></h1>
+    <nav id="nav-collapse" class="nav collapsed">
+      <ul class="nav__list">
+        <li class="nav__item"><a class="nav__link" href="./index.html">Contrast</a></li>
+        <li class="nav__item"><a class="nav__link" href="./opacity.html">Opacity</a></li>
+      </ul>
+    </nav>
+    <button class="nav__control button button--default js-collapse" type="button" data-target="nav-collapse"
+      aria-controls="nav-collapse" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="fas fa-bars" aria-hidden="true"></span><span class="visually-hidden">Menu</span>
+    </button>
   </header>
 
   <main class="main main--fixed">
@@ -61,27 +71,33 @@
 
     <div class="form__group">
       <label class="form__label" for="bg">Background</label>
-      <input id="bg" class="form__control input input--large js-opacityColor" placeholder="#0000FF, #c00, rgb(10, 20, 30), hsl(10, 20%, 30%)" data-target="bgSwatch" data-default="#ffffff">
+      <input id="bg" class="form__control input input--large js-opacityColor"
+        placeholder="#0000FF, #c00, rgb(10, 20, 30), hsl(10, 20%, 30%)" data-target="bgSwatch" data-default="#ffffff">
     </div>
     <div class="form__group">
       <label class="form__label" for="fg">Foreground</label>
-      <input id="fg" class="form__control input input--large js-opacityColor" placeholder="#0000FF, #c00, rgb(10, 20, 30), hsl(10, 20%, 30%)" data-target="fgSwatch" data-default="#005b99">
+      <input id="fg" class="form__control input input--large js-opacityColor"
+        placeholder="#0000FF, #c00, rgb(10, 20, 30), hsl(10, 20%, 30%)" data-target="fgSwatch" data-default="#005b99">
     </div>
     <div class="form__group">
       <label class="form__label" for="res">Result</label>
-      <input id="res" class="form__control input input--large js-opacityColor js-calculateResult" placeholder="#0000FF, #c00, rgb(10, 20, 30), hsl(10, 20%, 30%)"
-        data-target="resSwatch" data-default="#bfd6e6">
+      <input id="res" class="form__control input input--large js-opacityColor js-calculateResult"
+        placeholder="#0000FF, #c00, rgb(10, 20, 30), hsl(10, 20%, 30%)" data-target="resSwatch" data-default="#bfd6e6">
     </div>
     <div class="form__group">
       <label class="form__label" for="opacity">Opacity</label>
-      <input id="opacity" class="form__control input input--large js-inputOpacity js-calculateResult" type="range" value="25" min="0" max="100"
-        data-target="resSwatch" data-default="25">
+      <input id="opacity" class="form__control input input--large js-inputOpacity js-calculateResult" type="range"
+        value="25" min="0" max="100" data-target="resSwatch" data-default="25">
       <p class="text--muted">
         <span id="opacityDec">0.25</span> == <span id="opacityPercent">25%</span>
       </p>
       </p>
 
   </main>
+
+  <script src="https://www.craigmcn.com/albertcss/js/albert.min.js"></script>
+  <script src="https://kit.fontawesome.com/453b852cdd.js" crossorigin="anonymous"
+    integrity="sha384-NZ61boOcl3WY4W94TxWmzNrE/dZbP7g9IY8FECz/RXQXC1XKSv357JckOVRE8GM8"></script>
   <script src="./scripts/opacity.js"></script>
 </body>
 

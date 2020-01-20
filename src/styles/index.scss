@@ -105,6 +105,19 @@ $red: #b60202;
 }
 
 .colour {
+  border: 1px solid $grey;
   flex: 0 0 33.333%;
   padding: 1rem;
+
+  &:last-child {
+    border-bottom-right-radius: 0.25em;
+    border-top-right-radius: 0.25em;
+    border-left: 0;
+}
+
+&:first-child {
+    border-bottom-left-radius: 0.25em;
+    border-top-left-radius: 0.25em;
+    border-right: 0;
+}
 }

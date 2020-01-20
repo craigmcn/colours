@@ -54,13 +54,17 @@ Array.from(opacityColor).forEach(el => {
 
     updateSwatch(el.dataset.target, hex, rgb, hsl)
   } else {
-      // calculate resulting colour
-      resRGB = fgRGB.map((c, i) =>
-        Math.round(0.75 * bgRGB[i] + 0.25 * c) // default opacity = 0.25
-      )
-      updateSwatch(el.dataset.target, rgb2Hex(resRGB, false), resRGB, rgb2Hsl(resRGB))
+    // calculate resulting colour
+    resRGB = fgRGB.map(
+      (c, i) => Math.round(0.75 * bgRGB[i] + 0.25 * c) // default opacity = 0.25
+    )
+    updateSwatch(
+      el.dataset.target,
+      rgb2Hex(resRGB, false),
+      resRGB,
+      rgb2Hsl(resRGB)
+    )
   }
-
 })
 
 Array.from(opacityColor).forEach(i =>
@@ -113,8 +117,8 @@ Array.from(inputOpacity).forEach(i =>
   i.addEventListener('input', e => {
     const el = e.target,
       val = +el.value
-    opacityDec = (val / 100).toPrecision(2)
-    opacityPercent = val.toPrecision(2)
+    opacityDec = (val / 100).toPrecision(3)
+    opacityPercent = val.toPrecision(3)
     document.getElementById('opacityDec').innerHTML = opacityDec
     document.getElementById('opacityPercent').innerHTML = `${opacityPercent}%`
   })
@@ -132,10 +136,10 @@ Array.from(calculateResult).forEach(i =>
       )
       document.getElementById('opacityPercent').innerHTML = `${(
         opacityDec * 100
-      ).toPrecision(2)}%`
+      ).toPrecision(3)}%`
       document.getElementById('opacity').value = `${(
         opacityDec * 100
-      ).toPrecision(2)}%`
+      ).toPrecision(3)}%`
     } else if (el.id === 'opacity') {
       // calculate resulting colour
       resRGB = fgRGB.map((c, i) =>
@@ -156,5 +160,5 @@ Array.from(calculateResult).forEach(i =>
 )
 
 const resetCalculateResult = () => {
-  Array.from(calculateResult).forEach(i => i.value = i.dataset.default)
+  Array.from(calculateResult).forEach(i => (i.value = i.dataset.default))
 }
