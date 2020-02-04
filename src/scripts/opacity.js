@@ -1,18 +1,15 @@
-import { splitHex } from './parseValues'
-import { hex2Rgb, rgb2Hex, rgb2Hsl, hsl2Rgb } from './convertColours'
-import { rL } from './contrastRatio'
-import '../styles/index.scss'
-
-/* https://developer.mozilla.org/en-US/docs/Web/API/NodeList/forEach
- * This polyfill adds compatibility to all Browsers supporting ES5
+/* Opacity
+ * splitHex, hex2Rgb, rgb2Hex, rgb2Hsl, hsl2Rgb, rL already imported in index.js
  */
-;(function() {
-  if (window.NodeList && !NodeList.prototype.forEach) {
-    NodeList.prototype.forEach = Array.prototype.forEach
-  }
-})()
 
-let hex, rgb, hsl
+import {
+  calculateColorArray,
+  calculateOpacity,
+  updateCopy,
+  updateSwatch,
+} from './calculate'
+import { initClipboardCopy } from './clipboard'
+import { addWarning, clearWarnings } from './warnings'
 
 let bgHEX,
   bgRGB,
@@ -30,15 +27,6 @@ const opacityColor = document.querySelectorAll('.js-opacityColor')
 const inputOpacity = document.querySelectorAll('.js-inputOpacity')
 const calculateResult = document.querySelectorAll('.js-calculateResult')
 
-const updateSwatch = (id, hex, rgb, hsl) => {
-  const target = document.getElementById(id)
-  target.style.backgroundColor = `rgb(${rgb.join(',')}`
-  target.style.color = rL(rgb) <= 0.1833 ? 'white' : 'black'
-  target.querySelector('.js-hex').innerHTML = `#${hex.join('')}`
-  target.querySelector('.js-rgb').innerHTML = `rgb(${rgb.join(', ')})`
-  target.querySelector('.js-hsl').innerHTML = `hsl(${hsl.join(', ')})`
-}
-
 // load foreground, background, result
 Array.from(opacityColor).forEach(el => {
   if (el.id === 'bg' || el.id === 'fg') {
@@ -55,20 +43,20 @@ Array.from(opacityColor).forEach(el => {
     updateSwatch(el.dataset.target, hex, rgb, hsl)
   } else {
     // calculate resulting colour
-    resRGB = fgRGB.map(
-      (c, i) => Math.round(0.75 * bgRGB[i] + 0.25 * c) // default opacity = 0.25
-    )
+    resRGB = calculateColorArray(0.25, bgRGB, fgRGB) // default opacity = 0.25
     updateSwatch(
       el.dataset.target,
       rgb2Hex(resRGB, false),
       resRGB,
       rgb2Hsl(resRGB)
     )
+    updateCopy(rgb2Hex(resRGB, false), resRGB, rgb2Hsl(resRGB))
   }
 })
 
 Array.from(opacityColor).forEach(i =>
   i.addEventListener('input', e => {
+    clearWarnings()
     const el = e.target,
       val = el.value,
       match = val.match(
@@ -94,8 +82,6 @@ Array.from(opacityColor).forEach(i =>
       hsl = rgb2Hsl(rgb)
     }
 
-    if (el.id === 'bg' || el.id === 'fg') resetCalculateResult()
-
     if (el.id === 'bg') {
       bgHEX = hex
       bgRGB = rgb
@@ -105,11 +91,24 @@ Array.from(opacityColor).forEach(i =>
       fgRGB = rgb
       fgHSL = hsl
     } else if (el.id === 'res') {
+      if (!el.value) {
+        rgb = calculateColorArray(opacityDec, bgRGB, fgRGB)
+        hex = rgb2Hex(rgb, false)
+        hsl = rgb2Hsl(rgb)
+      }
       resHEX = hex
       resRGB = rgb
       resHSL = hsl
     }
     updateSwatch(el.dataset.target, hex, rgb, hsl)
+    el.dataset.target === 'resSwatch' && updateCopy(hex, rgb, hsl)
+
+    if (el.id === 'bg' || el.id === 'fg') {
+      // calculate resulting colour
+      resRGB = calculateColorArray(0.25, bgRGB, fgRGB) // default opacity = 0.25
+      updateSwatch('resSwatch', rgb2Hex(resRGB, false), resRGB, rgb2Hsl(resRGB))
+      updateCopy(rgb2Hex(resRGB, false), resRGB, rgb2Hsl(resRGB))
+    }
   })
 )
 
@@ -126,11 +125,17 @@ Array.from(inputOpacity).forEach(i =>
 
 Array.from(calculateResult).forEach(i =>
   i.addEventListener('input', e => {
+    clearWarnings()
     const el = e.target
+
     // Calculate remaining value
-    if (el.id === 'res') {
+    if (el.id === 'res' && el.value) {
       // calculate resulting opacity
-      opacityDec = (bgRGB[0] - resRGB[0]) / (bgRGB[0] - fgRGB[0])
+      const tmpOpacity = resRGB
+        .map((c, i) => calculateOpacity(bgRGB[i], fgRGB[i], c))
+        .filter(o => (o > 0 ? o : false))
+
+      opacityDec = tmpOpacity.reduce((a, c) => a + c, 0) / tmpOpacity.length
       document.getElementById('opacityDec').innerHTML = opacityDec.toPrecision(
         3
       )
@@ -140,25 +145,36 @@ Array.from(calculateResult).forEach(i =>
       document.getElementById('opacity').value = `${(
         opacityDec * 100
       ).toPrecision(3)}%`
+
+      // calculate resulting colour
+      const resRGBNew = calculateColorArray(opacityDec, bgRGB, fgRGB)
+      if (resRGBNew.join(',') !== resRGB.join(',')) {
+        addWarning(
+          el,
+          `${el.value} is not a valid transparency result. New result uses average opacity.`
+        )
+        updateSwatch(
+          el.dataset.target,
+          rgb2Hex(resRGBNew, false),
+          resRGBNew,
+          rgb2Hsl(resRGBNew)
+        )
+        updateCopy(rgb2Hex(resRGBNew, false), resRGBNew, rgb2Hsl(resRGBNew))
+      }
+      document.getElementById('opacity').value = opacityDec * 100
     } else if (el.id === 'opacity') {
       // calculate resulting colour
-      resRGB = fgRGB.map((c, i) =>
-        Math.round((1 - opacityDec) * bgRGB[i] + opacityDec * c)
-      )
+      resRGB = calculateColorArray(opacityDec, bgRGB, fgRGB)
 
-      document.getElementById('resHEX').innerHTML = `${rgb2Hex(resRGB, true)}`
-      document.getElementById('resRGB').innerHTML = `rgb(${resRGB.join(', ')})`
-      document.getElementById('resHSL').innerHTML = `hsl(${rgb2Hsl(resRGB).join(
-        ', '
-      )})`
-      document.getElementById('res').value = `rgb(${resRGB.join(', ')})`
-      const target = document.getElementById(el.dataset.target)
-      target.style.backgroundColor = `rgb(${resRGB.join(',')}`
-      target.style.color = rL(resRGB) >= 0.175 ? 'black' : 'white'
+      updateSwatch(
+        el.dataset.target,
+        rgb2Hex(resRGB, false),
+        resRGB,
+        rgb2Hsl(resRGB)
+      )
+      updateCopy(rgb2Hex(resRGB, false), resRGB, rgb2Hsl(resRGB))
     }
   })
 )
 
-const resetCalculateResult = () => {
-  Array.from(calculateResult).forEach(i => (i.value = i.dataset.default))
-}
+initClipboardCopy()

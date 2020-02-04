@@ -1,19 +1,10 @@
 import { splitHex, splitHsl } from './parseValues'
 import { hex2Rgb, rgb2Hex, rgb2Hsl, hsl2Rgb } from './convertColours'
-import { contrastRatio } from './contrastRatio'
-import '../styles/index.scss'
-
-/* https://developer.mozilla.org/en-US/docs/Web/API/NodeList/forEach
- * This polyfill adds compatibility to all Browsers supporting ES5
- */
-;(function() {
-  if (window.NodeList && !NodeList.prototype.forEach) {
-    NodeList.prototype.forEach = Array.prototype.forEach
-  }
-})()
+import { contrastRatio, rL } from './contrastRatio'
 
 let hex, rgb, hsl
 
+/* Index */
 const inputColor = document.querySelectorAll('.js-inputColor')
 Array.from(inputColor).forEach(i =>
   i.addEventListener('input', e => {

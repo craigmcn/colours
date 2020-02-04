@@ -8,25 +8,24 @@
 
   <title>Colours + Contrast :: Opacity</title>
 
-  <!-- <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=wAdO0d8bp8">
-  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png?v=wAdO0d8bp8">
-  <link rel="icon" type="image/png" sizes="194x194" href="/favicon-194x194.png?v=wAdO0d8bp8">
-  <link rel="icon" type="image/png" sizes="192x192" href="/android-chrome-192x192.png?v=wAdO0d8bp8">
-  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png?v=wAdO0d8bp8">
-  <link rel="manifest" href="/site.webmanifest?v=wAdO0d8bp8">
-  <link rel="mask-icon" href="/safari-pinned-tab.svg?v=wAdO0d8bp8" color="#005b99">
-  <link rel="shortcut icon" href="/favicon.ico?v=wAdO0d8bp8">
-  <meta name="msapplication-TileColor" content="#ffffff">
-  <meta name="theme-color" content="#005b99"> -->
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=eEvolvQr5k">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png?v=eEvolvQr5k">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png?v=eEvolvQr5k">
+  <link rel="manifest" href="/site.webmanifest?v=eEvolvQr5k">
+  <link rel="mask-icon" href="/safari-pinned-tab.svg?v=eEvolvQr5k" color="#005b99">
+  <link rel="shortcut icon" href="/favicon.ico?v=eEvolvQr5k">
+  <meta name="msapplication-TileColor" content="#005b99">
+  <meta name="theme-color" content="#005b99">
 
   <link rel="stylesheet" href="https://www.craigmcn.com/albertcss/css/albert.min.css">
+  <link rel="stylesheet" href="./colours.css">
 
 </head>
 
 <body>
   <header class="header">
     <div class="brand">
-      <!-- <img src="/nameplate.2019-11-24.png" alt=""> -->
+      <img src="/nameplate.2020-01-19.png" alt="" width="40">
       craigmcn
     </div>
     <h1><a class="header__link" href="./index.html">Colours</a></h1>
@@ -46,12 +45,12 @@
 
     <h1>Calculate opacity</h1>
 
-    <div class="colours" style="display: flex;">
-      <div id="bgSwatch" class="colour">
-        <strong>Background</strong><br>
-        <span id="bgHEX" class="js-hex"></span><br>
-        <span id="bgRGB" class="js-rgb"></span><br>
-        <span id="bgHSL" class="js-hsl"></span>
+    <div class="colours flex">
+      <div id="fgSwatch" class="colour">
+        <strong>Foreground</strong><br>
+        <span id="fgHEX" class="js-hex"></span><br>
+        <span id="fgRGB" class="js-rgb"></span><br>
+        <span id="fgHSL" class="js-hsl"></span>
       </div>
 
       <div id="resSwatch" class="colour">
@@ -61,12 +60,27 @@
         <span id="resHSL" class="js-hsl"></span>
       </div>
 
-      <div id="fgSwatch" class="colour">
-        <strong>Foreground</strong><br>
-        <span id="fgHEX" class="js-hex"></span><br>
-        <span id="fgRGB" class="js-rgb"></span><br>
-        <span id="fgHSL" class="js-hsl"></span>
+      <div id="bgSwatch" class="colour">
+        <strong>Background</strong><br>
+        <span id="bgHEX" class="js-hex"></span><br>
+        <span id="bgRGB" class="js-rgb"></span><br>
+        <span id="bgHSL" class="js-hsl"></span>
       </div>
+    </div>
+
+    <div id="copy" class="flex flex--jc-center">
+      <div>
+        <span class="far fa-copy" aria-hidden="true"></span><span class="visually-hidden">Copy</span>
+        <button class="button button--sm js-hex" data-copy="">HEX</button>
+        <button class="button button--sm js-rgb" data-copy="">RGB</button>
+        <button class="button button--sm js-hsl" data-copy="">HSL</button>
+      </div>
+    </div>
+
+    <div class="form__group">
+      <label class="form__label" for="fg">Foreground</label>
+      <input id="fg" class="form__control input input--large js-opacityColor"
+        placeholder="#0000FF, #c00, rgb(10, 20, 30), hsl(10, 20%, 30%)" data-target="fgSwatch" data-default="#005b99">
     </div>
 
     <div class="form__group">
@@ -74,16 +88,13 @@
       <input id="bg" class="form__control input input--large js-opacityColor"
         placeholder="#0000FF, #c00, rgb(10, 20, 30), hsl(10, 20%, 30%)" data-target="bgSwatch" data-default="#ffffff">
     </div>
-    <div class="form__group">
-      <label class="form__label" for="fg">Foreground</label>
-      <input id="fg" class="form__control input input--large js-opacityColor"
-        placeholder="#0000FF, #c00, rgb(10, 20, 30), hsl(10, 20%, 30%)" data-target="fgSwatch" data-default="#005b99">
-    </div>
+
     <div class="form__group">
       <label class="form__label" for="res">Result</label>
       <input id="res" class="form__control input input--large js-opacityColor js-calculateResult"
         placeholder="#0000FF, #c00, rgb(10, 20, 30), hsl(10, 20%, 30%)" data-target="resSwatch" data-default="#bfd6e6">
     </div>
+
     <div class="form__group">
       <label class="form__label" for="opacity">Opacity</label>
       <input id="opacity" class="form__control input input--large js-inputOpacity js-calculateResult" type="range"
@@ -91,14 +102,14 @@
       <p class="text--muted">
         <span id="opacityDec">0.25</span> == <span id="opacityPercent">25%</span>
       </p>
-      </p>
+    </div>
 
   </main>
 
   <script src="https://www.craigmcn.com/albertcss/js/albert.min.js"></script>
   <script src="https://kit.fontawesome.com/453b852cdd.js" crossorigin="anonymous"
     integrity="sha384-NZ61boOcl3WY4W94TxWmzNrE/dZbP7g9IY8FECz/RXQXC1XKSv357JckOVRE8GM8"></script>
-  <script src="./scripts/opacity.js"></script>
+  <script src="./scripts.js"></script>
 </body>
 
 </html>

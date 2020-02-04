@@ -3,3 +3,6 @@
 **/.cache
 **/node_modules
 /tmp
+/prod
+**/hash-manifest.json
+/src/scripts/scripts.js

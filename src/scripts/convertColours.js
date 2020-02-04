@@ -1,10 +1,10 @@
-const hex2Rgb = (hex = ['00', '00', '00']) =>
+export const hex2Rgb = (hex = ['00', '00', '00']) =>
   hex.reduce((r, c) => {
     r.push(parseInt(c, 16))
     return r
   }, [])
 
-const rgb2Hex = (rgb = [0, 0, 0], asString = true) => {
+export const rgb2Hex = (rgb = [0, 0, 0], asString = true) => {
   const a = rgb.map(c =>
     parseInt(c)
       .toString(16)
@@ -13,7 +13,7 @@ const rgb2Hex = (rgb = [0, 0, 0], asString = true) => {
   return asString ? '#' + a.join('') : a
 }
 
-const rgb2Hsl = ([r, g, b]) => {
+export const rgb2Hsl = ([r, g, b]) => {
   const _r = r / 255,
     _g = g / 255,
     _b = b / 255,
@@ -40,7 +40,7 @@ const rgb2Hsl = ([r, g, b]) => {
   ]
 }
 
-const hsl2Rgb = ([h, s, l]) => {
+export const hsl2Rgb = ([h, s, l]) => {
   const C = (1 - Math.abs(2 * (l / 100) - 1)) * (s / 100),
     X = C * (1 - Math.abs(((h / 60) % 2) - 1)),
     m = l / 100 - C / 2
@@ -66,5 +66,3 @@ const hsl2Rgb = ([h, s, l]) => {
   }
   return [r, g, b].map(c => Math.round((c + m) * 255, 0))
 }
-
-export { hex2Rgb, rgb2Hex, rgb2Hsl, hsl2Rgb }
