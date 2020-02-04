@@ -1,6 +1,10 @@
 $grey: #adafaa;
 $green: #036803;
 $red: #b60202;
+$warning: #695802;
+
+/* Colour + Contrast */
+// something goes here
 
 .swatch {
   display: flex;
@@ -93,4 +97,39 @@ $red: #b60202;
   .exBg {
     width: 66.6667%;
   }
+}
+
+/* Opacity */
+
+.colours {
+  display: flex;
+  margin-bottom: 1rem;
+}
+
+.colour {
+  border: 1px solid $grey;
+  flex: 0 0 33.333%;
+  padding: 1rem;
+
+  &:last-child {
+    border-bottom-right-radius: 0.25em;
+    border-top-right-radius: 0.25em;
+    border-left: 0;
+  }
+
+  &:first-child {
+      border-bottom-left-radius: 0.25em;
+      border-top-left-radius: 0.25em;
+      border-right: 0;
+  }
+}
+
+/* Form */
+.form__control--hasWarning {
+  border-color: $warning;
+}
+
+.form__control-warning {
+  color: $warning;
+  margin-bottom: 0.25rem;
 }
