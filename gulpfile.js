@@ -39,28 +39,20 @@ gulp.task('styles', () => {
     .pipe(
       hash.manifest(hashFilename, {
         deleteOld: true,
-        sourceDir: __dirname,
+        sourceDir: __dirname + output[env].substring(1),
       })
     )
     .pipe(gulp.dest(output[env]))
 })
 
 // JS
-const concat = require('gulp-concat'),
-  browserify = require('browserify'),
+const browserify = require('browserify'),
   babelify = require('babelify'),
   source = require('vinyl-source-stream'),
   buffer = require('vinyl-buffer'),
   uglify = require('gulp-uglify')
 
-gulp.task('concat', () => {
-  return gulp
-    .src(['./src/scripts/index.js', './src/scripts/opacity.js'])
-    .pipe(concat('scripts.js'))
-    .pipe(gulp.dest('./src/scripts/'))
-})
-
-gulp.task('browserify', () => {
+gulp.task('scripts', () => {
   const b = browserify({
     entries: `./src/scripts/scripts.js`,
     debug: false,
@@ -82,13 +74,13 @@ gulp.task('browserify', () => {
     .pipe(gulp.dest(output[env]))
     .pipe(
       hash.manifest(hashFilename, {
+        deleteOld: true,
+        sourceDir: __dirname + output[env].substring(1),
         append: true,
       })
     )
     .pipe(gulp.dest(output[env]))
 })
-
-gulp.task('scripts', gulp.series('concat', 'browserify'))
 
 // HTML
 gulp.task('html', done => {
@@ -117,12 +109,7 @@ gulp.task('browserSync', () => {
     ui: false,
   })
   gulp.watch(
-    [
-      'src/styles/**/*.scss',
-      'src/scripts/**/*.js',
-      'src/**/*.html',
-      '!src/scripts/scripts.js',
-    ],
+    ['src/styles/**/*.scss', 'src/scripts/**/*.js', 'src/**/*.html'],
     gulp.series('build', 'reload')
   )
 })

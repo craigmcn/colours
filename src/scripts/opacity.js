@@ -1,34 +1,21 @@
-/* Opacity
- * splitHex, hex2Rgb, rgb2Hex, rgb2Hsl, hsl2Rgb, rL already imported in index.js
- */
-
-import {
-  calculateColorArray,
-  calculateOpacity,
-  updateCopy,
-  updateSwatch,
-} from './calculate'
+import { splitHex, parseText } from './parseValues'
+import { hex2Rgb, rgb2Hex, rgb2Hsl } from './convertColours'
+import { calculateColorArray, calculateOpacity, useDecimal } from './calculate'
 import { initClipboardCopy } from './clipboard'
+import { updateSwatch } from './update'
 import { addWarning, clearWarnings } from './warnings'
 
-let bgHEX,
-  bgRGB,
-  bgHSL,
-  fgHEX,
-  fgRGB,
-  fgHSL,
-  resHEX,
-  resRGB,
-  resHSL,
-  opacityDec,
-  opacityPercent
-
 const opacityColor = document.querySelectorAll('.js-opacityColor')
-const inputOpacity = document.querySelectorAll('.js-inputOpacity')
-const calculateResult = document.querySelectorAll('.js-calculateResult')
+const opacityEl = document.getElementById('opacity')
+const opacityDecEl = document.getElementById('opacityDec')
+const opacityPercentEl = document.getElementById('opacityPercent')
+
+let bgRGB, fgRGB, resRGB
 
 // load foreground, background, result
-Array.from(opacityColor).forEach(el => {
+opacityColor.forEach(el => {
+  // on load
+  let hex, rgb, hsl
   if (el.id === 'bg' || el.id === 'fg') {
     hex = splitHex(el.dataset.default)
     rgb = hex2Rgb(hex)
@@ -39,141 +26,84 @@ Array.from(opacityColor).forEach(el => {
     } else {
       fgRGB = rgb
     }
-
-    updateSwatch(el.dataset.target, hex, rgb, hsl)
   } else {
-    // calculate resulting colour
     resRGB = calculateColorArray(0.25, bgRGB, fgRGB) // default opacity = 0.25
-    updateSwatch(
-      el.dataset.target,
-      rgb2Hex(resRGB, false),
-      resRGB,
-      rgb2Hsl(resRGB)
-    )
-    updateCopy(rgb2Hex(resRGB, false), resRGB, rgb2Hsl(resRGB))
+    hex = rgb2Hex(resRGB, false)
+    rgb = resRGB
+    hsl = rgb2Hsl(resRGB)
   }
-})
+  updateSwatch(el.dataset.target, hex, rgb, hsl)
 
-Array.from(opacityColor).forEach(i =>
-  i.addEventListener('input', e => {
+  // on input
+  el.addEventListener('input', () => {
     clearWarnings()
-    const el = e.target,
-      val = el.value,
-      match = val.match(
-        /^((#)?([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3}))|(rgb\((\d{1,3}),[\s]?(\d{1,3}),[\s]?(\d{1,3})\))|(hsl\((\d{1,3}),[\s]?(\d{1,3})%,[\s]?(\d{1,3})%\))$/
-      )
-    if (match) {
-      if (match[1]) {
-        hex = splitHex(match[3])
-        rgb = hex2Rgb(hex)
-        hsl = rgb2Hsl(rgb)
-      } else if (match[4]) {
-        rgb = [match[5], match[6], match[7]]
-        hex = rgb2Hex(rgb, false)
-        hsl = rgb2Hsl(rgb)
-      } else {
-        rgb = hsl2Rgb([match[9], match[10], match[11]])
-        hex = rgb2Hex(rgb, false)
-        hsl = [match[9], match[10] + '%', match[11] + '%']
-      }
-    } else {
-      hex = splitHex(el.dataset.default)
-      rgb = hex2Rgb(hex)
-      hsl = rgb2Hsl(rgb)
-    }
+    let [hex, rgb, hsl] = parseText(el.value, el.dataset.default)
 
     if (el.id === 'bg') {
-      bgHEX = hex
       bgRGB = rgb
-      bgHSL = hsl
     } else if (el.id === 'fg') {
-      fgHEX = hex
       fgRGB = rgb
-      fgHSL = hsl
     } else if (el.id === 'res') {
       if (!el.value) {
         rgb = calculateColorArray(opacityDec, bgRGB, fgRGB)
         hex = rgb2Hex(rgb, false)
         hsl = rgb2Hsl(rgb)
       }
-      resHEX = hex
       resRGB = rgb
-      resHSL = hsl
     }
     updateSwatch(el.dataset.target, hex, rgb, hsl)
-    el.dataset.target === 'resSwatch' && updateCopy(hex, rgb, hsl)
 
     if (el.id === 'bg' || el.id === 'fg') {
       // calculate resulting colour
       resRGB = calculateColorArray(0.25, bgRGB, fgRGB) // default opacity = 0.25
-      updateSwatch('resSwatch', rgb2Hex(resRGB, false), resRGB, rgb2Hsl(resRGB))
-      updateCopy(rgb2Hex(resRGB, false), resRGB, rgb2Hsl(resRGB))
+      hex = rgb2Hex(resRGB, false)
+      hsl = rgb2Hsl(resRGB)
+      updateSwatch('resSwatch', hex, resRGB, hsl)
     }
   })
-)
+})
 
-Array.from(inputOpacity).forEach(i =>
-  i.addEventListener('input', e => {
-    const el = e.target,
-      val = +el.value
-    opacityDec = (val / 100).toPrecision(3)
-    opacityPercent = val.toPrecision(3)
-    document.getElementById('opacityDec').innerHTML = opacityDec
-    document.getElementById('opacityPercent').innerHTML = `${opacityPercent}%`
+if (opacityEl) {
+  opacityEl.addEventListener('input', () => {
+    const val = +opacityEl.value
+    opacityDecEl.innerText = useDecimal(val / 100)
+    opacityPercentEl.innerText = `${val.toFixed(0)}%`
   })
-)
+}
 
-Array.from(calculateResult).forEach(i =>
-  i.addEventListener('input', e => {
+document.querySelectorAll('.js-calculateResult').forEach(el =>
+  el.addEventListener('input', () => {
     clearWarnings()
-    const el = e.target
 
-    // Calculate remaining value
     if (el.id === 'res' && el.value) {
-      // calculate resulting opacity
       const tmpOpacity = resRGB
         .map((c, i) => calculateOpacity(bgRGB[i], fgRGB[i], c))
         .filter(o => (o > 0 ? o : false))
 
-      opacityDec = tmpOpacity.reduce((a, c) => a + c, 0) / tmpOpacity.length
-      document.getElementById('opacityDec').innerHTML = opacityDec.toPrecision(
-        3
-      )
-      document.getElementById('opacityPercent').innerHTML = `${(
-        opacityDec * 100
-      ).toPrecision(3)}%`
-      document.getElementById('opacity').value = `${(
-        opacityDec * 100
-      ).toPrecision(3)}%`
+      const opacityDec =
+        tmpOpacity.reduce((a, c) => a + c, 0) / tmpOpacity.length
+      opacityDecEl.innerText = useDecimal(opacityDec)
+      opacityPercentEl.innerText = `${(opacityDec * 100).toFixed(0)}%`
+      opacityEl.value = opacityDec * 100
 
-      // calculate resulting colour
       const resRGBNew = calculateColorArray(opacityDec, bgRGB, fgRGB)
       if (resRGBNew.join(',') !== resRGB.join(',')) {
         addWarning(
           el,
           `${el.value} is not a valid transparency result. New result uses average opacity.`
         )
-        updateSwatch(
-          el.dataset.target,
-          rgb2Hex(resRGBNew, false),
-          resRGBNew,
-          rgb2Hsl(resRGBNew)
-        )
-        updateCopy(rgb2Hex(resRGBNew, false), resRGBNew, rgb2Hsl(resRGBNew))
+        resRGB = resRGBNew
       }
-      document.getElementById('opacity').value = opacityDec * 100
     } else if (el.id === 'opacity') {
-      // calculate resulting colour
-      resRGB = calculateColorArray(opacityDec, bgRGB, fgRGB)
-
-      updateSwatch(
-        el.dataset.target,
-        rgb2Hex(resRGB, false),
-        resRGB,
-        rgb2Hsl(resRGB)
-      )
-      updateCopy(rgb2Hex(resRGB, false), resRGB, rgb2Hsl(resRGB))
+      document.getElementById('res').value = ''
+      resRGB = calculateColorArray(+opacityDecEl.innerText, bgRGB, fgRGB)
     }
+    updateSwatch(
+      el.dataset.target,
+      rgb2Hex(resRGB, false),
+      resRGB,
+      rgb2Hsl(resRGB)
+    )
   })
 )
 
