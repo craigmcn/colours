@@ -3,5 +3,5 @@
 **/.cache
 **/node_modules
 /tmp
-/prod
-**/hash-manifest.json
+/dist
+/netlify
