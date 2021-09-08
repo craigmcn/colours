@@ -123,7 +123,7 @@ gulp.task('browserSync', () => {
         ui: false
     })
     gulp.watch(
-        ['src/styles/**/*.scss', 'src/scripts/**/*.js', 'src/**/*.html'],
+        ['src/styles/**/*.scss', 'src/scripts/**/*.js', 'src/templates/**/*.njk', 'src/**/*.html'],
         gulp.series('build', 'reload')
     )
 })

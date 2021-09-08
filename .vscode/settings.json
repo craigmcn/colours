@@ -27,5 +27,12 @@
     ],
     "files.eol": "\n",
     "files.insertFinalNewline": true,
+    "cSpell.words": [
+        "autoplace",
+        "browserslist",
+        "craigmcn",
+        "gulpif",
+        "wcag"
+    ],
   }
   
