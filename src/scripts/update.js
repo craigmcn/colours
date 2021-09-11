@@ -1,5 +1,5 @@
-import { contrastRatio, contrastTextColor } from './contrastRatio'
-import { hex2Rgb } from './convertColours'
+import { contrastRatio, contrastTextColor, BLACK } from './contrastRatio'
+import { hex2Rgb, hex2Str, hsl2Str, rgb2Str } from './convertColours'
 import { splitHex } from './parseValues'
 import { passFail } from './passFail'
 
@@ -27,17 +27,17 @@ const updateFocusStyle = linkColor => {
 
 export const updateCopy = (hex, rgb, hsl) => {
     let copy = document.querySelector('.js-hex[data-copy]')
-    let text = `#${hex.join('')}`
+    let text = hex2Str(hex)
     copy.dataset.copy = text
     copy.title = `Copy ${text}`
 
     copy = document.querySelector('.js-rgb[data-copy]')
-    text = `rgb(${rgb.join(', ')})`
+    text = rgb2Str(rgb)
     copy.dataset.copy = text
     copy.title = `Copy ${text}`
 
     copy = document.querySelector('.js-hsl[data-copy]')
-    text = `hsl(${hsl.join(', ')})`
+    text = hsl2Str(hsl)
     copy.dataset.copy = text
     copy.title = `Copy ${text}`
 }
@@ -74,24 +74,27 @@ export const updateExample = () => {
 }
 
 export const updateSwatch = (id, hex, rgb, hsl) => {
+    const textColor = contrastTextColor(rgb)
+
     const target = document.getElementById(id)
-    target.style.backgroundColor = `rgb(${rgb.join(',')}`
-    target.style.color = contrastTextColor(rgb)
-    target.querySelector('.js-hex').innerText = `#${hex.join('')}`
-    target.querySelector('.js-rgb').innerText = `rgb(${rgb.join(', ')})`
-    target.querySelector('.js-hsl').innerText = `hsl(${hsl.join(', ')})`
+    target.style.backgroundColor = rgb2Str(rgb)
+    target.style.color = textColor.AA.hex || BLACK
+
+    target.querySelector('.js-hex').innerText = hex2Str(hex)
+    target.querySelector('.js-rgb').innerText = rgb2Str(rgb)
+    target.querySelector('.js-hsl').innerText = hsl2Str(hsl)
 
     id === 'resSwatch' && updateCopy(hex, rgb, hsl)
 }
 
 export const updateValues = (el, hex, rgb, hsl) => {
     el.querySelectorAll('.value-rgb').forEach(
-        val => (val.innerText = `rgb(${rgb.join(', ')})`)
+        val => (val.innerText = rgb2Str(rgb))
     )
     el.querySelectorAll('.value-hsl').forEach(
-        val => (val.innerText = `hsl(${hsl.join(', ')})`)
+        val => (val.innerText = hsl2Str(hsl))
     )
     el.querySelectorAll('.value-hex').forEach(
-        val => (val.innerText = `#${hex.join('')}`)
+        val => (val.innerText = hex2Str(hex))
     )
 }

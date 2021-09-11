@@ -1,4 +1,4 @@
-import { rgb2Hex, hsl2Rgb } from './convertColours'
+import { rgb2Hex, hsl2Rgb, hex2Str, hsl2Str } from './convertColours'
 import { splitHsl, parseText } from './parseValues'
 import { updateValues, updateExample } from './update'
 
@@ -11,12 +11,10 @@ inputColor.forEach(el =>
 
         updateValues(card, hex, rgb, hsl)
 
-        card.querySelector('.swatch__source').style.backgroundColor = `#${hex.join(
-            ''
-        )}`
+        card.querySelector('.swatch__source').style.backgroundColor = hex2Str(hex)
         card.querySelector(
             '.swatch__compare'
-        ).style.backgroundColor = `hsl(${hsl.join(', ')})`
+        ).style.backgroundColor = hsl2Str(hsl)
         card.querySelector('.saturation').value = hsl[1].substring(
             0,
             hsl[1].length - 1
@@ -49,7 +47,7 @@ document.querySelectorAll('.saturation, .lightness').forEach(i =>
 
         swatch.querySelector(
             '.swatch__compare'
-        ).style.backgroundColor = `hsl(${hsl.join(', ')})`
+        ).style.backgroundColor = hsl2Str(hsl)
         updateExample()
     })
 )

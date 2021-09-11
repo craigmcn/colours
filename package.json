@@ -1,6 +1,6 @@
 {
   "name": "colours",
-  "version": "2.1.1",
+  "version": "2.2.0",
   "repository": "github:craigmcn/colours",
   "description": "Colour manipulator and contrast checker",
   "main": "index.js",

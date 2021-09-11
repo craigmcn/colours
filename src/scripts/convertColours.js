@@ -10,7 +10,7 @@ export const rgb2Hex = (rgb = [0, 0, 0], asString = true) => {
             .toString(16)
             .padStart(2, '0')
     )
-    return asString ? '#' + a.join('') : a
+    return asString ? hex2Str(a) : a
 }
 
 export const rgb2Hsl = ([r, g, b]) => {
@@ -72,3 +72,9 @@ export const hsl2Rgb = ([h, s, l]) => {
     }
     return [r, g, b].map(c => Math.round((c + m) * 255, 0))
 }
+
+export const hex2Str = hex => `#${hex.join('')}`
+
+export const rgb2Str = rgb => `rgb(${rgb.join(',')})`
+
+export const hsl2Str = hsl => `hsl(${hsl.join(', ')})`
