@@ -1,4 +1,4 @@
-import { contrastRatio, contrastTextColor, BLACK } from './contrastRatio'
+import { contrastRatio, contrastTextColor } from './contrastRatio'
 import { hex2Rgb, hex2Str, hsl2Str, rgb2Str } from './convertColours'
 import { splitHex } from './parseValues'
 import { passFail } from './passFail'
@@ -74,11 +74,11 @@ export const updateExample = () => {
 }
 
 export const updateSwatch = (id, hex, rgb, hsl) => {
-    const textColor = contrastTextColor(rgb)
-
     const target = document.getElementById(id)
     target.style.backgroundColor = rgb2Str(rgb)
-    target.style.color = textColor.AA.hex || BLACK
+
+    const textColor = contrastTextColor(rgb)
+    target.style.color = textColor.AAA.hex
 
     target.querySelector('.js-hex').innerText = hex2Str(hex)
     target.querySelector('.js-rgb').innerText = rgb2Str(rgb)
