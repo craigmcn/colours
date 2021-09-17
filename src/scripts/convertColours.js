@@ -8,7 +8,7 @@ export const rgb2Hex = (rgb = [0, 0, 0], asString = true) => {
     const a = rgb.map(c =>
         parseInt(c)
             .toString(16)
-            .padStart(2, '0')
+            .padStart(2, '0'),
     )
     return asString ? hex2Str(a) : a
 }
@@ -36,7 +36,7 @@ export const rgb2Hsl = ([r, g, b]) => {
     return [
         Math.round(h, 0),
         Math.round(s * 100, 0) + '%',
-        Math.round(l * 100, 0) + '%'
+        Math.round(l * 100, 0) + '%',
     ]
 }
 

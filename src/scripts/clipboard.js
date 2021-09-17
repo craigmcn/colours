@@ -11,7 +11,7 @@ export const initClipboardCopy = () => {
                         el.classList.remove('button--success')
                     }, 1200)
                 })
-            })
+            }),
         )
     }
 }
