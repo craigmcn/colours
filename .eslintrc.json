@@ -16,6 +16,7 @@
         "semi": ["error", "never"],
         "indent": ["error", 4],
         "no-multi-spaces": ["error"],
-        "no-console": "warn"
+        "no-console": "warn",
+        "comma-dangle": ["error", "always-multiline"]
     }
 }

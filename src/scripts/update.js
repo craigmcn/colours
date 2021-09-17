@@ -1,5 +1,5 @@
 import { contrastRatio, contrastTextColor } from './contrastRatio'
-import { hex2Rgb } from './convertColours'
+import { hex2Rgb, hex2Str, hsl2Str, rgb2Str } from './convertColours'
 import { splitHex } from './parseValues'
 import { passFail } from './passFail'
 
@@ -25,19 +25,31 @@ const updateFocusStyle = linkColor => {
     document.getElementsByTagName('head')[0].appendChild(styleTag)
 }
 
-export const updateCopy = (hex, rgb, hsl) => {
-    let copy = document.querySelector('.js-hex[data-copy]')
-    let text = `#${hex.join('')}`
+export const updateColor = (el, bgHex, fgHex) => {
+    const source = el.querySelector('.swatch__source')
+    const compare = el.querySelector('.swatch__compare')
+
+    source.style.backgroundColor = hex2Str(bgHex)
+    source.style.color = hex2Str(fgHex)
+    compare.style.backgroundColor = hex2Str(bgHex)
+    compare.style.color = hex2Str(fgHex)
+}
+
+export const updateCopy = (hex, rgb, hsl, el) => {
+    const parent = el || document
+
+    let copy = parent.querySelector('.js-hex[data-copy]')
+    let text = hex2Str(hex)
     copy.dataset.copy = text
     copy.title = `Copy ${text}`
 
-    copy = document.querySelector('.js-rgb[data-copy]')
-    text = `rgb(${rgb.join(', ')})`
+    copy = parent.querySelector('.js-rgb[data-copy]')
+    text = rgb2Str(rgb)
     copy.dataset.copy = text
     copy.title = `Copy ${text}`
 
-    copy = document.querySelector('.js-hsl[data-copy]')
-    text = `hsl(${hsl.join(', ')})`
+    copy = parent.querySelector('.js-hsl[data-copy]')
+    text = hsl2Str(hsl)
     copy.dataset.copy = text
     copy.title = `Copy ${text}`
 }
@@ -47,16 +59,16 @@ export const updateExample = () => {
     const textColor = document.getElementById('textColor')
     const bgColor = document.getElementById('bgColor')
     const exBgEl = document.querySelector('.exBg')
-    const selector = '.swatch__compare + .swatch__values > .value-hex'
+    const selector = '.swatch__compare > .swatch__values > .value-hex'
     const exLink =
-    linkColor.closest('.card').querySelector(selector).innerText ||
-    linkColor.dataset.default
+        linkColor.closest('.card').querySelector(selector).innerText ||
+        linkColor.dataset.default
     const exText =
-    textColor.closest('.card').querySelector(selector).innerText ||
-    textColor.dataset.default
+        textColor.closest('.card').querySelector(selector).innerText ||
+        textColor.dataset.default
     const exBg =
-    bgColor.closest('.card').querySelector(selector).innerText ||
-    bgColor.dataset.default
+        bgColor.closest('.card').querySelector(selector).innerText ||
+        bgColor.dataset.default
     const linkRgb = hex2Rgb(splitHex(exLink))
     const textRgb = hex2Rgb(splitHex(exText))
     const exBgRgb = hex2Rgb(splitHex(exBg))
@@ -75,23 +87,37 @@ export const updateExample = () => {
 
 export const updateSwatch = (id, hex, rgb, hsl) => {
     const target = document.getElementById(id)
-    target.style.backgroundColor = `rgb(${rgb.join(',')}`
-    target.style.color = contrastTextColor(rgb)
-    target.querySelector('.js-hex').innerText = `#${hex.join('')}`
-    target.querySelector('.js-rgb').innerText = `rgb(${rgb.join(', ')})`
-    target.querySelector('.js-hsl').innerText = `hsl(${hsl.join(', ')})`
+    target.style.backgroundColor = rgb2Str(rgb)
+
+    const textColor = contrastTextColor(rgb)
+    target.style.color = hex2Str(textColor.AAA.hex)
+
+    target.querySelector('.js-hex').innerText = hex2Str(hex)
+    target.querySelector('.js-rgb').innerText = rgb2Str(rgb)
+    target.querySelector('.js-hsl').innerText = hsl2Str(hsl)
 
     id === 'resSwatch' && updateCopy(hex, rgb, hsl)
 }
 
-export const updateValues = (el, hex, rgb, hsl) => {
+export const updateValues = (el, hex, rgb, hsl, updateSatLight) => {
     el.querySelectorAll('.value-rgb').forEach(
-        val => (val.innerText = `rgb(${rgb.join(', ')})`)
+        val => (val.innerText = rgb2Str(rgb)),
     )
     el.querySelectorAll('.value-hsl').forEach(
-        val => (val.innerText = `hsl(${hsl.join(', ')})`)
+        val => (val.innerText = hsl2Str(hsl)),
     )
     el.querySelectorAll('.value-hex').forEach(
-        val => (val.innerText = `#${hex.join('')}`)
+        val => (val.innerText = hex2Str(hex)),
     )
+
+    if (updateSatLight) {
+        el.querySelector('.saturation').value = hsl[1].substring(
+            0,
+            hsl[1].length - 1,
+        )
+        el.querySelector('.lightness').value = hsl[2].substring(
+            0,
+            hsl[2].length - 1,
+        )
+    }
 }

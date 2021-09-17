@@ -1,85 +1,70 @@
 {% extends "layout.njk" %}
 
 {% block head %}
-  <title>Colours + Contrast :: Opacity</title>
+<title>Colours + Contrast :: Opacity</title>
 {% endblock %}
 
 {% block content %}
 
-  <main class="main main--fixed">
+<main class="main main--fixed">
 
     <h1>Calculate opacity</h1>
 
     <div class="colours flex">
-      <div id="fgSwatch" class="colour">
-        <strong>Foreground</strong><br>
-        <span id="fgHEX" class="js-hex"></span><br>
-        <span id="fgRGB" class="js-rgb"></span><br>
-        <span id="fgHSL" class="js-hsl"></span>
-      </div>
+        <div id="fgSwatch" class="colour">
+            <strong>Foreground</strong><br>
+            <span id="fgHEX" class="js-hex"></span><br>
+            <span id="fgRGB" class="js-rgb"></span><br>
+            <span id="fgHSL" class="js-hsl"></span>
+        </div>
 
-      <div id="resSwatch" class="colour">
-        <strong>Result</strong><br>
-        <span id="resHEX" class="js-hex"></span><br>
-        <span id="resRGB" class="js-rgb"></span><br>
-        <span id="resHSL" class="js-hsl"></span>
-      </div>
+        <div id="resSwatch" class="colour">
+            <strong>Result</strong><br>
+            <span id="resHEX" class="js-hex"></span><br>
+            <span id="resRGB" class="js-rgb"></span><br>
+            <span id="resHSL" class="js-hsl"></span>
+        </div>
 
-      <div id="bgSwatch" class="colour">
-        <strong>Background</strong><br>
-        <span id="bgHEX" class="js-hex"></span><br>
-        <span id="bgRGB" class="js-rgb"></span><br>
-        <span id="bgHSL" class="js-hsl"></span>
-      </div>
+        <div id="bgSwatch" class="colour">
+            <strong>Background</strong><br>
+            <span id="bgHEX" class="js-hex"></span><br>
+            <span id="bgRGB" class="js-rgb"></span><br>
+            <span id="bgHSL" class="js-hsl"></span>
+        </div>
     </div>
 
-    <div id="copy" class="flex flex--jc-center">
-      <div>
-        <!-- <span class="far fa-copy" aria-hidden="true"></span> -->
-        <svg aria-hidden="true" focusable="false" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"
-          style="width: 1em">
-          <g>
-            <path fill="currentColor"
-              d="M352 96V0H152a24 24 0 0 0-24 24v368a24 24 0 0 0 24 24h272a24 24 0 0 0 24-24V96z" opacity="0.4"></path>
-            <path fill="currentColor"
-              d="M96 392V96H24a24 24 0 0 0-24 24v368a24 24 0 0 0 24 24h272a24 24 0 0 0 24-24v-40H152a56.06 56.06 0 0 1-56-56zM441 73L375 7a24 24 0 0 0-17-7h-6v96h96v-6.06A24 24 0 0 0 441 73z">
-            </path>
-          </g>
-        </svg>
-        <span class="visually-hidden">Copy</span>
-        <button class="button button--sm js-hex" data-copy="">HEX</button>
-        <button class="button button--sm js-rgb" data-copy="">RGB</button>
-        <button class="button button--sm js-hsl" data-copy="">HSL</button>
-      </div>
+    {% include "../templates/parts/_copy.njk" %}
+
+    <div class="form__group">
+        <label class="form__label" for="fg">Foreground</label>
+        <input id="fg" class="form__control input input--large js-opacityColor"
+            placeholder="#0000FF, #c00, rgb(10, 20, 30), hsl(10, 20%, 30%)" data-target="fgSwatch"
+            data-default="#005b99">
     </div>
 
     <div class="form__group">
-      <label class="form__label" for="fg">Foreground</label>
-      <input id="fg" class="form__control input input--large js-opacityColor"
-        placeholder="#0000FF, #c00, rgb(10, 20, 30), hsl(10, 20%, 30%)" data-target="fgSwatch" data-default="#005b99">
+        <label class="form__label" for="bg">Background</label>
+        <input id="bg" class="form__control input input--large js-opacityColor"
+            placeholder="#0000FF, #c00, rgb(10, 20, 30), hsl(10, 20%, 30%)" data-target="bgSwatch"
+            data-default="#ffffff">
     </div>
 
     <div class="form__group">
-      <label class="form__label" for="bg">Background</label>
-      <input id="bg" class="form__control input input--large js-opacityColor"
-        placeholder="#0000FF, #c00, rgb(10, 20, 30), hsl(10, 20%, 30%)" data-target="bgSwatch" data-default="#ffffff">
+        <label class="form__label" for="res">Result</label>
+        <input id="res" class="form__control input input--large js-opacityColor js-calculateResult"
+            placeholder="#0000FF, #c00, rgb(10, 20, 30), hsl(10, 20%, 30%)" data-target="resSwatch"
+            data-default="#bfd6e6">
     </div>
 
     <div class="form__group">
-      <label class="form__label" for="res">Result</label>
-      <input id="res" class="form__control input input--large js-opacityColor js-calculateResult"
-        placeholder="#0000FF, #c00, rgb(10, 20, 30), hsl(10, 20%, 30%)" data-target="resSwatch" data-default="#bfd6e6">
+        <label class="form__label" for="opacity">Opacity</label>
+        <input id="opacity" class="form__control input input--large js-calculateResult" type="range" value="25" min="0"
+            max="100" data-target="resSwatch" data-default="25">
+        <p class="text--muted">
+            <code>opacity: <span id="opacityDec">0.25</span> (<span id="opacityPercent">25%</span>)</code>
+        </p>
     </div>
 
-    <div class="form__group">
-      <label class="form__label" for="opacity">Opacity</label>
-      <input id="opacity" class="form__control input input--large js-calculateResult" type="range" value="25" min="0"
-        max="100" data-target="resSwatch" data-default="25">
-      <p class="text--muted">
-        <code>opacity: <span id="opacityDec">0.25</span> (<span id="opacityPercent">25%</span>)</code>
-      </p>
-    </div>
-
-  </main>
+</main>
 
 {% endblock %}

@@ -90,7 +90,7 @@ document.querySelectorAll('.js-calculateResult').forEach(el =>
             if (resRGBNew.join(',') !== resRGB.join(',')) {
                 addWarning(
                     el,
-                    `${el.value} is not a valid transparency result. New result uses average opacity.`
+                    `${el.value} is not a valid transparency result. New result uses average opacity.`,
                 )
                 resRGB = resRGBNew
             }
@@ -102,9 +102,9 @@ document.querySelectorAll('.js-calculateResult').forEach(el =>
             el.dataset.target,
             rgb2Hex(resRGB, false),
             resRGB,
-            rgb2Hsl(resRGB)
+            rgb2Hsl(resRGB),
         )
-    })
+    }),
 )
 
 initClipboardCopy()

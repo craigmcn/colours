@@ -5,9 +5,11 @@ const update = (level, test, result) => {
     if (result === P) {
         el.classList.add('pass')
         el.querySelector(`.label--wcag${level}>span`).classList.add('pass')
+        el.querySelector('.label--warn')?.setAttribute('hidden', true)
     } else {
         el.classList.remove('pass')
         el.querySelector(`.label--wcag${level}>span`).classList.remove('pass')
+        el.querySelector('.label--warn')?.removeAttribute('hidden')
     }
     el.querySelector(`.label--wcag${level}>span`).innerText = result
 }

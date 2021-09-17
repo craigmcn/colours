@@ -11,7 +11,7 @@ const env = argv.env ? argv.env : 'development'
 const output = {
     development: './tmp',
     production: './dist',
-    netlify: './netlify'
+    netlify: './netlify',
 }
 const outputNetlify = `${output[env]}/colours`
 const browserSync = require('browser-sync').create()
@@ -23,12 +23,12 @@ const autoprefixer = require('gulp-autoprefixer')
 const sassOptions = {
     development: {
         errLogToConsole: true,
-        outputStyle: 'expanded'
+        outputStyle: 'expanded',
     },
     production: {
         errLogToConsole: false,
-        outputStyle: 'compressed'
-    }
+        outputStyle: 'compressed',
+    },
 }
 
 gulp.task('styles', () => {
@@ -43,8 +43,8 @@ gulp.task('styles', () => {
         .pipe(
             hash.manifest(hashFilename, {
                 deleteOld: true,
-                sourceDir: __dirname + output[env].substring(1)
-            })
+                sourceDir: __dirname + output[env].substring(1),
+            }),
         )
         .pipe(gulp.dest(output[env]))
         .pipe(gulpif(env === 'netlify', gulp.dest(outputNetlify)))
@@ -60,15 +60,15 @@ const uglify = require('gulp-uglify')
 gulp.task('scripts', () => {
     const b = browserify({
         entries: './src/scripts/scripts.js',
-        debug: env !== 'development'
+        debug: env !== 'development',
     })
 
     return b
         .transform(
             babelify.configure({
                 presets: ['@babel/preset-env'],
-                sourceMaps: env !== 'development'
-            })
+                sourceMaps: env !== 'development',
+            }),
         )
         .bundle()
         .pipe(source('scripts.js'))
@@ -82,8 +82,8 @@ gulp.task('scripts', () => {
             hash.manifest(hashFilename, {
                 deleteOld: true,
                 sourceDir: __dirname + output[env].substring(1),
-                append: true
-            })
+                append: true,
+            }),
         )
         .pipe(gulp.dest(output[env]))
         .pipe(gulpif(env === 'netlify', gulp.dest(outputNetlify)))
@@ -98,8 +98,8 @@ gulp.task('html', () => {
         .src('./src/pages/**/*.html')
         .pipe(
             render({
-                path: ['src/templates']
-            })
+                path: ['src/templates'],
+            }),
         )
         .pipe(rewrite({ manifest }))
         .pipe(gulp.dest(output[env]))
@@ -120,11 +120,11 @@ gulp.task('browserSync', () => {
     browserSync.init({
         port: 1235,
         server: output[env],
-        ui: false
+        ui: false,
     })
     gulp.watch(
         ['src/styles/**/*.scss', 'src/scripts/**/*.js', 'src/templates/**/*.njk', 'src/**/*.html'],
-        gulp.series('build', 'reload')
+        gulp.series('build', 'reload'),
     )
 })
 

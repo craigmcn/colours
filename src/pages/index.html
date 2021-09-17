@@ -2,167 +2,208 @@
 
 {% block content %}
 
-  <main class="main">
+<main class="main">
     <section class="flex flex--grid">
-      <div class="card flex__item flex__item--12 flex__item--4-lg">
-        <div class="card__title">
-          <h3>Links</h3>
-        </div>
-        <div class="card__body">
-          <p class="form__group">
-            <label for="linkColor" class="visually-hidden">Link color</label>
-            <input id="linkColor" class="form__control input input--large js-inputColor" type="text"
-              placeholder="#0000FF, #c00, rgb(10, 20, 30), hsl(10, 20%, 30%)" data-default="#0000FF">
-          </p>
-          <div class="swatches">
-            <div class="swatch swatch--source">
-              <div class="swatch__source" style="background-color: #0000ff"></div>
-              <p class="swatch__values">
-                <span class="value-rgb muted">rgb(0, 0, 255)</span><br>
-                <span class="value-hsl muted">hsl(240, 100%, 50%)</span><br>
-                <span class="value-hex muted">#0000FF</span>
-              </p>
+        <div class="card flex__item flex__item--12 flex__item--4-lg">
+            <div class="card__title">
+                <h3>Links</h3>
             </div>
-            <div class="swatch swatch--compare">
-              <div class="swatch__compare" style="background-color: #0000ff"></div>
-              <p class="swatch__values">
-                <span class="value-rgb muted">rgb(0, 0, 255)</span><br>
-                <span class="value-hsl muted">hsl(240, 100%, 50%)</span><br>
-                <span class="value-hex muted">#0000FF</span>
-              </p>
+            <div class="card__body">
+                <p class="form__group">
+                    <label for="linkColor" class="visually-hidden">Link color</label>
+                    <input id="linkColor" class="form__control input input--large js-inputColor" type="text"
+                        placeholder="#0000FF, #c00, rgb(10, 20, 30), hsl(10, 20%, 30%)" data-default="#0000FF">
+                </p>
+                <div class="swatches">
+                    <div class="swatch swatch--source">
+                        <div class="swatch__source" style="background-color: #0000ff; color: #ebebff;">
+                            <p class="swatch__values">
+                                <span class="value-rgb">rgb(0, 0, 255)</span><br>
+                                <span class="value-hsl">hsl(240, 100%, 50%)</span><br>
+                                <span class="value-hex">#0000FF</span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="swatch swatch--compare">
+                        <div class="swatch__compare" style="background-color: #0000ff; color: #ebebff;">
+                            <p class="swatch__values">
+                                <span class="value-rgb">rgb(0, 0, 255)</span><br>
+                                <span class="value-hsl">hsl(240, 100%, 50%)</span><br>
+                                <span class="value-hex">#0000FF</span>
+                            </p>
+                        </div>
+                    </div>
+
+                    {% set section_name = "linkColor" %}
+                    {% set saturation = "100" %}
+                    {% set lightness = "50" %}
+                    {% include "../templates/parts/_swatch-controls.njk" %}
+
+                </div><!-- ./swatches -->
+
+                {% include "../templates/parts/_copy.njk" %}
+
             </div>
-            <div class="swatch__controls">
-              <p><label><input type="range" class="saturation" id="linkColorSat" min="0" max="100" step="1" value="100">
-                  saturation</label></p>
-              <p><label><input type="range" class="lightness" id="linkColorLight" min="0" max="100" step="1" value="50">
-                  lightness</label></p>
+        </div><!-- ./card -->
+        <div class="card flex__item flex__item--12 flex__item--4-lg">
+            <div class="card__title">
+                <h3>Text</h3>
             </div>
-          </div><!-- ./swatches -->
-        </div>
-      </div><!-- ./card -->
-      <div class="card flex__item flex__item--12 flex__item--4-lg">
-        <div class="card__title">
-          <h3>Text</h3>
-        </div>
-        <div class="card__body">
-          <p class="form__group">
-            <label for="textColor" class="visually-hidden">Text color</label>
-            <input id="textColor" class="form__control input input--large js-inputColor" type="text"
-              placeholder="#0000FF, #c00, rgb(10, 20, 30), hsl(10, 20%, 30%)" data-default="#000000">
-          </p>
-          <div class="swatches">
-            <div class="swatch">
-              <div class="swatch__source" style="background-color: #000000"></div>
-              <p class="swatch__values">
-                <span class="value-rgb muted">rgb(0, 0, 0)</span><br>
-                <span class="value-hsl muted">hsl(0, 0%, 0%)</span><br>
-                <span class="value-hex muted">#000000</span>
-              </p>
+            <div class="card__body">
+                <p class="form__group">
+                    <label for="textColor" class="visually-hidden">Text color</label>
+                    <input id="textColor" class="form__control input input--large js-inputColor" type="text"
+                        placeholder="#0000FF, #c00, rgb(10, 20, 30), hsl(10, 20%, 30%)" data-default="#222222">
+                </p>
+                <div class="swatches">
+                    <div class="swatch">
+                        <div class="swatch__source" style="background-color: #222222; color: #adadad;">
+                            <p class="swatch__values">
+                                <span class="value-rgb">rgb(34,34,34)</span><br>
+                                <span class="value-hsl">hsl(0, 0%, 13%)</span><br>
+                                <span class="value-hex">#222222</span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="swatch swatch--compare">
+                        <div class="swatch__compare" style="background-color: #222222; color: #adadad;">
+                            <p class="swatch__values">
+                                <span class="value-rgb">rgb(34,34,34)</span><br>
+                                <span class="value-hsl">hsl(0, 0%, 13%)</span><br>
+                                <span class="value-hex">#222222</span>
+                            </p>
+                        </div>
+                    </div>
+
+                    {% set section_name = "textColor" %}
+                    {% set saturation = "0" %}
+                    {% set lightness = "13" %}
+                    {% include "../templates/parts/_swatch-controls.njk" %}
+
+                </div><!-- ./swatches -->
+
+                {% include "../templates/parts/_copy.njk" %}
+
             </div>
-            <div class="swatch swatch--compare">
-              <div class="swatch__compare" style="background-color: #000000"></div>
-              <p class="swatch__values">
-                <span class="value-rgb muted">rgb(0, 0, 0)</span><br>
-                <span class="value-hsl muted">hsl(0, 0%, 0%)</span><br>
-                <span class="value-hex muted">#000000</span>
-              </p>
+        </div><!-- ./card -->
+        <div class="card flex__item flex__item--12 flex__item--4-lg">
+            <div class="card__title">
+                <h3>Background</h3>
             </div>
-            <div class="swatch__controls">
-              <p><label><input type="range" class="saturation" id="textColorSat" min="0" max="100" step="1" value="0">
-                  saturation</label></p>
-              <p><label><input type="range" class="lightness" id="textColorLight" min="0" max="100" step="1" value="0">
-                  lightness</label></p>
+            <div class="card__body">
+                <p class="form__group">
+                    <label for="bgColor" class="visually-hidden">Background color</label>
+                    <input id="bgColor" class="form__control input input--large js-inputColor" type="text"
+                        placeholder="#0000FF, #c00, rgb(10, 20, 30), hsl(10, 20%, 30%)" data-default="#FFFFFF">
+                </p>
+                <div class="swatches">
+                    <div class="swatch">
+                        <div class="swatch__source" style="background-color: #ffffff; color: #595959;">
+                            <p class="swatch__values">
+                                <span class="value-rgb">rgb(255, 255, 255)</span><br>
+                                <span class="value-hsl">hsl(0, 0%, 100%)</span><br>
+                                <span class="value-hex">#FFFFFF</span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="swatch swatch--compare">
+                        <div class="swatch__compare" style="background-color: #ffffff; color: #595959;">
+                            <p class="swatch__values">
+                                <span class="value-rgb">rgb(255, 255, 255)</span><br>
+                                <span class="value-hsl">hsl(0, 0%, 100%)</span><br>
+                                <span class="value-hex">#FFFFFF</span>
+                            </p>
+                        </div>
+                    </div>
+
+                    {% set section_name = "bgColor" %}
+                    {% set saturation = "0" %}
+                    {% set lightness = "100" %}
+                    {% include "../templates/parts/_swatch-controls.njk" %}
+
+                </div><!-- ./swatches -->
+
+                {% include "../templates/parts/_copy.njk" %}
+
             </div>
-          </div><!-- ./swatches -->
-        </div>
-      </div><!-- ./card -->
-      <div class="card flex__item flex__item--12 flex__item--4-lg">
-        <div class="card__title">
-          <h3>Background</h3>
-        </div>
-        <div class="card__body">
-          <p class="form__group">
-            <label for="bgColor" class="visually-hidden">Background color</label>
-            <input id="bgColor" class="form__control input input--large js-inputColor" type="text"
-              placeholder="#0000FF, #c00, rgb(10, 20, 30), hsl(10, 20%, 30%)" data-default="#FFFFFF">
-          </p>
-          <div class="swatches">
-            <div class="swatch">
-              <div class="swatch__source" style="background-color: #ffffff"></div>
-              <p class="swatch__values">
-                <span class="value-rgb muted">rgb(255, 255, 255)</span><br>
-                <span class="value-hsl muted">hsl(0, 0%, 100%)</span><br>
-                <span class="value-hex muted">#FFFFFF</span>
-              </p>
-            </div>
-            <div class="swatch swatch--compare">
-              <div class="swatch__compare" style="background-color: #ffffff"></div>
-              <p class="swatch__values">
-                <span class="value-rgb muted">rgb(255, 255, 255)</span><br>
-                <span class="value-hsl muted">hsl(0, 0%, 100%)</span><br>
-                <span class="value-hex muted">#FFFFFF</span>
-              </p>
-            </div>
-            <div class="swatch__controls">
-              <p><label><input type="range" class="saturation" id="bgColorSat" min="0" max="100" step="1" value="0">
-                  saturation</label></p>
-              <p><label><input type="range" class="lightness" id="bgColorLight" min="0" max="100" step="1" value="100">
-                  lightness</label></p>
-            </div>
-          </div><!-- ./swatches -->
-        </div>
-      </div><!-- ./card -->
+        </div><!-- ./card -->
     </section>
 
     <section class="m-v-md">
-      <div class="exBg" style="background-color: #ffffff; border-color: #000000;">
-        <p class="exText" style="color: #000000">Foreground text <a href="#" class="exLink" style="color: #0000ff">link
-            text</a>
-          foreground text</p>
-      </div>
+        <div class="exBg" style="background-color: #ffffff; border-color: #000000;">
+            <p class="exText" style="color: #000000">
+                Foreground text
+                <a href="#" class="exLink" style="color: #0000ff">link text</a>
+                foreground text
+            </p>
+        </div>
     </section>
 
-    <section class="m-v-md">
-      <div id="link2Body" class="contrast">
-        <div class="contrast__ratio">
-          <span class="contrast__value"></span>:1
-        </div>
-        <div class="contrast__description">
-          <p class="label">Link to Body text</p>
-          <p class="label--wcagA">WCAG A: <span>Fail</span></p>
-        </div>
-      </div>
-    </section>
+    <div class="flex flex--grid">
+        <div class="flex__item flex__item--12 flex__item--9-lg m-v-md">
+            <section>
+                <div id="link2Body" class="contrast">
+                    <div class="contrast__ratio">
+                        <span class="contrast__value"></span>:1
+                    </div>
+                    <div class="contrast__description">
+                        <p class="label">Link to Body text</p>
+                        <p class="label--wcagA">WCAG A: <span>Fail</span></p>
+                        <p class="label--warn text--info">
+                            <i class="fa-light fa-circle-info"></i>
+                            Use another method for differentiating links and text (e.g., underline)
+                        </p>
+                    </div>
+                </div>
+            </section>
 
-    <section class="m-v-md">
-      <div id="link2Bg" class="contrast pass">
-        <div class="contrast__ratio">
-          <span class="contrast__value"></span>:1
-        </div>
-        <div class="contrast__description">
-          <p class="label">Link to Background</p>
-          <p class="label--wcagAA">WCAG AA: <span>Fail</span></p>
-          <p class="label--wcagAAA">WCAG AAA: <span>Fail</span></p>
-        </div>
-      </div>
-    </section>
+            <section class="m-v-md">
+                <div id="link2Bg" class="contrast pass">
+                    <div class="contrast__ratio">
+                        <span class="contrast__value"></span>:1
+                    </div>
+                    <div class="contrast__description">
+                        <p class="label">Link to Background</p>
+                        <p class="label--wcagAA">WCAG AA: <span>Fail</span></p>
+                        <p class="label--wcagAAA">WCAG AAA: <span>Fail</span></p>
+                    </div>
+                </div>
+            </section>
 
-    <section class="m-v-md">
-      <div id="body2Bg" class="contrast">
-        <div class="contrast__ratio">
-          <span class="contrast__value"></span>:1
+            <section>
+                <div id="body2Bg" class="contrast">
+                    <div class="contrast__ratio">
+                        <span class="contrast__value"></span>:1
+                    </div>
+                    <div class="contrast__description">
+                        <p class="label">Body text to Background</p>
+                        <p class="label--wcagAA">WCAG AA: <span>Fail</span></p>
+                        <p class="label--wcagAAA">WCAG AAA: <span>Fail</span></p>
+                    </div>
+                </div>
+            </section>
         </div>
-        <div class="contrast__description">
-          <p class="label">Body text to Background</p>
-          <p class="label--wcagAA">WCAG AA: <span>Fail</span></p>
-          <p class="label--wcagAAA">WCAG AAA: <span>Fail</span></p>
+
+        <div class="card flex__item flex__item--12 flex__item--3-lg m-v-md">
+            <div class="card__body">
+                <p>Calculate text and link colours for background</p>
+
+                <button class="button js-calculateWcag" type="button" style="display: block; width: 100%"
+                    data-wcag="AA">
+                    WCAG AA
+                </button>
+
+                <button class="button js-calculateWcag" type="button" style="display: block; width: 100%"
+                    data-wcag="AAA">
+                    WCAG AAA
+                </button>
+            </div>
         </div>
-      </div>
-    </section>
+    </div>
 
     <p class="m-v-md"><a href="https://webaim.org/blog/wcag-2-0-and-link-colors/" target="_blank">WebAIM: WCAG 2.0 and
-        Link Colors</a></p>
+            Link Colors</a></p>
 
-  </main>
-  
+</main>
+
 {% endblock %}

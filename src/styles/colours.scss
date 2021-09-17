@@ -13,8 +13,8 @@ $warning: #695802;
   &__source,
   &__compare {
     border: 1px solid $grey;
-    height: 5.5rem;
-    width: 10rem;
+    padding: 1rem;
+    width: 100%;
   }
 
   &__source {
@@ -44,7 +44,8 @@ $warning: #695802;
   border: 1px solid $grey;
   border-radius: 0.25em;
   display: flex;
-  height: 5rem;
+  flex-grow: 1;
+  min-height: 5rem;
   padding: 0.5rem;
 
   p {
@@ -59,6 +60,7 @@ $warning: #695802;
 
   &__ratio {
     align-self: center;
+    flex-shrink: 0;
     font-size: 2rem;
     width: 4em;
   }
