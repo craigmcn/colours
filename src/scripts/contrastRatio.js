@@ -1,4 +1,4 @@
-import { hsl2Rgb, hsl2Str, rgb2Hex, rgb2Hsl, rgb2Str } from './convertColours'
+import { hsl2Rgb, rgb2Hex, rgb2Hsl } from './convertColours'
 
 const sRgb = c => {
     const s = c / 255
@@ -17,11 +17,13 @@ export const contrastRatio = ([r1, g1, b1], [r2, g2, b2]) => {
 
 // color = rgb => [r, g, b]
 export const contrastTextColor = (color) => ({
-    AA: getContrastColour(color),
-    AAA: getContrastColour(color, 'AAA')
+    A: getContrastColour({ color, wcag: 'A' }),
+    AA: getContrastColour({ color }),
+    AAA: getContrastColour({ color, wcag: 'AAA' }),
 })
 
-const getContrastColour = (color, wcag = 'AA') => {
+export const getContrastColour = ({ color, wcag = 'AA', direction }) => {
+    let dir = direction
     let [h, s, l] = rgb2Hsl(color)
     s = parseInt(s)
     l = parseInt(l)
@@ -29,23 +31,26 @@ const getContrastColour = (color, wcag = 'AA') => {
     // https://ux.stackexchange.com/questions/107318/formula-for-color-contrast-between-text-and-background
     // lighter - increase lightness to >= contrastRatio
     // darker  - decrease lightness to >= contrastRatio
-    const direction = rL(color) <= 0.1833 ? 'L' : 'D'
+    if (!dir) {
+        dir = rL(color) <= 0.1833 ? 'L' : 'D'
+    }
 
-    const ratio = wcag === 'AA' ? 4.5 : 7
-    const limit = direction === 'L' ? 100 : 0
+    const ratio = wcag === 'AA' ? 4.5 : wcag === 'A' ? 3 : 7
+    const limit = dir === 'L' ? 100 : 0
     let retHsl = [h, s, l]
     let retRgb = hsl2Rgb(retHsl)
 
     // eslint-disable-next-line no-unmodified-loop-condition
-    while (contrastRatio(color, retRgb) < ratio && ((limit === 0 && l >= limit) || (limit === 100 && l < limit))) {
-        l += direction === 'L' ? 1 : -1
+    while (contrastRatio(color, retRgb) < ratio && ((limit === 0 && l > limit) || (limit === 100 && l < limit))) {
+        l += dir === 'L' ? 1 : -1
         retHsl = [h, s, l]
         retRgb = hsl2Rgb(retHsl)
     }
 
     return {
-        hex: rgb2Hex(retRgb, true),
-        rgb: rgb2Str(retRgb),
-        hsl: hsl2Str(retHsl)
+        hex: rgb2Hex(retRgb, false),
+        rgb: retRgb,
+        hsl: [retHsl[0], `${retHsl[1]}%`, `${retHsl[2]}%`],
+        direction: dir,
     }
 }
