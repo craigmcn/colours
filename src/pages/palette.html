@@ -1,0 +1,57 @@
+{% extends "layout.njk" %}
+
+{% block head %}
+<title>Colours + Contrast :: Colour palette generator</title>
+{% endblock %}
+
+{% block content %}
+
+<main class="main main--fixed">
+
+    <h1>Palette generator</h1>
+
+    <div class="flex flex--grid">
+        <div class="flex__item flex__item--12 flex__item--3-sm">
+            <div class="form__group">
+                <label class="form__label" for="name">Name</label>
+                <input id="name" class="form__control input input--large" placeholder="grey" data-default="grey">
+            </div>
+
+            <div class="form__group">
+                <label class="form__label" for="base">Base</label>
+                <input id="base" class="form__control input input--large js-paletteColor"
+                    placeholder="#0000FF, #c00, rgb(10, 20, 30), hsl(10, 20%, 30%)" data-default="#808080">
+            </div>
+
+            <div class="form__group">
+                <label class="form__label" for="start">Light</label>
+                <input id="start" class="form__control input input--large js-paletteColor"
+                    placeholder="#0000FF, #c00, rgb(10, 20, 30), hsl(10, 20%, 30%)" data-default="#ffffff">
+            </div>
+
+            <div class="form__group">
+                <label class="form__label" for="end">Dark</label>
+                <input id="end" class="form__control input input--large js-paletteColor"
+                    placeholder="#0000FF, #c00, rgb(10, 20, 30), hsl(10, 20%, 30%)" data-default="#222222">
+            </div>
+        </div>
+
+        <div class="card flex__item flex__item--12 flex__item--5-sm">
+            <div id="results" class="card__body"></div>
+        </div>
+
+        <div class="card flex__item flex__item--12 flex__item--4-sm">
+            <div class="card__title">
+                <h2>Custom properties</h2>
+            </div>
+
+            <div class="card__body">
+                <pre id="variables" class="text--small" style="background-color: transparent;"></pre>
+                <button class="button button--sm" data-copy=""><span class="fad fa-copy"></span> Copy</button>
+            </div>
+        </div>
+    </div>
+
+</main>
+
+{% endblock %}
