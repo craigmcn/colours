@@ -22,6 +22,23 @@ import {
     initClipboardCopy,
 } from './clipboard'
 
+const calculateBlend = () => {
+    const start = document.getElementById('start')
+    const end = document.getElementById('end')
+    const steps = document.getElementById('steps')
+
+    const startColor = parseText(start.value || start.dataset.default)
+    const endColor = parseText(end.value || end.dataset.default)
+    const resultArray = []
+
+    const stepsCount = steps?.value ?? 10
+    for (let i = 0; i < +stepsCount + 1; i++) {
+        resultArray.push(calculateColorArray(i / stepsCount, startColor[1], endColor[1]))
+    }
+
+    drawSwatches(resultArray)
+}
+
 const calculatePalette = () => {
     const start = document.getElementById('start')
     const end = document.getElementById('end')
@@ -104,4 +121,16 @@ if (paletteColors.length) {
     document.getElementById('name').addEventListener('input', calculatePalette)
 
     calculatePalette()
+}
+
+const blendColors = document.querySelectorAll('.js-blendColor')
+
+if (blendColors.length) {
+    blendColors.forEach((el) => {
+        el.addEventListener('input', calculateBlend)
+    })
+
+    document.getElementById('steps').addEventListener('input', calculateBlend)
+
+    calculateBlend()
 }

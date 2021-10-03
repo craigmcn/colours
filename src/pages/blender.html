@@ -1,0 +1,40 @@
+{% extends "layout.njk" %}
+
+{% block head %}
+<title>Colours + Contrast :: Colour blender</title>
+{% endblock %}
+
+{% block content %}
+
+<main class="main main--fixed">
+
+    <h1>Colour blender</h1>
+
+    <div class="flex flex--grid">
+        <div class="flex__item flex__item--12 flex__item--6-sm">
+            <div class="form__group">
+                <label class="form__label" for="start">Start</label>
+                <input id="start" class="form__control input input--large js-blendColor"
+                    placeholder="#0000FF, #c00, rgb(10, 20, 30), hsl(10, 20%, 30%)" data-default="#005b99">
+            </div>
+
+            <div class="form__group">
+                <label class="form__label" for="end">End</label>
+                <input id="end" class="form__control input input--large js-blendColor"
+                    placeholder="#0000FF, #c00, rgb(10, 20, 30), hsl(10, 20%, 30%)" data-default="#ffffff">
+            </div>
+
+            <div class="form__group">
+                <label class="form__label" for="steps">Steps</label>
+                <input id="steps" class="form__control input input--large" value="5" inputmode="numeric">
+            </div>
+        </div>
+
+        <div class="card flex__item flex__item--12 flex__item--6-sm">
+            <div id="results" class="card__body"></div>
+        </div>
+    </div>
+
+</main>
+
+{% endblock %}
