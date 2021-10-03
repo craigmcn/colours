@@ -3,15 +3,15 @@ import { hex2Rgb, hex2Str, hsl2Str, rgb2Str } from './convertColours'
 import { splitHex } from './parseValues'
 import { passFail } from './passFail'
 
-const updateContrast = obj => {
-    Object.keys(obj).forEach(k => {
+const updateContrast = (obj) => {
+    Object.keys(obj).forEach((k) => {
         document.getElementById(k).querySelector('.contrast__value').innerText =
       obj[k]
         passFail(k, obj[k])
     })
 }
 
-const updateFocusStyle = linkColor => {
+const updateFocusStyle = (linkColor) => {
     const exLinkStyle = document.getElementById('exLinkStyle')
     if (exLinkStyle) exLinkStyle.remove()
     const styles = `.exLink:focus{ box-shadow: 0 0 0 0.2rem rgba(${linkColor},0.5) }`

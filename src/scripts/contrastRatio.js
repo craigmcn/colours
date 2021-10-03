@@ -1,6 +1,10 @@
-import { hsl2Rgb, rgb2Hex, rgb2Hsl } from './convertColours'
+import {
+    hsl2Rgb,
+    rgb2Hex,
+    rgb2Hsl,
+} from './convertColours'
 
-const sRgb = c => {
+const sRgb = (c) => {
     const s = c / 255
     return s <= 0.03928 ? s / 12.92 : Math.pow((s + 0.055) / 1.055, 2.4)
 }
@@ -16,13 +20,25 @@ export const contrastRatio = ([r1, g1, b1], [r2, g2, b2]) => {
 }
 
 // color = rgb => [r, g, b]
-export const contrastTextColor = (color) => ({
-    A: getContrastColour({ color, wcag: 'A' }),
-    AA: getContrastColour({ color }),
-    AAA: getContrastColour({ color, wcag: 'AAA' }),
+export const contrastTextColor = color => ({
+    A: getContrastColour({
+        color,
+        wcag: 'A',
+    }),
+    AA: getContrastColour({
+        color,
+    }),
+    AAA: getContrastColour({
+        color,
+        wcag: 'AAA',
+    }),
 })
 
-export const getContrastColour = ({ color, wcag = 'AA', direction }) => {
+export const getContrastColour = ({
+    color,
+    wcag = 'AA',
+    direction,
+}) => {
     let dir = direction
     let [h, s, l] = rgb2Hsl(color)
     s = parseInt(s)

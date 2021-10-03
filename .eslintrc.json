@@ -17,6 +17,7 @@
         "indent": ["error", 4],
         "no-multi-spaces": ["error"],
         "no-console": "warn",
-        "comma-dangle": ["error", "always-multiline"]
+        "comma-dangle": ["error", "always-multiline"],
+        "arrow-parens": ["error", "as-needed", { "requireForBlockBody": true }]
     }
 }

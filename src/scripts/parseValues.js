@@ -5,7 +5,7 @@ export const splitHex = (hex) => {
     const h = hex.replace('#', '').toLowerCase()
     if (!h.match(/^[a-f0-9]{3}$/) && !h.match(/^[a-f0-9]{6}$/)) { return ['00', '00', '00'] }
     if (h.length === 3) {
-        return h.split('').map((c) => c + c)
+        return h.split('').map(c => c + c)
     } else {
         const a = h.match(/^(.{2})(.{2})(.{2})$/)
         return [a[1], a[2], a[3]]

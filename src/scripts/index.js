@@ -30,7 +30,7 @@ inputColor.forEach(el =>
 )
 
 document.querySelectorAll('.saturation, .lightness').forEach(i =>
-    i.addEventListener('input', e => {
+    i.addEventListener('input', (e) => {
         const swatch = e.target
             .closest('.swatches')
             .querySelector('.swatch--compare')
@@ -60,8 +60,8 @@ document.querySelectorAll('.saturation, .lightness').forEach(i =>
     }),
 )
 
-document.querySelectorAll('.js-calculateWcag').forEach(el => {
-    el.addEventListener('click', e => {
+document.querySelectorAll('.js-calculateWcag').forEach((el) => {
+    el.addEventListener('click', (e) => {
         const bgColorCard = document.getElementById('bgColor').closest('.card__body')
         const bgColor = bgColorCard.querySelector('.swatch__compare > .swatch__values > .value-hex').innerText
 
@@ -95,7 +95,7 @@ document.querySelectorAll('.js-calculateWcag').forEach(el => {
 
 if (inputColor.length) {
     updateExample()
-    inputColor.forEach(el => {
+    inputColor.forEach((el) => {
         const val = el.value
         const [hex, rgb, hsl] = parseText(val, el.dataset.default)
 

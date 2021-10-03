@@ -75,6 +75,6 @@ export const hsl2Rgb = ([h, s, l]) => {
 
 export const hex2Str = hex => `#${hex.join('')}`
 
-export const rgb2Str = rgb => `rgb(${rgb.join(',')})`
+export const rgb2Str = rgb => `rgb(${rgb.join(', ')})`
 
 export const hsl2Str = hsl => `hsl(${hsl.join(', ')})`

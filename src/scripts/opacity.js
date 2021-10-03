@@ -13,7 +13,7 @@ const opacityPercentEl = document.getElementById('opacityPercent')
 let bgRGB, fgRGB, resRGB
 
 // load foreground, background, result
-opacityColor.forEach(el => {
+opacityColor.forEach((el) => {
     // on load
     let hex, rgb, hsl
     if (el.id === 'bg' || el.id === 'fg') {
