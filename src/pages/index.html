@@ -1,5 +1,15 @@
 {% extends "layout.njk" %}
 
+{% block scripts %}
+<script>
+    (function () {
+        if (!window.location.pathname.endsWith("/")) {
+            window.location = window.location + "/"
+        }
+    }())
+</script>
+{% endblock %}
+
 {% block content %}
 
 <main class="main">

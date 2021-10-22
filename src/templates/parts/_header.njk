@@ -1,3 +1,9 @@
+{% if env == "netlify" %}
+  {% set fileExt = "" %}
+{% else %}
+  {% set fileExt = ".html" %}
+{% endif %}
+
 <header class="header">
 
     <section class="brand">
@@ -14,22 +20,22 @@
     </section>
 
     <h1>
-        <a class="header__link" href="./index.html">Colours</a>
+        <a class="header__link" href="./">Colours</a>
     </h1>
 
     <nav id="nav-collapse" class="nav collapsed">
         <ul class="nav__list">
             <li class="nav__item">
-                <a class="nav__link" href="./index.html">Contrast</a>
+                <a class="nav__link" href="./">Contrast</a>
             </li>
             <li class="nav__item">
-                <a class="nav__link" href="./opacity.html">Opacity</a>
+                <a class="nav__link" href="./opacity{{ fileExt }}">Opacity</a>
             </li>
             <li class="nav__item">
-                <a class="nav__link" href="./palette.html">Palette</a>
+                <a class="nav__link" href="./palette{{ fileExt }}">Palette</a>
             </li>
             <li class="nav__item">
-                <a class="nav__link" href="./blender.html">Blender</a>
+                <a class="nav__link" href="./blender{{ fileExt }}">Blender</a>
             </li>
         </ul>
     </nav>

@@ -1,9 +1,13 @@
-const { readFileSync } = require('fs')
+const {
+    readFileSync,
+} = require('fs')
 const gulp = require('gulp')
 const gulpif = require('gulp-if')
 const flatten = require('gulp-flatten')
 const hash = require('gulp-hash')
-const hashOptions = { template: '<%= name %>.<%= hash %><%= ext %>' }
+const hashOptions = {
+    template: '<%= name %>.<%= hash %><%= ext %>',
+}
 const hashFilename = 'hash-manifest.json'
 const rewrite = require('gulp-rev-rewrite')
 const argv = require('minimist')(process.argv.slice(2))
@@ -35,7 +39,9 @@ gulp.task('styles', () => {
     return gulp
         .src('./src/styles/**/*.scss')
         .pipe(sass(sassOptions[env]).on('error', sass.logError))
-        .pipe(autoprefixer({ grid: 'autoplace' }))
+        .pipe(autoprefixer({
+            grid: 'autoplace',
+        }))
         .pipe(flatten())
         .pipe(hash(hashOptions))
         .pipe(gulp.dest(output[env]))
@@ -99,9 +105,14 @@ gulp.task('html', () => {
         .pipe(
             render({
                 path: ['src/templates'],
+                data: {
+                    env,
+                },
             }),
         )
-        .pipe(rewrite({ manifest }))
+        .pipe(rewrite({
+            manifest,
+        }))
         .pipe(gulp.dest(output[env]))
         .pipe(gulpif(env === 'netlify', gulp.dest(outputNetlify)))
 })
