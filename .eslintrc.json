@@ -14,7 +14,7 @@
     "rules": {
         "quotes": ["error", "single"],
         "semi": ["error", "never"],
-        "indent": ["error", 4],
+        "indent": ["error", 4, { "SwitchCase": 1 }],
         "no-multi-spaces": ["error"],
         "no-console": "warn",
         "comma-dangle": ["error", "always-multiline"],

@@ -2,11 +2,7 @@
 
 {% block scripts %}
 <script>
-    (function () {
-        if (!window.location.pathname.endsWith("/")) {
-            window.location = window.location + "/"
-        }
-    }())
+    (() => !window.location.pathname.endsWith("/") && window.location.replace(window.location.href + "/"))()
 </script>
 {% endblock %}
 

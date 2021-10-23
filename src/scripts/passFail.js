@@ -16,30 +16,30 @@ const update = (level, test, result) => {
 
 export const passFail = (test, value) => {
     switch (test) {
-    case 'link2Body':
-        if (value < 3) {
-            update('A', test, F)
-        } else {
-            update('A', test, P)
-        }
-        break
-
-    case 'link2Bg': // fallthrough
-    case 'body2Bg':
-        if (value < 4.5) {
-            update('AAA', test, F)
-            update('AA', test, F)
-        } else {
-            if (value < 7) {
-                update('AAA', test, F)
+        case 'link2Body':
+            if (value < 3) {
+                update('A', test, F)
             } else {
-                update('AAA', test, P)
+                update('A', test, P)
             }
-            update('AA', test, P)
-        }
-        break
+            break
 
-    default:
-    // do nothing
+        case 'link2Bg': // fallthrough
+        case 'body2Bg':
+            if (value < 4.5) {
+                update('AAA', test, F)
+                update('AA', test, F)
+            } else {
+                if (value < 7) {
+                    update('AAA', test, F)
+                } else {
+                    update('AAA', test, P)
+                }
+                update('AA', test, P)
+            }
+            break
+
+        default:
+            // do nothing
     }
 }

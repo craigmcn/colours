@@ -8,9 +8,6 @@
       "editor.formatOnSave": true,
       "editor.defaultFormatter": "vscode.html-language-features"
     },
-    "[javascript]": {
-      "editor.formatOnSave": true,
-    },
     "[css]": {
       "editor.formatOnSave": true,
     },
