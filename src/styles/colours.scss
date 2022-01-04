@@ -1,10 +1,7 @@
-$grey: #adafaa;
+$grey: #afafb3;
 $green: #036803;
 $red: #b60202;
 $warning: #695802;
-
-/* Colour + Contrast */
-// something goes here
 
 .swatch {
     display: flex;
@@ -13,6 +10,7 @@ $warning: #695802;
     &__source,
     &__compare {
         border: 1px solid $grey;
+        border: 1px solid var(--grey300);
         padding: 1rem;
         width: 100%;
     }
@@ -43,6 +41,7 @@ $warning: #695802;
 
 .contrast {
     border: 1px solid $grey;
+    border: 1px solid var(--grey300);
     border-radius: 0.25em;
     display: flex;
     flex-grow: 1;
@@ -55,6 +54,7 @@ $warning: #695802;
 
     &.pass {
         border-color: $green;
+        border-color: var(--green);
         border-width: 3px;
         padding: calc(0.5rem - 2px);
     }
@@ -83,9 +83,11 @@ $warning: #695802;
 .label--wcagAA>span,
 .label--wcagAAA>span {
     color: $red;
+    color: var(--red);
 
     &.pass {
         color: $green;
+        color: var(--green);
         font-weight: bold;
     }
 }
@@ -113,6 +115,7 @@ $warning: #695802;
 
 .colour {
     border: 1px solid $grey;
+    border: 1px solid var(--grey300);
     flex: 0 0 33.333%;
     padding: 1rem;
 
@@ -132,9 +135,11 @@ $warning: #695802;
 /* Form */
 .form__control--hasWarning {
     border-color: $warning;
+    border-color: var(--warn);
 }
 
 .form__control-warning {
     color: $warning;
+    color: var(--warn);
     margin-bottom: 0.25rem;
 }
