@@ -5,8 +5,8 @@
     "description": "Colour manipulator and contrast checker",
     "main": "index.js",
     "devDependencies": {
-        "@babel/core": "^7.16.7",
-        "@babel/preset-env": "^7.16.7",
+        "@babel/core": "^7.17.5",
+        "@babel/preset-env": "^7.16.11",
         "babelify": "^10.0.0",
         "browser-sync": "^2.27.7",
         "browserify": "^17.0.0",
@@ -25,7 +25,7 @@
         "gulp-sass": "^5.1.0",
         "gulp-uglify": "^3.0.2",
         "minimist": "^1.2.5",
-        "sass": "^1.45.2",
+        "sass": "^1.49.8",
         "vinyl-buffer": "^1.0.1",
         "vinyl-source-stream": "^2.0.0"
     },
