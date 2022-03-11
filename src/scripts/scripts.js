@@ -1,3 +1,3 @@
-import './index'
-import './opacity'
-import './palette'
+import './index';
+import './opacity';
+import './palette';

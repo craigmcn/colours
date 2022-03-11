@@ -13,8 +13,8 @@
     },
     "rules": {
         "quotes": ["error", "single"],
-        "semi": ["error", "never"],
-        "indent": ["error", 4, { "SwitchCase": 1 }],
+        "semi": ["error", "always"],
+        "indent": ["error", 4, { "SwitchCase": 2 }],
         "no-multi-spaces": ["error"],
         "no-trailing-spaces": "error",
         "no-console": "warn",

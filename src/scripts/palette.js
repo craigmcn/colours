@@ -1,136 +1,136 @@
 import {
     parseText,
-} from './parseValues'
+} from './parseValues';
 import {
     hsl2Str,
     hex2Str,
     rgb2Hex,
     rgb2Hsl,
     rgb2Str,
-} from './convertColours'
+} from './convertColours';
 import {
     calculateColorArray,
-} from './calculate'
+} from './calculate';
 import {
     contrastTextColor,
-} from './contrastRatio'
+} from './contrastRatio';
 import {
     nearestNamedColor,
-} from './nearestNamedColor'
+} from './nearestNamedColor';
 import {
     copyComponent,
     initClipboardCopy,
-} from './clipboard'
+} from './clipboard';
 
 const calculateBlend = () => {
-    const start = document.getElementById('start')
-    const end = document.getElementById('end')
-    const steps = document.getElementById('steps')
+    const start = document.getElementById('start');
+    const end = document.getElementById('end');
+    const steps = document.getElementById('steps');
 
-    const startColor = parseText(start.value || start.dataset.default)
-    const endColor = parseText(end.value || end.dataset.default)
-    const resultArray = []
+    const startColor = parseText(start.value || start.dataset.default);
+    const endColor = parseText(end.value || end.dataset.default);
+    const resultArray = [];
 
-    const stepsCount = steps?.value ?? 10
+    const stepsCount = steps?.value ?? 10;
     for (let i = 0; i < +stepsCount + 1; i++) {
-        resultArray.push(calculateColorArray(i / stepsCount, startColor[1], endColor[1]))
+        resultArray.push(calculateColorArray(i / stepsCount, startColor[1], endColor[1]));
     }
 
-    drawSwatches(resultArray)
-}
+    drawSwatches(resultArray);
+};
 
 const calculatePalette = () => {
-    const start = document.getElementById('start')
-    const end = document.getElementById('end')
-    const base = document.getElementById('base')
+    const start = document.getElementById('start');
+    const end = document.getElementById('end');
+    const base = document.getElementById('base');
 
-    const baseColor = parseText(base.value || base.dataset.default)
-    const startColor = parseText(start.value || start.dataset.default)
-    const endColor = parseText(end.value || end.dataset.default)
-    const resultArray = []
+    const baseColor = parseText(base.value || base.dataset.default);
+    const startColor = parseText(start.value || start.dataset.default);
+    const endColor = parseText(end.value || end.dataset.default);
+    const resultArray = [];
 
     for (let i = 0; i < 5; i++) {
-        resultArray.push(calculateColorArray(i / 5, startColor[1], baseColor[1]))
+        resultArray.push(calculateColorArray(i / 5, startColor[1], baseColor[1]));
     }
 
     for (let i = 0; i < 6; i++) {
-        resultArray.push(calculateColorArray(i / 5, baseColor[1], endColor[1]))
+        resultArray.push(calculateColorArray(i / 5, baseColor[1], endColor[1]));
     }
 
-    resultArray.splice(1, 0, calculateColorArray(0.05, startColor[1], baseColor[1]))
+    resultArray.splice(1, 0, calculateColorArray(0.05, startColor[1], baseColor[1]));
 
-    drawCustomProperties(resultArray)
-    drawSwatches(resultArray)
-}
+    drawCustomProperties(resultArray);
+    drawSwatches(resultArray);
+};
 
 const drawSwatches = (colorArray) => {
-    const results = document.getElementById('results')
-    results.innerHTML = ''
+    const results = document.getElementById('results');
+    results.innerHTML = '';
 
     colorArray.forEach((color) => {
-        const hex = rgb2Hex(color, true)
-        const rgb = rgb2Str(color)
-        const hsl = hsl2Str(rgb2Hsl(color))
+        const hex = rgb2Hex(color, true);
+        const rgb = rgb2Str(color);
+        const hsl = hsl2Str(rgb2Hsl(color));
 
-        const result = document.createElement('div')
-        result.classList = 'flex'
-        result.innerHTML = `${rgb}<br>${hsl}<br>${hex}`
-        result.style.color = hex2Str(contrastTextColor(color).AAA.hex)
-        result.style.backgroundColor = rgb
-        result.style.marginBottom = '2px'
-        result.style.padding = '0.5rem'
+        const result = document.createElement('div');
+        result.classList = 'flex';
+        result.innerHTML = `${rgb}<br>${hsl}<br>${hex}`;
+        result.style.color = hex2Str(contrastTextColor(color).AAA.hex);
+        result.style.backgroundColor = rgb;
+        result.style.marginBottom = '2px';
+        result.style.padding = '0.5rem';
 
-        result.appendChild(copyComponent(hex, rgb, hsl))
+        result.appendChild(copyComponent(hex, rgb, hsl));
 
-        results.appendChild(result)
-    })
+        results.appendChild(result);
+    });
 
-    initClipboardCopy()
-}
+    initClipboardCopy();
+};
 
 const drawCustomProperties = (colorArray) => {
-    const name = document.getElementById('name')
-    const base = document.getElementById('base')
-    const baseColor = parseText(base.value || base.dataset.default)
+    const name = document.getElementById('name');
+    const base = document.getElementById('base');
+    const baseColor = parseText(base.value || base.dataset.default);
 
-    const variables = document.getElementById('variables')
-    variables.innerHTML = ''
+    const variables = document.getElementById('variables');
+    variables.innerHTML = '';
 
-    const copyButton = variables.parentElement.querySelector('button[data-copy]')
+    const copyButton = variables.parentElement.querySelector('button[data-copy]');
 
-    let colorName = name.value || name.dataset.default
+    let colorName = name.value || name.dataset.default;
     if (base.value && !name.value) {
-        colorName = nearestNamedColor(baseColor[1])
+        colorName = nearestNamedColor(baseColor[1]);
     }
 
     colorArray.forEach((color, index) => {
-        const i = index === 0 ? 0 : index === 1 ? 50 : (index - 1) * 100
-        const result = `--${colorName}-${i}: ${rgb2Hex(color, true)}`
-        variables.innerHTML += `${result}<br>`
+        const i = index === 0 ? 0 : index === 1 ? 50 : (index - 1) * 100;
+        const result = `--${colorName}-${i}: ${rgb2Hex(color, true)}`;
+        variables.innerHTML += `${result}<br>`;
 
-        copyButton.dataset.copy += `${result}\n`
-    })
-}
+        copyButton.dataset.copy += `${result}\n`;
+    });
+};
 
-const paletteColors = document.querySelectorAll('.js-paletteColor')
+const paletteColors = document.querySelectorAll('.js-paletteColor');
 if (paletteColors.length) {
     paletteColors.forEach((el) => {
-        el.addEventListener('input', calculatePalette)
-    })
+        el.addEventListener('input', calculatePalette);
+    });
 
-    document.getElementById('name').addEventListener('input', calculatePalette)
+    document.getElementById('name').addEventListener('input', calculatePalette);
 
-    calculatePalette()
+    calculatePalette();
 }
 
-const blendColors = document.querySelectorAll('.js-blendColor')
+const blendColors = document.querySelectorAll('.js-blendColor');
 
 if (blendColors.length) {
     blendColors.forEach((el) => {
-        el.addEventListener('input', calculateBlend)
-    })
+        el.addEventListener('input', calculateBlend);
+    });
 
-    document.getElementById('steps').addEventListener('input', calculateBlend)
+    document.getElementById('steps').addEventListener('input', calculateBlend);
 
-    calculateBlend()
+    calculateBlend();
 }
