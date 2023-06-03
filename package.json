@@ -8,7 +8,7 @@
         "@babel/core": "^7.17.5",
         "@babel/preset-env": "^7.16.11",
         "babelify": "^10.0.0",
-        "browser-sync": "^2.27.11",
+        "browser-sync": "^2.29.1",
         "browserify": "^17.0.0",
         "eslint": "^8.16.0",
         "eslint-config-standard": "^17.0.0",
