@@ -1,0 +1,42 @@
+$grey: #afafb3;
+$green: #036803;
+
+.contrast {
+  border: 1px solid $grey;
+  border: 1px solid var(--grey300);
+  border-radius: 0.25em;
+  display: flex;
+  flex-grow: 1;
+  min-height: 5rem;
+  padding: 0.5rem;
+
+  p {
+    margin-top: 0;
+  }
+}
+
+.pass {
+  border-color: $green;
+  border-color: var(--green);
+  border-width: 3px;
+  padding: calc(0.5rem - 2px);
+}
+
+.ratio {
+  align-self: center;
+  flex-shrink: 0;
+  font-size: 2rem;
+  width: 4em;
+}
+
+.value {
+  font-weight: bold;
+}
+
+.description {
+  font-size: 0.9rem;
+
+  & > .label {
+    font-weight: bold;
+  }
+}

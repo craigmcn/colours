@@ -1,0 +1,13 @@
+$warning: #695802;
+
+.hasWarning {
+  border-color: $warning;
+  border-color: var(--warn);
+}
+
+.warning {
+  color: $warning;
+  color: var(--warn);
+  display: block;
+  margin-bottom: 0.25rem;
+}

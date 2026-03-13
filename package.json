@@ -1,39 +1,27 @@
 {
     "name": "colours",
-    "version": "2.5.1",
+    "version": "3.0.0",
     "repository": "github:craigmcn/colours",
     "description": "Colour manipulator and contrast checker",
-    "main": "index.js",
-    "devDependencies": {
-        "@babel/core": "^7.17.5",
-        "@babel/preset-env": "^7.16.11",
-        "babelify": "^10.0.0",
-        "browser-sync": "^3.0.3",
-        "browserify": "^17.0.0",
-        "eslint": "^8.16.0",
-        "eslint-config-standard": "^17.0.0",
-        "eslint-plugin-import": "^2.25.4",
-        "eslint-plugin-node": "^11.1.0",
-        "eslint-plugin-promise": "^6.0.0",
-        "gulp": "^5.0.0",
-        "gulp-autoprefixer": "^8.0.0",
-        "gulp-flatten": "^0.4.0",
-        "gulp-hash": "^4.2.2",
-        "gulp-if": "^3.0.0",
-        "gulp-nunjucks-render": "^2.2.3",
-        "gulp-rev-rewrite": "^5.0.0",
-        "gulp-sass": "^5.1.0",
-        "gulp-uglify": "^3.0.2",
-        "minimist": "^1.2.6",
-        "sass": "^1.49.9",
-        "vinyl-buffer": "^1.0.1",
-        "vinyl-source-stream": "^2.0.0"
-    },
+    "type": "module",
     "scripts": {
-        "build": "gulp build --env=production",
-        "build:netlify": "gulp build --env=netlify",
-        "dev": "gulp build",
-        "serve": "gulp serve"
+        "dev": "vite",
+        "build": "tsc -b && vite build",
+        "build:netlify": "tsc -b && vite build --outDir=netlify && vite build --base=/colours/ --outDir=netlify/colours",
+        "preview": "vite preview"
+    },
+    "dependencies": {
+        "react": "^19.1.0",
+        "react-dom": "^19.1.0",
+        "react-router-dom": "^7.5.0"
+    },
+    "devDependencies": {
+        "@types/react": "^19.1.0",
+        "@types/react-dom": "^19.1.0",
+        "@vitejs/plugin-react": "^4.4.1",
+        "sass": "^1.86.0",
+        "typescript": "^5.8.2",
+        "vite": "^6.3.1"
     },
     "keywords": [
         "wcag",
@@ -45,9 +33,5 @@
         "check"
     ],
     "author": "Craig McNaughton",
-    "license": "GPL-3.0-or-later",
-    "browserslist": [
-        "> 1%",
-        "last 2 versions"
-    ]
+    "license": "GPL-3.0-or-later"
 }

@@ -1,0 +1,23 @@
+.exBg {
+  border: 1px solid;
+  font-size: 200%;
+  margin: 0 auto;
+  padding: 0.5em 0;
+  text-align: center;
+
+  @media (min-width: 1012px) {
+    width: 66.6667%;
+  }
+}
+
+.exText {
+  // color set via inline style
+}
+
+.exLink {
+  // color set via inline style
+  &:focus {
+    outline: 2px solid currentColor;
+    outline-offset: 2px;
+  }
+}
