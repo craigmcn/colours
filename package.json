@@ -8,7 +8,8 @@
         "dev": "vite",
         "build": "tsc -b && vite build",
         "build:netlify": "tsc -b && vite build --outDir=netlify && vite build --base=/colours/ --outDir=netlify/colours",
-        "preview": "vite preview"
+        "preview": "vite preview",
+        "test": "vitest"
     },
     "dependencies": {
         "react": "^19.1.0",
@@ -16,12 +17,17 @@
         "react-router-dom": "^7.5.0"
     },
     "devDependencies": {
+        "@testing-library/jest-dom": "^6.9.1",
+        "@testing-library/react": "^16.3.2",
+        "@testing-library/user-event": "^14.6.1",
         "@types/react": "^19.1.0",
         "@types/react-dom": "^19.1.0",
         "@vitejs/plugin-react": "^4.4.1",
+        "happy-dom": "^20.8.9",
         "sass": "^1.86.0",
         "typescript": "^5.8.2",
-        "vite": "^6.3.1"
+        "vite": "^6.3.1",
+        "vitest": "^4.1.2"
     },
     "keywords": [
         "wcag",
