@@ -1,93 +1,15 @@
 import { useMemo } from 'react'
-import type { ColorValue } from '../../types/colour'
 import { useColor } from '../../hooks/useColor'
-import { ColorInput } from '../../components/ColorInput/ColorInput'
-import { CopyButtons } from '../../components/CopyButtons/CopyButtons'
-import { SwatchControls } from '../../components/SwatchControls/SwatchControls'
+import { SwatchCard } from '../../components/SwatchCard/SwatchCard'
 import { ContrastResult } from '../../components/ContrastResult/ContrastResult'
 import { ColorExample } from '../../components/ColorExample/ColorExample'
 import { contrastRatio, contrastTextColor, getContrastColour } from '../../utils/contrastRatio'
-import { hsl2Rgb, rgb2Hex, rgb2Hsl, hex2Str, rgb2Str, hsl2Str } from '../../utils/convertColours'
+import { hex2Str } from '../../utils/convertColours'
 import { getPassFail } from '../../utils/passFail'
-import styles from './ContrastChecker.module.scss'
 
 const DEFAULT_LINK = '#0000FF'
 const DEFAULT_TEXT = '#222222'
 const DEFAULT_BG = '#FFFFFF'
-
-interface SwatchCardProps {
-  id: string
-  title: string
-  color: ColorValue
-  inputValue: string
-  onInputChange: (v: string) => void
-  onSetColor: (c: ColorValue, display?: string) => void
-}
-
-const SwatchCard = ({ id, title, color, inputValue, onInputChange, onSetColor }: SwatchCardProps) => {
-  const textColor = contrastTextColor(color.rgb)
-  const sourceBg = hex2Str(color.hex)
-  const compareBg = hsl2Str(color.hsl)
-  const fg = hex2Str(textColor.AAA.hex)
-
-  const handleSatChange = (sat: number) => {
-    const h = color.hsl[0]
-    const l = parseInt(color.hsl[2])
-    const rgb = hsl2Rgb([h, sat, l])
-    const hex = rgb2Hex(rgb, false)
-    const hsl = rgb2Hsl(rgb)
-    onSetColor({ hex, rgb, hsl })
-  }
-
-  const handleLightChange = (light: number) => {
-    const h = color.hsl[0]
-    const s = parseInt(color.hsl[1])
-    const rgb = hsl2Rgb([h, s, light])
-    const hex = rgb2Hex(rgb, false)
-    const hsl = rgb2Hsl(rgb)
-    onSetColor({ hex, rgb, hsl })
-  }
-
-  const sat = parseInt(color.hsl[1])
-  const light = parseInt(color.hsl[2])
-
-  return (
-    <div className="card flex__item flex__item--12 flex__item--4-lg">
-      <div className="card__title"><h3>{title}</h3></div>
-      <div className="card__body">
-        <ColorInput id={id} label={title} value={inputValue} onChange={onInputChange} hideLabel />
-
-        <div className={styles.swatches}>
-          <div className={styles.swatchSource} style={{ backgroundColor: sourceBg, color: fg }}>
-            <p className={styles.swatchValues}>
-              <span>{rgb2Str(color.rgb)}</span><br />
-              <span>{hsl2Str(color.hsl)}</span><br />
-              <span>{hex2Str(color.hex)}</span>
-            </p>
-          </div>
-          <div className={styles.swatchCompare} style={{ backgroundColor: compareBg, color: fg }}>
-            <p className={styles.swatchValues}>
-              <span>{rgb2Str(color.rgb)}</span><br />
-              <span>{hsl2Str(color.hsl)}</span><br />
-              <span>{hex2Str(color.hex)}</span>
-            </p>
-          </div>
-          <div className={styles.swatchControls}>
-            <SwatchControls
-              id={id}
-              saturation={sat}
-              lightness={light}
-              onSaturationChange={handleSatChange}
-              onLightnessChange={handleLightChange}
-            />
-          </div>
-        </div>
-
-        <CopyButtons hex={color.hex} rgb={color.rgb} hsl={color.hsl} id={id} />
-      </div>
-    </div>
-  )
-}
 
 export const ContrastChecker = () => {
   const link = useColor(DEFAULT_LINK)
@@ -101,23 +23,23 @@ export const ContrastChecker = () => {
   const handleCalculateWcag = (level: 'AA' | 'AAA') => {
     const wcagText = contrastTextColor(bg.color.rgb)
     const { hex: textHex, rgb: textRgb, hsl: textHsl, direction } = wcagText[level]
-    text.set({ hex: textHex, rgb: textRgb, hsl: textHsl }, hex2Str(textHex))
+    text.set({ hex: textHex, rgb: textRgb, hsl: textHsl }, hex2Str(textHex), true)
 
     const { hex: linkHex, rgb: linkRgb, hsl: linkHsl } = getContrastColour({ color: textRgb, wcag: 'A', direction })
-    link.set({ hex: linkHex, rgb: linkRgb, hsl: linkHsl }, hex2Str(linkHex))
+    link.set({ hex: linkHex, rgb: linkRgb, hsl: linkHsl }, hex2Str(linkHex), true)
   }
 
   return (
     <main className="main">
       <section className="flex flex--grid">
         <SwatchCard id="linkColor" title="Links"
-          color={link.color} inputValue={link.inputValue}
+          color={link.color} sourceColor={link.sourceColor} inputValue={link.inputValue}
           onInputChange={link.update} onSetColor={link.set} />
         <SwatchCard id="textColor" title="Text"
-          color={text.color} inputValue={text.inputValue}
+          color={text.color} sourceColor={text.sourceColor} inputValue={text.inputValue}
           onInputChange={text.update} onSetColor={text.set} />
         <SwatchCard id="bgColor" title="Background"
-          color={bg.color} inputValue={bg.inputValue}
+          color={bg.color} sourceColor={bg.sourceColor} inputValue={bg.inputValue}
           onInputChange={bg.update} onSetColor={bg.set} />
       </section>
 

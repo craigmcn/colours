@@ -12,18 +12,21 @@ const defaultColor = (defaultHex: string): ColorValue => {
 
 export const useColor = (initialHex: string) => {
   const [color, setColor] = useState<ColorValue>(() => defaultColor(initialHex))
+  const [sourceColor, setSourceColor] = useState<ColorValue>(() => defaultColor(initialHex))
   const [inputValue, setInputValue] = useState('')
 
   const update = useCallback((text: string) => {
     setInputValue(text)
     const [hex, rgb, hsl] = parseText(text, initialHex)
     setColor({ hex, rgb, hsl })
+    setSourceColor({ hex, rgb, hsl })
   }, [initialHex])
 
-  const set = useCallback((value: ColorValue, displayValue?: string) => {
+  const set = useCallback((value: ColorValue, displayValue?: string, updateSource = false) => {
     setColor(value)
-    setInputValue(displayValue ?? '')
+    if (displayValue !== undefined) setInputValue(displayValue)
+    if (updateSource) setSourceColor(value)
   }, [])
 
-  return { color, inputValue, update, set }
+  return { color, sourceColor, inputValue, update, set }
 }

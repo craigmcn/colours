@@ -1,0 +1,32 @@
+$grey: #afafb3;
+
+.swatches {
+  display: flex;
+  flex-direction: column;
+}
+
+.swatchSource,
+.swatchCompare {
+  border: 1px solid $grey;
+  border: 1px solid var(--grey300);
+  padding: 1rem;
+  width: 100%;
+}
+
+.swatchSource {
+  border-bottom: none;
+  margin-bottom: 0;
+}
+
+.swatchCompare {
+  border-top: none;
+  margin-top: 0;
+}
+
+.swatchControls>p {
+  margin-top: 0.5rem;
+}
+
+.swatchValues {
+  margin-left: 0.25rem;
+}
