@@ -21,32 +21,30 @@ export const CopyButtons = ({ hex, rgb, hsl, id = 'copy' }: Props) => {
   const prefix = id
 
   return (
-    <div className={`flex flex--jc-center ${styles.copyButtons}`}>
-      <div>
-        <span className="fad fa-copy" aria-hidden="true" />
-        <span className="visually-hidden">Copy</span>
-        <button
-          className={`button button--sm${copiedKey === `${prefix}-hex` ? ' button--success' : ''}`}
-          onClick={() => copy(hexStr, `${prefix}-hex`)}
-          title={`Copy ${hexStr}`}
-        >
-          HEX
-        </button>
-        <button
-          className={`button button--sm${copiedKey === `${prefix}-rgb` ? ' button--success' : ''}`}
-          onClick={() => copy(rgbStr, `${prefix}-rgb`)}
-          title={`Copy ${rgbStr}`}
-        >
-          RGB
-        </button>
-        <button
-          className={`button button--sm${copiedKey === `${prefix}-hsl` ? ' button--success' : ''}`}
-          onClick={() => copy(hslStr, `${prefix}-hsl`)}
-          title={`Copy ${hslStr}`}
-        >
-          HSL
-        </button>
-      </div>
+    <div className={`flex flex--ai-center flex--jc-center ${styles.copyButtons}`}>
+      <span className="fad fa-copy" aria-hidden="true" />
+      <span className="visually-hidden">Copy</span>
+      <button
+        className={`m-l-xs button button--sm${copiedKey === `${prefix}-hex` ? ' button--success' : ''}`}
+        onClick={() => copy(hexStr, `${prefix}-hex`)}
+        title={`Copy ${hexStr}`}
+      >
+        HEX
+      </button>
+      <button
+        className={`m-l-xs button button--sm${copiedKey === `${prefix}-rgb` ? ' button--success' : ''}`}
+        onClick={() => copy(rgbStr, `${prefix}-rgb`)}
+        title={`Copy ${rgbStr}`}
+      >
+        RGB
+      </button>
+      <button
+        className={`m-l-xs button button--sm${copiedKey === `${prefix}-hsl` ? ' button--success' : ''}`}
+        onClick={() => copy(hslStr, `${prefix}-hsl`)}
+        title={`Copy ${hslStr}`}
+      >
+        HSL
+      </button>
     </div>
   )
 }

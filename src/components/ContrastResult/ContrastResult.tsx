@@ -29,7 +29,7 @@ export const ContrastResult = (props: Props) => {
         <span className={styles.value}>{ratio}</span>:1
       </div>
       <div className={styles.description}>
-        <p className="label">{label}</p>
+        <p className={styles.label}>{label}</p>
         {props.type === 'link2Body' ? (
           <>
             <p className="label--wcagA">
@@ -37,8 +37,8 @@ export const ContrastResult = (props: Props) => {
             </p>
             {props.results.A === 'Fail' && (
               <p className="label--warn text--info">
-                <i className="fa-light fa-circle-info" />
-                {' '}Use another method for differentiating links and text (e.g., underline)
+                <i className="fa-light fa-circle-info m-r-xs" />
+                Use another method for differentiating links and text (e.g., underline)
               </p>
             )}
           </>

@@ -2,7 +2,7 @@ $grey: #afafb3;
 
 .swatches {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
 }
 
 .swatchSource,
@@ -23,7 +23,7 @@ $grey: #afafb3;
   margin-top: 0;
 }
 
-.swatchControls > p {
+.swatchControls>p {
   margin-top: 0.5rem;
 }
 
