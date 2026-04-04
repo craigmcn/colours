@@ -15,7 +15,7 @@ const hsl: HSL = [0, '100%', '50%']
 
 describe('CopyButtons — clipboard not supported', () => {
   beforeEach(() => {
-    vi.mocked(useClipboard).mockReturnValue({ copy: vi.fn(), copiedKey: null, isSupported: false })
+    vi.mocked(useClipboard).mockReturnValue({ copy: vi.fn() as (text: string, key: string) => void, copiedKey: null, isSupported: false })
   })
 
   it('renders nothing', () => {
@@ -31,7 +31,7 @@ describe('CopyButtons — clipboard supported', () => {
 
   beforeEach(() => {
     mockCopy = vi.fn()
-    vi.mocked(useClipboard).mockReturnValue({ copy: mockCopy, copiedKey: null, isSupported: true })
+    vi.mocked(useClipboard).mockReturnValue({ copy: mockCopy as (text: string, key: string) => void, copiedKey: null, isSupported: true })
   })
 
   it('renders HEX, RGB and HSL copy buttons', () => {

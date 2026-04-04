@@ -32,7 +32,7 @@ const makeProps = (overrides: Partial<SwatchCardProps> = {}): SwatchCardProps =>
 })
 
 beforeEach(() => {
-  vi.mocked(useClipboard).mockReturnValue({ copy: vi.fn(), copiedKey: null, isSupported: true })
+  vi.mocked(useClipboard).mockReturnValue({ copy: vi.fn() as (text: string, key: string) => void, copiedKey: null, isSupported: true })
 })
 
 // ─── Rendering ────────────────────────────────────────────────────────────────

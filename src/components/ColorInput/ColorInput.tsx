@@ -7,9 +7,10 @@ interface Props {
   onChange: (value: string) => void
   hideLabel?: boolean
   warning?: string
+  disabled?: boolean
 }
 
-export const ColorInput = ({ id, label, value, onChange, hideLabel = false, warning }: Props) => (
+export const ColorInput = ({ id, label, value, onChange, hideLabel = false, warning, disabled = false }: Props) => (
   <p className="form__group">
     <label htmlFor={id} className={hideLabel ? 'visually-hidden' : 'form__label'}>{label}</label>
     {warning && <span className={styles.warning}>{warning}</span>}
@@ -19,6 +20,7 @@ export const ColorInput = ({ id, label, value, onChange, hideLabel = false, warn
       type="text"
       placeholder="#0000FF, #c00, rgb(10, 20, 30), hsl(10, 20%, 30%)"
       value={value}
+      disabled={disabled}
       onChange={e => onChange(e.target.value)}
     />
   </p>
