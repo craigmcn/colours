@@ -30,6 +30,8 @@ Enter a foreground colour, a background colour, and an opacity level (0–100%) 
 
 Enter a start colour and an end colour and choose how many steps you want. The tool produces a smooth gradient of in-between colours. You can copy any colour in the list as a HEX, RGB, or HSL value.
 
+**See the [Colour Blender section](#colour-blender-in-depth) below for a full explanation.**
+
 ---
 
 ### Palette Generator
@@ -79,6 +81,43 @@ These two buttons save you time when you need to find a compliant colour combina
 ### Copy buttons
 
 Each colour card has HEX, RGB, and HSL copy buttons. Click one to copy that format to your clipboard, ready to paste into your code or design tool.
+
+---
+
+## Colour Blender — in depth
+
+### What does the Colour Blender do?
+
+The Colour Blender takes two colours — a **Start** and an **End** — and creates a smooth series of in-between colours. Each colour is an equal step along the way from start to finish, like rungs on a ladder. This is useful when you need a set of colours that fade gradually from one shade to another, such as a chart colour scale, a gradient background, or a custom tint ramp.
+
+### How the blending works
+
+The tool blends in the **RGB** colour space. For each step, it adds an equal fraction of the difference in red, green, and blue between the two colours. For example, blending black (`rgb(0, 0, 0)`) to white (`rgb(255, 255, 255)`) in 2 steps gives you one midpoint at `rgb(128, 128, 128)` — a medium grey.
+
+### How to use the Colour Blender
+
+1. **Type a Start colour** — the colour at the beginning of the blend. You can use a hex code (`#005b99`), an `rgb()` value, or an `hsl()` value.
+2. **Type an End colour** — the colour at the end of the blend. Same format options as Start.
+3. **Set the number of Steps** — how many colours you want *between* the start and end. The total number of swatches shown is always steps + 1 (because the start and end are included). The default is 5 steps, giving you 6 swatches.
+4. The colour swatches update instantly as you type. Each swatch shows the colour's RGB, HSL, and hex values.
+5. Click **HEX**, **RGB**, or **HSL** below any swatch to copy that colour value to your clipboard.
+
+### Steps examples
+
+| Steps | Total swatches | What you get |
+|-------|---------------|--------------|
+| 1     | 2             | Start and End only — no blending |
+| 2     | 3             | Start, one midpoint, End |
+| 5     | 6             | Start, four intermediate colours, End |
+| 10    | 11            | A fine-grained scale with 9 intermediates |
+
+### Copy buttons
+
+Each swatch has three copy buttons:
+
+- **HEX** — copies the 6-character hex code (e.g. `#669dc2`)
+- **RGB** — copies the `rgb()` value (e.g. `rgb(102, 157, 194)`)
+- **HSL** — copies the `hsl()` value (e.g. `hsl(204, 44%, 58%)`)
 
 ---
 
