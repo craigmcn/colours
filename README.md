@@ -22,6 +22,8 @@ The main tool. It helps you check whether your text and link colours are readabl
 
 Enter a foreground colour, a background colour, and an opacity level (0–100%) and this tool shows you the solid colour that a semi-transparent foreground would actually look like on screen. You can also work backwards: type in a result colour and the tool will calculate what opacity would produce it.
 
+**See the [Opacity Calculator section](#opacity-calculator-in-depth) below for a full explanation.**
+
 ---
 
 ### Colour Blender
@@ -139,7 +141,64 @@ Paste this inside a `:root {}` rule in your stylesheet, then use `var(--brand-50
 
 ---
 
-| Format | Example | Notes |
+## Opacity Calculator — in depth
+
+### What is opacity?
+
+Opacity describes how see-through something is. At 0% opacity, a colour is completely invisible — only the background shows through. At 100% opacity, the colour is completely solid. Anywhere in between, the two colours blend together on screen. The blended colour you actually see is called the **result**.
+
+Browsers calculate the result using this formula for each colour channel (red, green, and blue):
+
+```
+result = (1 − opacity) × background + opacity × foreground
+```
+
+So at 25% opacity, 75% of the background colour and 25% of the foreground colour mix together to produce the result.
+
+### The four-way solver
+
+Most tools only let you go in one direction: pick a foreground, a background, and an opacity, and see the result. This tool lets you solve for **any one of the four values** when you know the other three.
+
+Use the **Solve for** button group to choose which value you want to calculate:
+
+| Solve for | You provide | The tool calculates |
+|-----------|-------------|---------------------|
+| **Result** (default) | Foreground, Background, Opacity | The blended colour |
+| **Opacity** | Foreground, Background, Result | What opacity produces that result |
+| **Foreground** | Background, Result, Opacity | What foreground colour was used |
+| **Background** | Foreground, Result, Opacity | What background colour was used |
+
+The solved field is shown as disabled (greyed out) and updates automatically. The other three fields remain editable.
+
+### How to use the Opacity Calculator
+
+**Forward mode (solve for Result):**
+1. Type your **Foreground** colour — the colour of the element with opacity applied.
+2. Type your **Background** colour — the colour behind it.
+3. Drag the **Opacity** slider to the percentage you want.
+4. The **Result** field and the centre swatch show the solid colour that would appear on screen.
+
+**Reverse mode (solve for Opacity):**
+1. Click **Opacity** in the Solve for group.
+2. Type the **Foreground** and **Background** colours.
+3. Type the target **Result** colour — the solid colour you want to end up with.
+4. The **Opacity** slider shows the percentage that produces that result.
+
+**Solve for Foreground or Background** works the same way — select the field you want to find, fill in the other three, and the answer appears immediately.
+
+### Edge cases
+
+- **Solve for Foreground at 0% opacity** — the foreground has no effect on the result at all, so there is no single answer. A warning is shown.
+- **Solve for Background at 100% opacity** — the background is completely hidden, so it cannot be recovered from the result. A warning is shown.
+- When the result colour cannot be achieved exactly (e.g. the typed result is outside the mathematically possible range for the given foreground and background), the tool clamps the output to the nearest valid value.
+
+### Colour swatches
+
+Three swatches across the top show the current **Foreground**, **Result**, and **Background** colours at all times, updating live as you make changes. Use the HEX, RGB, and HSL copy buttons below the swatches to copy the Result colour in whichever format you need.
+
+---
+
+## Colour formats
 |--------|---------|-------|
 | Hex | `#3a86ff` or `#38f` | The most common format in CSS. The shorthand (`#38f`) is expanded automatically. |
 | RGB | `rgb(58, 134, 255)` | Red, green, and blue values from 0 to 255. |
