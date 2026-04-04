@@ -8,19 +8,21 @@ export const splitHex = (hex?: string): Hex => {
   if (h.length === 3) {
     return h.split('').map(c => c + c) as Hex
   }
-  const a = h.match(/^(.{2})(.{2})(.{2})$/)!
+  const a = h.match(/^(.{2})(.{2})(.{2})$/)! // This regex will always match because of the previous checks
   return [a[1], a[2], a[3]] as Hex
 }
 
 export const splitRgb = (rgb?: string): RGB => {
   if (!rgb) return [0, 0, 0]
-  const m = rgb.match(/^rgb\((\d{1,3}),[\s]?(\d{1,3}),[\s]?(\d{1,3})\)$/)!
+  const m = rgb.match(/^rgb\((\d{1,3}),[\s]?(\d{1,3}),[\s]?(\d{1,3})\)$/)
+  if (!m) return [0, 0, 0]
   return [Number(m[1]), Number(m[2]), Number(m[3])]
 }
 
 export const splitHsl = (hsl?: string): [number, string, string] => {
   if (!hsl) return [0, '0%', '0%']
-  const m = hsl.match(/^hsl\((\d{1,3}),[\s]?(\d{1,3})%,[\s]?(\d{1,3})%\)$/)!
+  const m = hsl.match(/^hsl\((\d{1,3}),[\s]?(\d{1,3})%,[\s]?(\d{1,3})%\)$/)
+  if (!m) return [0, '0%', '0%']
   return [Number(m[1]), m[2], m[3]]
 }
 
