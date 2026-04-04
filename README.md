@@ -32,7 +32,9 @@ Enter a start colour and an end colour and choose how many steps you want. The t
 
 ### Palette Generator
 
-Enter a base colour (plus optional light and dark endpoint colours) and the tool builds an 11-step palette — similar to the colour scales used in design systems like Tailwind or Material Design. It also outputs the palette as CSS custom properties so you can paste them straight into your stylesheet.
+Enter a base colour (plus optional light and dark endpoint colours) and the tool builds a 12-step palette — similar to the colour scales used in design systems like Tailwind or Material Design. It also outputs the palette as CSS custom properties so you can paste them straight into your stylesheet.
+
+**See the [Palette Generator section](#palette-generator-in-depth) below for a full explanation.**
 
 ---
 
@@ -78,7 +80,64 @@ Each colour card has HEX, RGB, and HSL copy buttons. Click one to copy that form
 
 ---
 
-## Colour formats
+## Palette Generator — in depth
+
+### What is a colour palette?
+
+A colour palette (or colour scale) is a set of shades of a single colour, ranging from very light to very dark. Design systems use palettes to give you a consistent set of options for backgrounds, text, borders, and hover states — instead of picking random shades each time. Tailwind CSS, for example, names its steps 50, 100, 200 … 900. This tool uses a similar scale that also includes a 0 step (the lightest possible) and a 1000 step (the darkest).
+
+### How the palette is built
+
+The generator divides the range from your **Light** endpoint to your **Base** colour, and then from your **Base** colour to your **Dark** endpoint, blending linearly between them. This gives you 12 swatches:
+
+| Step | Description |
+|------|-------------|
+| 0    | Equal to the Light colour |
+| 50   | A very subtle tint — 5% of the way from Light to Base |
+| 100  | 20% of the way from Light to Base |
+| 200  | 40% |
+| 300  | 60% |
+| 400  | 80% |
+| 500  | Equal to the Base colour |
+| 600  | 20% of the way from Base to Dark |
+| 700  | 40% |
+| 800  | 60% |
+| 900  | 80% |
+| 1000 | Equal to the Dark colour |
+
+The 50 step is deliberately compressed (only 5% of the Light-to-Base range) so you always have a near-white tint available even when your base colour is fairly light.
+
+### How to use the Palette Generator
+
+1. **Type a Base colour** — this is the main colour of your palette (e.g. your brand blue). You can use hex, `rgb()`, or `hsl()`.
+2. **Optionally change Light** — the lightest end of the scale. Defaults to white (`#ffffff`). Change this if you want a tinted light end (e.g. a very pale blue instead of pure white).
+3. **Optionally change Dark** — the darkest end of the scale. Defaults to near-black (`#222222`). Change this to keep the dark end within a hue family rather than going to neutral grey.
+4. **Optionally type a Name** — this becomes the prefix for all CSS custom property names (e.g. `brand` → `--brand-500`). If you leave it empty, the tool guesses the closest standard CSS colour name for the base (e.g. `cornflowerblue`, `tomato`).
+5. The 12 swatches update instantly as you type. Each swatch shows its RGB, HSL, and hex values, plus HEX, RGB, and HSL copy buttons.
+6. The **Custom properties** panel on the right shows all 12 variables ready to paste into a CSS `:root {}` block. Click **Copy** to copy the whole block at once.
+
+### CSS custom properties output
+
+The output looks like this (using `brand` as the name and a blue base):
+
+```css
+--brand-0: #ffffff
+--brand-50: #f0f4ff
+--brand-100: #c9d8fe
+--brand-200: #93b1fd
+--brand-300: #5d8afc
+--brand-400: #2763fb
+--brand-500: #003cfa
+--brand-600: #0031cf
+--brand-700: #0026a4
+--brand-800: #001b79
+--brand-900: #00104e
+--brand-1000: #222222
+```
+
+Paste this inside a `:root {}` rule in your stylesheet, then use `var(--brand-500)` anywhere in your CSS.
+
+---
 
 | Format | Example | Notes |
 |--------|---------|-------|
