@@ -1,4 +1,3 @@
-import { describe, it, expect } from 'vitest'
 import { calculateColorArray, calculateFg, calculateBg, calculateOpacity, useDecimal } from './calculate'
 import type { RGB } from '../types/colour'
 

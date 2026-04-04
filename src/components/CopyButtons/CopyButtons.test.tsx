@@ -1,6 +1,5 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { vi, describe, it, expect, beforeEach } from 'vitest'
 import { CopyButtons } from './CopyButtons'
 import { useClipboard } from '../../hooks/useClipboard'
 import type { Hex, RGB, HSL } from '../../types/colour'

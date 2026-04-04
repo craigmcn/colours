@@ -50,14 +50,14 @@ export const SwatchCard = ({ id, title, color, sourceColor, inputValue, onInputC
         <ColorInput id={id} label={title} value={inputValue} onChange={onInputChange} hideLabel />
 
         <div className={styles.swatches}>
-          <div className={styles.swatchSource} style={{ backgroundColor: sourceBg, color: sourceFg }}>
+          <div className={styles.swatchSource} role="group" aria-label="Source" style={{ backgroundColor: sourceBg, color: sourceFg }}>
             <p className={styles.swatchValues}>
               <span>{rgb2Str(sourceColor.rgb)}</span><br />
               <span>{hsl2Str(sourceColor.hsl)}</span><br />
               <span>{hex2Str(sourceColor.hex)}</span>
             </p>
           </div>
-          <div className={styles.swatchCompare} style={{ backgroundColor: compareBg, color: compareFg }}>
+          <div className={styles.swatchCompare} role="group" aria-label="Compare" style={{ backgroundColor: compareBg, color: compareFg }}>
             <p className={styles.swatchValues}>
               <span>{rgb2Str(color.rgb)}</span><br />
               <span>{hsl2Str(color.hsl)}</span><br />

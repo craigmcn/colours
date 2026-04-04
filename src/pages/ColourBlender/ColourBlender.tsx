@@ -57,9 +57,9 @@ export const ColourBlender = () => {
               const textColor = hex2Str(contrastTextColor(rgb).AAA.hex)
               const key = `${i}-${rgbStr}`
               return (
-                <div key={key} className={`flex ${styles.result}`}
+                <div key={key} role="group" aria-label={hexStr} className={`flex ${styles.result}`}
                   style={{ color: textColor, backgroundColor: rgbStr }}>
-                  <div>{rgbStr}<br />{hslStr}<br />{hexStr}</div>
+                  <div><span>{rgbStr}</span><br /><span>{hslStr}</span><br /><span>{hexStr}</span></div>
                   <div className="flex flex__item--as-center m-l-auto m-b-0">
                     <div>
                       <span className="fad fa-copy m-r-xs" aria-hidden="true" />

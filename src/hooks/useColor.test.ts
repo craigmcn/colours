@@ -1,5 +1,4 @@
 import { renderHook, act } from '@testing-library/react'
-import { describe, it, expect } from 'vitest'
 import { useColor } from './useColor'
 import type { ColorValue } from '../types/colour'
 

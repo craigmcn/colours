@@ -1,6 +1,5 @@
-import { render, screen, fireEvent } from '@testing-library/react'
+import { render, screen, fireEvent, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { vi, describe, it, expect, beforeEach } from 'vitest'
 import { SwatchCard } from './SwatchCard'
 import type { SwatchCardProps } from './SwatchCard'
 import type { ColorValue } from '../../types/colour'
@@ -65,17 +64,16 @@ describe('SwatchCard — rendering', () => {
 describe('SwatchCard — source swatch', () => {
   it('displays the source colour values', () => {
     render(<SwatchCard {...makeProps({ sourceColor: red })} />)
-    // Each value should appear at least once (source swatch)
-    expect(screen.getAllByText('rgb(255, 0, 0)').length).toBeGreaterThanOrEqual(1)
-    expect(screen.getAllByText('#ff0000').length).toBeGreaterThanOrEqual(1)
-    expect(screen.getAllByText('hsl(0, 100%, 50%)').length).toBeGreaterThanOrEqual(1)
+    const source = screen.getByRole('group', { name: 'Source' })
+    expect(within(source).getByText('rgb(255, 0, 0)')).toBeInTheDocument()
+    expect(within(source).getByText('#ff0000')).toBeInTheDocument()
+    expect(within(source).getByText('hsl(0, 100%, 50%)')).toBeInTheDocument()
   })
 
   it('keeps the source swatch stable when color and sourceColor differ', () => {
     render(<SwatchCard {...makeProps({ color: blue, sourceColor: red })} />)
-    // Both sets of values should be in the document simultaneously
-    expect(screen.getByText('rgb(255, 0, 0)')).toBeInTheDocument()
-    expect(screen.getByText('rgb(0, 0, 255)')).toBeInTheDocument()
+    expect(within(screen.getByRole('group', { name: 'Source' })).getByText('rgb(255, 0, 0)')).toBeInTheDocument()
+    expect(within(screen.getByRole('group', { name: 'Compare' })).getByText('rgb(0, 0, 255)')).toBeInTheDocument()
   })
 })
 
@@ -84,8 +82,9 @@ describe('SwatchCard — source swatch', () => {
 describe('SwatchCard — compare swatch', () => {
   it('shows the compare colour values when color differs from sourceColor', () => {
     render(<SwatchCard {...makeProps({ color: blue, sourceColor: red })} />)
-    expect(screen.getByText('rgb(0, 0, 255)')).toBeInTheDocument()
-    expect(screen.getByText('#0000ff')).toBeInTheDocument()
+    const compare = screen.getByRole('group', { name: 'Compare' })
+    expect(within(compare).getByText('rgb(0, 0, 255)')).toBeInTheDocument()
+    expect(within(compare).getByText('#0000ff')).toBeInTheDocument()
   })
 })
 

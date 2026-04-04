@@ -1,4 +1,3 @@
-import { describe, it, expect } from 'vitest'
 import { getPassFail } from './passFail'
 
 // ─── link2Body (WCAG A threshold: 3:1) ───────────────────────────────────────

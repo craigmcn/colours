@@ -1,4 +1,3 @@
-import { describe, it, expect } from 'vitest'
 import { hex2Rgb, rgb2Hex, rgb2Hsl, hsl2Rgb, hex2Str, rgb2Str, hsl2Str } from './convertColours'
 import type { Hex, RGB } from '../types/colour'
 

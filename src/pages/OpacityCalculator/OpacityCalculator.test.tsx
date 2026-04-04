@@ -1,6 +1,5 @@
 import { render, screen, fireEvent, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { vi, describe, it, expect, beforeEach } from 'vitest'
 import { OpacityCalculator } from './OpacityCalculator'
 import { useClipboard } from '../../hooks/useClipboard'
 
