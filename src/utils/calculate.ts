@@ -24,8 +24,9 @@ export const calculateBg = (o: number, fg: RGB, result: RGB): RGB =>
   }) as RGB
 
 export const calculateOpacity = (b: number, f: number, r: number): number => {
-  const o = Math.max(Math.min((b - r) / (b - f), 1), 0)
-  return isNaN(o) ? 0 : o
+  if (b === f) return 0
+  const o = (b - r) / (b - f)
+  return !isFinite(o) ? 0 : Math.max(Math.min(o, 1), 0)
 }
 
 export const useDecimal = (value: number): number | string =>

@@ -29,7 +29,7 @@ export const splitHsl = (hsl?: string): [number, string, string] => {
 export const parseText = (text: string, defaultHex?: string): [Hex, RGB, HSL] => {
   let hex: Hex, rgb: RGB, hsl: HSL
   const match = text.match(
-    /^((#)?([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3}))|(rgb\((\d{1,3}),[\s]?(\d{1,3}),[\s]?(\d{1,3})\))|(hsl\((\d{1,3}),[\s]?(\d{1,3})%,[\s]?(\d{1,3})%\))$/,
+    /^((#)?([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3}))$|^(rgb\((\d{1,3}),[\s]?(\d{1,3}),[\s]?(\d{1,3})\))$|^(hsl\((\d{1,3}),[\s]?(\d{1,3})%,[\s]?(\d{1,3})%\))$/,
   )
   if (!match) {
     hex = splitHex(defaultHex)

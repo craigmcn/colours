@@ -77,9 +77,16 @@ describe('ColorSwatch — inline styles', () => {
     const { container: lightContainer } = render(<ColorSwatch {...white} />)
     const darkTextColor = (darkContainer.firstElementChild as HTMLElement).style.color
     const lightTextColor = (lightContainer.firstElementChild as HTMLElement).style.color
-    // Both should be set; the dark-background text should be lighter (higher hex value)
+    const rgbSum = (color: string): number => {
+      const rgb = color.match(/rgb\((\d+),\s*(\d+),\s*(\d+)\)/)
+      if (rgb) return Number(rgb[1]) + Number(rgb[2]) + Number(rgb[3])
+      const hex = color.match(/^#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/i)
+      if (hex) return parseInt(hex[1], 16) + parseInt(hex[2], 16) + parseInt(hex[3], 16)
+      return 0
+    }
+    // Both should be set; the dark-background text should be lighter (higher RGB sum)
     expect(darkTextColor).toBeTruthy()
     expect(lightTextColor).toBeTruthy()
-    expect(darkTextColor > lightTextColor).toBe(true)
+    expect(rgbSum(darkTextColor)).toBeGreaterThan(rgbSum(lightTextColor))
   })
 })

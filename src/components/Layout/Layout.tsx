@@ -69,8 +69,6 @@ export const Layout = ({ children }: Props) => (
       </button>
     </header>
 
-    <script src="https://www.craigmcn.com/albertcss/js/albert.min.js" />
-
     {children}
   </>
 )
