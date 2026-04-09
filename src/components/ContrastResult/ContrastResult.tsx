@@ -26,7 +26,7 @@ export const ContrastResult = (props: Props) => {
   return (
     <div className={`${styles.contrast}${isPass ? ` ${styles.pass}` : ''}`}>
       <div className={styles.ratio}>
-        <span className={styles.value}>{ratio}</span>:1
+        <span className={styles.value}>{ratio.toFixed(2)}</span>:1
       </div>
       <div className={styles.description}>
         <p className={styles.label}>{label}</p>

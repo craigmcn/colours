@@ -29,7 +29,10 @@ export const PaletteGenerator = () => {
   const { copy, copiedKey } = useClipboard()
 
   const palette = buildPalette(base.color.rgb, light.color.rgb, dark.color.rgb)
-  const colorName = name || (base.inputValue ? nearestNamedColor(base.color.rgb) : 'grey')
+  const toCssIdent = (s: string): string =>
+    s.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '') || 'colour'
+
+  const colorName = toCssIdent(name || (base.inputValue ? nearestNamedColor(base.color.rgb) : 'grey'))
 
   const variables = palette.map((rgb, index) => {
     const i = index === 0 ? 0 : index === 1 ? 50 : (index - 1) * 100

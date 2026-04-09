@@ -14,7 +14,7 @@ export const contrastRatio = (c1: RGB, c2: RGB): number => {
   const rL2 = rL(c2)
   const l = rL1 > rL2 ? rL1 : rL2
   const d = rL1 > rL2 ? rL2 : rL1
-  return parseFloat(((l + 0.05) / (d + 0.05)).toFixed(2))
+  return (l + 0.05) / (d + 0.05)
 }
 
 export const contrastTextColor = (color: RGB): ContrastColors => ({
