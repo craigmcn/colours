@@ -52,6 +52,14 @@ describe('splitRgb', () => {
   it('accepts rgb() without spaces', () => {
     expect(splitRgb('rgb(255,0,0)')).toEqual([255, 0, 0])
   })
+
+  it('clamps channel values above 255 to 255', () => {
+    expect(splitRgb('rgb(999, 256, 300)')).toEqual([255, 255, 255])
+  })
+
+  it('clamps negative channel values to 0', () => {
+    expect(splitRgb('rgb(0, 0, 0)')).toEqual([0, 0, 0])
+  })
 })
 
 // ─── splitHsl ─────────────────────────────────────────────────────────────────
@@ -103,6 +111,12 @@ describe('parseText — rgb() input', () => {
     const [hex, rgb] = parseText('rgb(255, 0, 0)')
     expect(hex).toEqual(['ff', '00', '00'])
     expect(rgb).toEqual([255, 0, 0])
+  })
+
+  it('clamps out-of-range channel values to [0, 255]', () => {
+    const [hex, rgb] = parseText('rgb(999, 0, 0)')
+    expect(rgb).toEqual([255, 0, 0])
+    expect(hex).toEqual(['ff', '00', '00'])
   })
 })
 

@@ -95,7 +95,7 @@ export const OpacityCalculator = () => {
   const handleResultInput = (value: string) => {
     setResultInputValue(value)
     if (!value) return
-    const [, rgb] = parseText(value, '')
+    const [, rgb] = parseText(value, hex2Str(rgb2Hex(resultRgb, false)))
     setResultRgb(rgb)
   }
 

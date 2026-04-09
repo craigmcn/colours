@@ -12,11 +12,13 @@ export const splitHex = (hex?: string): Hex => {
   return [a[1], a[2], a[3]] as Hex
 }
 
+const clampRgb = (v: number): number => Math.min(255, Math.max(0, v))
+
 export const splitRgb = (rgb?: string): RGB => {
   if (!rgb) return [0, 0, 0]
   const m = rgb.match(/^rgb\((\d{1,3}),[\s]?(\d{1,3}),[\s]?(\d{1,3})\)$/)
   if (!m) return [0, 0, 0]
-  return [Number(m[1]), Number(m[2]), Number(m[3])]
+  return [clampRgb(Number(m[1])), clampRgb(Number(m[2])), clampRgb(Number(m[3]))]
 }
 
 export const splitHsl = (hsl?: string): [number, string, string] => {
@@ -41,7 +43,7 @@ export const parseText = (text: string, defaultHex?: string): [Hex, RGB, HSL] =>
       rgb = hex2Rgb(hex)
       hsl = rgb2Hsl(rgb)
     } else if (match[4]) {
-      rgb = [Number(match[5]), Number(match[6]), Number(match[7])]
+      rgb = [clampRgb(Number(match[5])), clampRgb(Number(match[6])), clampRgb(Number(match[7]))]
       hex = rgb2Hex(rgb, false)
       hsl = rgb2Hsl(rgb)
     } else {
