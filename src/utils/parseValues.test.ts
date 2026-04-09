@@ -57,7 +57,7 @@ describe('splitRgb', () => {
     expect(splitRgb('rgb(999, 256, 300)')).toEqual([255, 255, 255])
   })
 
-  it('clamps negative channel values to 0', () => {
+  it('handles minimum valid RGB values (0, 0, 0)', () => {
     expect(splitRgb('rgb(0, 0, 0)')).toEqual([0, 0, 0])
   })
 })
