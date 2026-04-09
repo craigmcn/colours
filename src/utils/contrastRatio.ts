@@ -34,8 +34,8 @@ export const getContrastColour = ({
 }): ContrastColor => {
   let dir = direction
   const hslRaw = rgb2Hsl(color)
-  let h = hslRaw[0]
-  let s = parseInt(hslRaw[1])
+  const h = hslRaw[0]
+  const s = parseInt(hslRaw[1])
   let l = parseInt(hslRaw[2])
 
   if (!dir) {

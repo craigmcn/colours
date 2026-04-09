@@ -1,0 +1,3 @@
+npx eslint src
+tsc -b
+npm test -- --run

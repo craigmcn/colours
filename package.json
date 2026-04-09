@@ -1,46 +1,53 @@
 {
-    "//": "The build:netlify script builds the app twice: once for the root and once for the /colours/ subdirectory. This is necessary because Netlify serves the app from the root, but GitHub Pages (craigmcn.com) serves it from the /colours/ subdirectory.", 
-    "name": "colours",
-    "version": "3.0.0",
-    "repository": "github:craigmcn/colours",
-    "description": "Colour manipulator and contrast checker",
-    "type": "module",
-    "scripts": {
-        "dev": "vite",
-        "build": "tsc -b && vite build",
-        "build:netlify": "tsc -b && vite build --outDir=netlify && vite build --base=/colours/ --outDir=netlify/colours",
-        "preview": "vite preview",
-        "test": "vitest",
-        "test:coverage": "vitest run --coverage"
-    },
-    "dependencies": {
-        "react": "^19.1.0",
-        "react-dom": "^19.1.0",
-        "react-router-dom": "^7.5.0"
-    },
-    "devDependencies": {
-        "@testing-library/jest-dom": "^6.9.1",
-        "@testing-library/react": "^16.3.2",
-        "@testing-library/user-event": "^14.6.1",
-        "@types/react": "^19.1.0",
-        "@types/react-dom": "^19.1.0",
-        "@vitejs/plugin-react": "^4.4.1",
-        "@vitest/coverage-v8": "^4.1.2",
-        "happy-dom": "^20.8.9",
-        "sass": "^1.86.0",
-        "typescript": "^5.8.2",
-        "vite": "^6.3.1",
-        "vitest": "^4.1.2"
-    },
-    "keywords": [
-        "wcag",
-        "a11y",
-        "accessibility",
-        "color",
-        "colour",
-        "contrast",
-        "check"
-    ],
-    "author": "Craig McNaughton",
-    "license": "GPL-3.0-or-later"
+  "//": "The build:netlify script builds the app twice: once for the root and once for the /colours/ subdirectory. This is necessary because Netlify serves the app from the root, but GitHub Pages (craigmcn.com) serves it from the /colours/ subdirectory.",
+  "name": "colours",
+  "version": "3.0.0",
+  "repository": "github:craigmcn/colours",
+  "description": "Colour manipulator and contrast checker",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "build:netlify": "tsc -b && vite build --outDir=netlify && vite build --base=/colours/ --outDir=netlify/colours",
+    "preview": "vite preview",
+    "test": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "lint": "eslint src",
+    "prepare": "husky"
+  },
+  "dependencies": {
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "react-router-dom": "^7.5.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.4",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^14.6.1",
+    "@types/react": "^19.1.0",
+    "@types/react-dom": "^19.1.0",
+    "@vitejs/plugin-react": "^4.4.1",
+    "@vitest/coverage-v8": "^4.1.2",
+    "eslint": "^9.39.4",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "happy-dom": "^20.8.9",
+    "husky": "^9.1.7",
+    "sass": "^1.86.0",
+    "typescript": "^5.8.2",
+    "typescript-eslint": "^8.58.1",
+    "vite": "^6.3.1",
+    "vitest": "^4.1.2"
+  },
+  "keywords": [
+    "wcag",
+    "a11y",
+    "accessibility",
+    "color",
+    "colour",
+    "contrast",
+    "check"
+  ],
+  "author": "Craig McNaughton",
+  "license": "GPL-3.0-or-later"
 }
