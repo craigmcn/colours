@@ -24,6 +24,8 @@ export const calculateBg = (o: number, fg: RGB, result: RGB): RGB =>
   }) as RGB
 
 export const calculateOpacity = (b: number, f: number, r: number): number => {
+  // When background and foreground channels are equal the equation is degenerate
+  // (division by zero); opacity is underdetermined so return 0 as a safe sentinel.
   if (b === f) return 0
   const o = (b - r) / (b - f)
   return !isFinite(o) ? 0 : Math.max(Math.min(o, 1), 0)

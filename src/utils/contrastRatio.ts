@@ -9,6 +9,9 @@ const sRgb = (c: number): number => {
 const rL = ([r, g, b]: RGB): number =>
   0.2126 * sRgb(r) + 0.7152 * sRgb(g) + 0.0722 * sRgb(b)
 
+// Returns an unrounded float. Rounding to 2dp for display happens in ContrastResult.
+// Pass/fail comparisons and the getContrastColour search loop must use this raw value
+// to avoid borderline ratios (e.g. 4.495) being incorrectly rounded up to a passing score.
 export const contrastRatio = (c1: RGB, c2: RGB): number => {
   const rL1 = rL(c1)
   const rL2 = rL(c2)
