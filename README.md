@@ -3,6 +3,9 @@
 A set of tools for working with colours on the web.
 
 [![Netlify Status](https://api.netlify.com/api/v1/badges/2078914d-df15-4326-8b0f-b7d5580e295e/deploy-status)](https://app.netlify.com/sites/priceless-payne-88b1ed/deploys)
+[![Test](https://github.com/craigmcn/colours/actions/workflows/test.yml/badge.svg)](https://github.com/craigmcn/colours/actions/workflows/test.yml)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+[![Node](https://img.shields.io/badge/node-v24-brightgreen)](https://nodejs.org)
 
 Enter a colour in hex (`#ff0000`), RGB (`rgb(255, 0, 0)`), or HSL (`hsl(0, 100%, 50%)`) format and the app will convert it, calculate contrast ratios, blend colours together, and more.
 
