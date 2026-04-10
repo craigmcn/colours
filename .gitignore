@@ -3,6 +3,8 @@
 **/.cache
 **/node_modules
 /tmp
+/coverage
 /dist
 /netlify
 .vscode
+/memory

@@ -1,0 +1,19 @@
+// Global styles not suited to CSS modules
+
+$grey: #afafb3;
+$green: #036803;
+$red: #b60202;
+$warning: #695802;
+
+.label--wcagA > span,
+.label--wcagAA > span,
+.label--wcagAAA > span {
+  color: $red;
+  color: var(--red);
+
+  &.pass {
+    color: $green;
+    color: var(--green);
+    font-weight: bold;
+  }
+}

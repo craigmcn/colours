@@ -1,0 +1,12 @@
+$grey: #afafb3;
+
+.swatch {
+  border: 1px solid $grey;
+  border: 1px solid var(--grey300);
+  padding: 1rem;
+  width: 100%;
+}
+
+.values {
+  margin-left: 0.25rem;
+}
