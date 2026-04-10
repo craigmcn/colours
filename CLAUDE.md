@@ -53,7 +53,20 @@ src/
 
 ## CI
 
-A GitHub Actions workflow (`.github/workflows/test.yml`) runs `npm test -- --run` on every pull request. The pre-commit hook runs lint + type-check + tests locally before each commit, so CI failures on a PR should be rare.
+A GitHub Actions workflow (`.github/workflows/test.yml`) runs `npm test -- --run` on every push to `main` and on every pull request. The pre-commit hook runs lint + type-check + tests locally before each commit, so CI failures on a PR should be rare.
+
+## Repository protection
+
+`.github/CODEOWNERS` assigns `@craigmcn` as the owner of all files and controls who GitHub automatically requests reviews from. It does not block merges on its own (`require_code_owner_review` is off in the ruleset).
+
+A repository ruleset ("Branch Protection Best Practices") is active and applies to the default branch (`main`) and `feature-*` branches (excludes `dev-*`). It enforces:
+
+- **Pull request required** — 1 approving review required, must be from a code owner (`@craigmcn`), and the last pusher cannot self-approve
+- **Status checks must pass** — the `test` job in the CI workflow must be green before merging
+- **No deletion** — the protected branches cannot be deleted
+- **No force-pushes** — history cannot be rewritten on protected branches
+
+`@craigmcn` (as repository admin) can bypass all rules and merge without a review. No one else can merge without `@craigmcn`'s explicit approval.
 
 ## External dependencies
 
