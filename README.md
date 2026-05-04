@@ -251,8 +251,8 @@ Three swatches across the top show the current **Foreground**, **Result**, and *
 ## Development
 
 ```bash
-npm install
-npm run dev      # start local dev server at http://localhost:3060
-npm run build    # production build
-npm run test     # run unit tests (Vitest)
+yarn install
+yarn dev         # start local dev server at http://localhost:3060
+yarn build       # production build
+yarn test --run  # run unit tests (Vitest)
 ```

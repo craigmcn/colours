@@ -1,4 +1,4 @@
 #!/bin/sh
-npx eslint src
+yarn eslint src
 tsc -b
-npm test -- --run
+yarn test --run
