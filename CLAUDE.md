@@ -7,14 +7,14 @@ React + TypeScript SPA (Vite) with four colour tools: Contrast Checker, Opacity 
 ## Commands
 
 ```bash
-npm run dev          # dev server on port 3060
-npm test -- --run    # run tests once (omit --run for watch mode)
-npm run lint         # run ESLint across src/
-npm run build        # production build
-npm run build:netlify # dual build for Netlify + GitHub Pages
+yarn dev             # dev server on port 3060
+yarn test --run      # run tests once (omit --run for watch mode)
+yarn lint            # run ESLint across src/
+yarn build           # production build
+yarn build:netlify   # dual build for Netlify + GitHub Pages
 ```
 
-Always run `npm test -- --run` to verify changes before committing. The pre-commit hook does this automatically, along with `npm run lint` and `tsc -b`.
+Always run `yarn test --run` to verify changes before committing. The pre-commit hook does this automatically, along with `yarn lint` and `tsc -b`.
 
 ## Architecture
 
@@ -46,27 +46,53 @@ src/
 
 - **Spelling**: "colour" in UI-facing text and filenames (e.g. `ColourBlender`), "color" in React/CSS convention filenames (e.g. `ColorInput`, `useColor`).
 - **CSS**: CSS Modules (`.module.scss`) for component styles; `camelCase` locals convention (set in `vite.config.ts`). Global styles in `src/styles/global.scss`.
-- **Testing**: Vitest + React Testing Library, `happy-dom` environment. Tests live alongside source files. Run all tests with `npm test -- --run`. Do not mock internal utilities — test against real implementations.
+- **Testing**: Vitest + React Testing Library, `happy-dom` environment. Tests live alongside source files. Run all tests with `yarn test --run`. Do not mock internal utilities — test against real implementations.
 - **TypeScript**: strict mode with `noUnusedLocals` and `noUnusedParameters` — the build will fail if unused symbols are introduced.
 - **Linting**: ESLint v9 flat config (`eslint.config.js`) with `typescript-eslint` and `eslint-plugin-react-hooks`.
 - **Commit messages**: enforced by the `commit-msg` hook. Format: `type(optional-scope): description`. Valid types: `feat`, `fix`, `refactor`, `docs`, `test`, `chore`, `style`, `perf`, `build`, `ci`, `revert`.
 
 ## CI
 
-A GitHub Actions workflow (`.github/workflows/test.yml`) runs `npm test -- --run` on every push to `main` and on every pull request. The pre-commit hook runs lint + type-check + tests locally before each commit, so CI failures on a PR should be rare.
+A GitHub Actions workflow (`.github/workflows/test.yml`) runs `yarn test --run` on every push to `main` and on every pull request. The pre-commit hook runs lint + type-check + tests locally before each commit, so CI failures on a PR should be rare.
 
 ## Repository protection
 
-`.github/CODEOWNERS` assigns `@craigmcn` as the owner of all files and controls who GitHub automatically requests reviews from. It does not block merges on its own (`require_code_owner_review` is off in the ruleset).
+`.github/CODEOWNERS` assigns `@craigmcn` as the owner of all files. The ruleset enforces `require_code_owner_review`, so reviews must come from `@craigmcn`.
 
 A repository ruleset ("Branch Protection Best Practices") is active and applies to the default branch (`main`) and `feature-*` branches (excludes `dev-*`). It enforces:
 
 - **Pull request required** — 1 approving review required, must be from a code owner (`@craigmcn`), and the last pusher cannot self-approve
+- **Stale reviews dismissed** — approval is invalidated when new commits are pushed
 - **Status checks must pass** — the `test` job in the CI workflow must be green before merging
 - **No deletion** — the protected branches cannot be deleted
 - **No force-pushes** — history cannot be rewritten on protected branches
 
 `@craigmcn` (as repository admin) can bypass all rules and merge without a review. No one else can merge without `@craigmcn`'s explicit approval.
+
+## Progress
+
+### Completed (2026-05-01)
+
+- Added `.github/CODEOWNERS` (`* @craigmcn`) — PR #64, commit `29c105a`; closes cross-repo task A from the repo-modernisation plan
+- Confirmed branch protection ruleset (14897154) already had 1 required approval + Admin role bypass; closed cross-repo task B
+- Fixed gap vs. standard: enabled `dismiss_stale_reviews_on_push` on the ruleset via `gh api`
+
+### Completed (2026-05-04)
+
+- Removed legacy `.eslintrc.json` (superseded by `eslint.config.js`)
+- Migrated npm → Yarn 4 (`yarn@4.14.1`, node-modules linker); added `@testing-library/dom` as explicit dev dep to resolve Yarn 4 peer resolution
+- Upgraded Vite 6 → 8 and `@vitejs/plugin-react` 4 → 6
+- Updated husky pre-commit hook and all doc/command references from npm to yarn
+
+### Outstanding / next
+
+- Cross-repo tasks A & B (CODEOWNERS + branch-protection update) still needed for: `albertcss`, `words`, `cryptogram`
+
+### Key decisions
+
+- `require_code_owner_review: true` is ON in the ruleset (CLAUDE.md previously said it was off — corrected above)
+- `dismiss_stale_reviews` aligned to cross-repo standard; all other ruleset parameters left unchanged
+- `@testing-library/dom` must be listed explicitly in `devDependencies` — Yarn 4 does not auto-hoist peer deps the way npm does
 
 ## External dependencies
 

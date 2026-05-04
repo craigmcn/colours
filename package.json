@@ -22,12 +22,13 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.39.4",
+    "@testing-library/dom": "^10",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
     "@testing-library/user-event": "^14.6.1",
     "@types/react": "^19.1.0",
     "@types/react-dom": "^19.1.0",
-    "@vitejs/plugin-react": "^4.4.1",
+    "@vitejs/plugin-react": "^6",
     "@vitest/coverage-v8": "^4.1.2",
     "eslint": "^9.39.4",
     "eslint-plugin-react-hooks": "^7.0.1",
@@ -36,7 +37,7 @@
     "sass": "^1.86.0",
     "typescript": "^5.8.2",
     "typescript-eslint": "^8.58.1",
-    "vite": "^6.4.2",
+    "vite": "^8",
     "vitest": "^4.1.2"
   },
   "keywords": [
@@ -49,5 +50,6 @@
     "check"
   ],
   "author": "Craig McNaughton",
-  "license": "GPL-3.0-or-later"
+  "license": "GPL-3.0-or-later",
+  "packageManager": "yarn@4.14.1"
 }

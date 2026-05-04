@@ -8,3 +8,7 @@
 /netlify
 .vscode
 /memory
+# yarn 4
+.yarn/install-state.gz
+yarn-debug.log*
+yarn-error.log*
