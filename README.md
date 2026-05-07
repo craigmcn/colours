@@ -55,10 +55,10 @@ When you put text on a coloured background, some combinations are easy to read a
 
 The **Web Content Accessibility Guidelines** (WCAG) are a set of rules published by the World Wide Web Consortium (W3C) that describe how to make websites usable by people with disabilities, including those with low vision or colour blindness. Two compliance levels are commonly tested:
 
-| Level | Body text | Large text (18pt+ or 14pt bold) |
-|-------|-----------|----------------------------------|
-| **AA** | 4.5:1 minimum | 3:1 minimum |
-| **AAA** | 7:1 minimum | 4.5:1 minimum |
+| Level   | Body text     | Large text (18pt+ or 14pt bold) |
+| ------- | ------------- | ------------------------------- |
+| **AA**  | 4.5:1 minimum | 3:1 minimum                     |
+| **AAA** | 7:1 minimum   | 4.5:1 minimum                   |
 
 Meeting **AA** is considered the standard requirement. **AAA** is the stricter gold standard.
 
@@ -101,18 +101,18 @@ The tool blends in the **RGB** colour space. For each step, it adds an equal fra
 
 1. **Type a Start colour** — the colour at the beginning of the blend. You can use a hex code (`#005b99`), an `rgb()` value, or an `hsl()` value.
 2. **Type an End colour** — the colour at the end of the blend. Same format options as Start.
-3. **Set the number of Steps** — how many colours you want *between* the start and end. The total number of swatches shown is always steps + 1 (because the start and end are included). The default is 5 steps, giving you 6 swatches.
+3. **Set the number of Steps** — how many colours you want _between_ the start and end. The total number of swatches shown is always steps + 1 (because the start and end are included). The default is 5 steps, giving you 6 swatches.
 4. The colour swatches update instantly as you type. Each swatch shows the colour's RGB, HSL, and hex values.
 5. Click **HEX**, **RGB**, or **HSL** below any swatch to copy that colour value to your clipboard.
 
 ### Steps examples
 
-| Steps | Total swatches | What you get |
-|-------|---------------|--------------|
-| 1     | 2             | Start and End only — no blending |
-| 2     | 3             | Start, one midpoint, End |
-| 5     | 6             | Start, four intermediate colours, End |
-| 10    | 11            | A fine-grained scale with 9 intermediates |
+| Steps | Total swatches | What you get                              |
+| ----- | -------------- | ----------------------------------------- |
+| 1     | 2              | Start and End only — no blending          |
+| 2     | 3              | Start, one midpoint, End                  |
+| 5     | 6              | Start, four intermediate colours, End     |
+| 10    | 11             | A fine-grained scale with 9 intermediates |
 
 ### Copy buttons
 
@@ -134,20 +134,20 @@ A colour palette (or colour scale) is a set of shades of a single colour, rangin
 
 The generator divides the range from your **Light** endpoint to your **Base** colour, and then from your **Base** colour to your **Dark** endpoint, blending linearly between them. This gives you 12 swatches:
 
-| Step | Description |
-|------|-------------|
-| 0    | Equal to the Light colour |
+| Step | Description                                           |
+| ---- | ----------------------------------------------------- |
+| 0    | Equal to the Light colour                             |
 | 50   | A very subtle tint — 5% of the way from Light to Base |
-| 100  | 20% of the way from Light to Base |
-| 200  | 40% |
-| 300  | 60% |
-| 400  | 80% |
-| 500  | Equal to the Base colour |
-| 600  | 20% of the way from Base to Dark |
-| 700  | 40% |
-| 800  | 60% |
-| 900  | 80% |
-| 1000 | Equal to the Dark colour |
+| 100  | 20% of the way from Light to Base                     |
+| 200  | 40%                                                   |
+| 300  | 60%                                                   |
+| 400  | 80%                                                   |
+| 500  | Equal to the Base colour                              |
+| 600  | 20% of the way from Base to Dark                      |
+| 700  | 40%                                                   |
+| 800  | 60%                                                   |
+| 900  | 80%                                                   |
+| 1000 | Equal to the Dark colour                              |
 
 The 50 step is deliberately compressed (only 5% of the Light-to-Base range) so you always have a near-white tint available even when your base colour is fairly light.
 
@@ -165,18 +165,10 @@ The 50 step is deliberately compressed (only 5% of the Light-to-Base range) so y
 The output looks like this (using `brand` as the name and a blue base):
 
 ```css
---brand-0: #ffffff
---brand-50: #f0f4ff
---brand-100: #c9d8fe
---brand-200: #93b1fd
---brand-300: #5d8afc
---brand-400: #2763fb
---brand-500: #003cfa
---brand-600: #0031cf
---brand-700: #0026a4
---brand-800: #001b79
---brand-900: #00104e
---brand-1000: #222222
+--brand-0: #ffffff --brand-50: #f0f4ff --brand-100: #c9d8fe --brand-200: #93b1fd
+  --brand-300: #5d8afc --brand-400: #2763fb --brand-500: #003cfa
+  --brand-600: #0031cf --brand-700: #0026a4 --brand-800: #001b79
+  --brand-900: #00104e --brand-1000: #222222;
 ```
 
 Paste this inside a `:root {}` rule in your stylesheet, then use `var(--brand-500)` anywhere in your CSS.
@@ -203,24 +195,26 @@ Most tools only let you go in one direction: pick a foreground, a background, an
 
 Use the **Solve for** button group to choose which value you want to calculate:
 
-| Solve for | You provide | The tool calculates |
-|-----------|-------------|---------------------|
-| **Result** (default) | Foreground, Background, Opacity | The blended colour |
-| **Opacity** | Foreground, Background, Result | What opacity produces that result |
-| **Foreground** | Background, Result, Opacity | What foreground colour was used |
-| **Background** | Foreground, Result, Opacity | What background colour was used |
+| Solve for            | You provide                     | The tool calculates               |
+| -------------------- | ------------------------------- | --------------------------------- |
+| **Result** (default) | Foreground, Background, Opacity | The blended colour                |
+| **Opacity**          | Foreground, Background, Result  | What opacity produces that result |
+| **Foreground**       | Background, Result, Opacity     | What foreground colour was used   |
+| **Background**       | Foreground, Result, Opacity     | What background colour was used   |
 
 The solved field is shown as disabled (greyed out) and updates automatically. The other three fields remain editable.
 
 ### How to use the Opacity Calculator
 
 **Forward mode (solve for Result):**
+
 1. Type your **Foreground** colour — the colour of the element with opacity applied.
 2. Type your **Background** colour — the colour behind it.
 3. Drag the **Opacity** slider to the percentage you want.
 4. The **Result** field and the centre swatch show the solid colour that would appear on screen.
 
 **Reverse mode (solve for Opacity):**
+
 1. Click **Opacity** in the Solve for group.
 2. Type the **Foreground** and **Background** colours.
 3. Type the target **Result** colour — the solid colour you want to end up with.
@@ -241,6 +235,7 @@ Three swatches across the top show the current **Foreground**, **Result**, and *
 ---
 
 ## Colour formats
+
 |--------|---------|-------|
 | Hex | `#3a86ff` or `#38f` | The most common format in CSS. The shorthand (`#38f`) is expanded automatically. |
 | RGB | `rgb(58, 134, 255)` | Red, green, and blue values from 0 to 255. |

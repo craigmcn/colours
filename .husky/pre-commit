@@ -1,4 +1,5 @@
 #!/bin/sh
+yarn prettier --check .
 yarn eslint src
 tsc -b
 yarn test --run
