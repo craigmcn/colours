@@ -77,22 +77,34 @@ A repository ruleset ("Branch Protection Best Practices") is active and applies 
 - Confirmed branch protection ruleset (14897154) already had 1 required approval + Admin role bypass; closed cross-repo task B
 - Fixed gap vs. standard: enabled `dismiss_stale_reviews_on_push` on the ruleset via `gh api`
 
-### Completed (2026-05-04)
+### Completed (2026-05-04) — PR #65
 
 - Removed legacy `.eslintrc.json` (superseded by `eslint.config.js`)
-- Migrated npm → Yarn 4 (`yarn@4.14.1`, node-modules linker); added `@testing-library/dom` as explicit dev dep to resolve Yarn 4 peer resolution
+- Migrated npm → Yarn 4 (`yarn@4.14.1`, node-modules linker); binary committed at `.yarn/releases/`; `package-lock.json` replaced by `yarn.lock`
+- Added `@testing-library/dom` as explicit dev dep — required because Yarn 4 does not auto-hoist peer deps
 - Upgraded Vite 6 → 8 and `@vitejs/plugin-react` 4 → 6
-- Updated husky pre-commit hook and all doc/command references from npm to yarn
+- Updated `.husky/pre-commit` and `.github/workflows/test.yml` from npm to yarn
+- Committed pre-existing `.editorconfig` that was untracked
+- `colours` is now fully aligned with the cross-repo standard stack
 
-### Outstanding / next
+### Outstanding / next (this repo)
 
-- Cross-repo tasks A & B (CODEOWNERS + branch-protection update) still needed for: `albertcss`, `words`, `cryptogram`
+- No known outstanding work for `colours` specifically
+
+### Outstanding / next (cross-repo — other repos)
+
+- `order` — remove `.eslintrc.cjs` (next in the sync plan)
+- `unixtime` — upgrade React 18.2 → 19; clean up `resolutions` block
+- `currency`, `markdown`, `math-tiles`, `number-magic`, `unixtime`, `words` — add Husky pre-commit hooks and `.github/CODEOWNERS`
+- `albertcss`, `words`, `cryptogram` — branch-protection ruleset alignment (tasks A & B)
+- Low-priority: rename `vite.config.js` → `.ts` in `words`, `unixtime`, `cryptogram`; fix cryptogram PnP → node-modules; bump Yarn in several repos
 
 ### Key decisions
 
-- `require_code_owner_review: true` is ON in the ruleset (CLAUDE.md previously said it was off — corrected above)
+- `require_code_owner_review: true` is ON in the ruleset (CLAUDE.md previously said it was off — corrected 2026-05-01)
 - `dismiss_stale_reviews` aligned to cross-repo standard; all other ruleset parameters left unchanged
 - `@testing-library/dom` must be listed explicitly in `devDependencies` — Yarn 4 does not auto-hoist peer deps the way npm does
+- `yarn test --run` (not `yarn vitest run`) is the canonical test command — matches the `test` script in `package.json`
 
 ## External dependencies
 
