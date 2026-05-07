@@ -88,7 +88,7 @@ A repository ruleset ("Branch Protection Best Practices") is active and applies 
 - Committed pre-existing `.editorconfig` that was untracked
 - `colours` is now fully aligned with the cross-repo standard stack
 
-### Completed (2026-05-07) — PR #66 (open, pending merge)
+### Completed (2026-05-07) — PR #66
 
 - Added Prettier (`prettier@3`, `eslint-config-prettier`) with default settings
 - Added `.prettierrc` (`{}`), `.prettierignore` (dist/netlify/coverage/.yarn/lock files)
@@ -98,13 +98,15 @@ A repository ruleset ("Branch Protection Best Practices") is active and applies 
 - Added `yarn format:check` to `.github/workflows/test.yml` CI
 - Applied initial format pass across all source files (whitespace/quote/semicolon only — no logic changes)
 - Fixed README CSS code block that Prettier mangled: added `<!-- prettier-ignore -->` and restored each custom property to its own line with trailing semicolons
-- Added TODO in `index.html` for Router basename trailing-slash redirect
-- Added TODO in `PaletteGenerator.tsx` for appending trailing semicolons to custom property output
+
+### Completed (2026-05-07) — PR #67 (open, pending merge)
+
+- Added Router basename trailing-slash redirect script in `index.html` using `%BASE_URL%` (Vite template variable); preserves query string and hash on redirect; no-op for Netlify build
+- Appended trailing semicolon to each CSS custom property line in Palette Generator output; tightened copy-block test assertions to verify format
 
 ### Outstanding / next (this repo)
 
-- **Router trailing-slash fix** — `<BrowserRouter basename="/colours/">` emits a warning when the URL is `/colours` (no trailing slash). Add a `<script>` in `index.html` `<head>` that redirects bare basename to basename + `/` before React hydrates. See TODO comment in `index.html`.
-- **Palette custom property semicolons** — each `--name-N: #hex` line should end with `;`. Update the map in `PaletteGenerator.tsx`, the README example, and the test assertions. See TODO comment in the file.
+- No known outstanding work for `colours` specifically
 
 ### Outstanding / next (cross-repo — other repos)
 
