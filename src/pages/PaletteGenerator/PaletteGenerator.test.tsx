@@ -19,7 +19,7 @@ vi.mock("../../hooks/useClipboard");
 // Hex values live inside a <div> interleaved with <br> nodes (rgb, hsl, hex),
 // so getByText(hexStr) won't find them. Instead we inspect the <pre> element,
 // which renders each CSS variable as its own <span> text, e.g.:
-//   --grey-500: #808080
+//   --grey-500: #808080;
 
 beforeEach(() => {
   vi.mocked(useClipboard).mockReturnValue({
@@ -354,9 +354,10 @@ describe("copy interactions", () => {
     ];
     // variablesText = variables.join('\n') → 12 lines joined by newline
     expect(text.split("\n")).toHaveLength(12);
-    expect(text).toMatch(/--gr[ae]y-0: #ffffff/);
-    expect(text).toMatch(/--gr[ae]y-500: #808080/);
+    expect(text).toMatch(/--gr[ae]y-0: #ffffff;/);
+    expect(text).toMatch(/--gr[ae]y-500: #808080;/);
     expect(text).not.toMatch(/\n$/); // joined, not terminated
+    expect(text).not.toMatch(/;;/); // exactly one semicolon per line
   });
 
   it("the copied variable block uses the typed Name when set", async () => {

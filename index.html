@@ -5,12 +5,14 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Colours + Contrast</title>
-    <!-- TODO: add a <script> that appends a trailing slash to location.pathname
-         when it equals the bare basename ("/colours") so that BrowserRouter
-         does not emit the "Router basename is not able to match the URL"
-         warning. Pattern used in other projects: if (!location.pathname.endsWith('/'))
-         location.replace(location.pathname + '/') — place before the module
-         script so the redirect happens before React hydrates. -->
+    <script>
+      // Redirect /colours → /colours/ so BrowserRouter basename matching works.
+      // %BASE_URL% is replaced by Vite at build time (e.g. "/colours/" for
+      // the GitHub Pages build, "/" for Netlify). Has no effect when base is "/".
+      if (location.pathname === "%BASE_URL%".replace(/\/$/, "")) {
+        location.replace("%BASE_URL%");
+      }
+    </script>
     <meta
       name="keywords"
       content="Craig McNaughton, software developer, software development, colour, color, contrast, opacity"
