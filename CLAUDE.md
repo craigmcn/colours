@@ -10,11 +10,13 @@ React + TypeScript SPA (Vite) with four colour tools: Contrast Checker, Opacity 
 yarn dev             # dev server on port 3060
 yarn test --run      # run tests once (omit --run for watch mode)
 yarn lint            # run ESLint across src/
+yarn format          # format all files with Prettier
+yarn format:check    # check formatting without writing (used in CI)
 yarn build           # production build
 yarn build:netlify   # dual build for Netlify + GitHub Pages
 ```
 
-Always run `yarn test --run` to verify changes before committing. The pre-commit hook does this automatically, along with `yarn lint` and `tsc -b`.
+Always run `yarn test --run` to verify changes before committing. The pre-commit hook does this automatically, along with `yarn prettier --check`, `yarn lint`, and `tsc -b`.
 
 ## Architecture
 
@@ -104,6 +106,10 @@ A repository ruleset ("Branch Protection Best Practices") is active and applies 
 - Added Router basename trailing-slash redirect script in `index.html` using `%BASE_URL%` (Vite template variable); preserves query string and hash on redirect; no-op for Netlify build
 - Appended trailing semicolon to each CSS custom property line in Palette Generator output; tightened copy-block test assertions to verify format
 
+### Completed (2026-05-07) — PR #68
+
+- Docs-only: removed stale "(open, pending merge)" qualifier from PR #67 entry; merged directly by admin
+
 ### Outstanding / next (this repo)
 
 - No known outstanding work for `colours` specifically
@@ -122,6 +128,9 @@ A repository ruleset ("Branch Protection Best Practices") is active and applies 
 - `dismiss_stale_reviews` aligned to cross-repo standard; all other ruleset parameters left unchanged
 - `@testing-library/dom` must be listed explicitly in `devDependencies` — Yarn 4 does not auto-hoist peer deps the way npm does
 - `yarn test --run` (not `yarn vitest run`) is the canonical test command — matches the `test` script in `package.json`
+- `.prettierrc` is `{}` (empty) — Prettier defaults apply (double quotes, semicolons); intentional, not a placeholder
+- Router basename redirect uses Vite's `%BASE_URL%` template so the same `index.html` works for both builds; the redirect also forwards `location.search` and `location.hash`
+- Palette Generator CSS custom property lines end with `;` — output is valid CSS ready to paste into `:root {}`
 
 ## External dependencies
 
