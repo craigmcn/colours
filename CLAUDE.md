@@ -99,7 +99,7 @@ A repository ruleset ("Branch Protection Best Practices") is active and applies 
 - Applied initial format pass across all source files (whitespace/quote/semicolon only — no logic changes)
 - Fixed README CSS code block that Prettier mangled: added `<!-- prettier-ignore -->` and restored each custom property to its own line with trailing semicolons
 
-### Completed (2026-05-07) — PR #67 (open, pending merge)
+### Completed (2026-05-07) — PR #67
 
 - Added Router basename trailing-slash redirect script in `index.html` using `%BASE_URL%` (Vite template variable); preserves query string and hash on redirect; no-op for Netlify build
 - Appended trailing semicolon to each CSS custom property line in Palette Generator output; tightened copy-block test assertions to verify format
