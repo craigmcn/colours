@@ -47,6 +47,11 @@ export const PaletteGenerator = () => {
     name || (base.inputValue ? nearestNamedColor(base.color.rgb) : "grey"),
   );
 
+  // TODO: append a trailing semicolon to each custom property value so the
+  // output is valid CSS and matches the README example, e.g.
+  // `--brand-500: #003cfa;` instead of `--brand-500: #003cfa`.
+  // Update the README code block and the variablesText snapshot / assertions
+  // in PaletteGenerator.test.tsx at the same time.
   const variables = palette.map((rgb, index) => {
     const i = index === 0 ? 0 : index === 1 ? 50 : (index - 1) * 100;
     return `--${colorName}-${i}: ${rgb2Hex(rgb, true)}`;

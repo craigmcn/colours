@@ -164,11 +164,20 @@ The 50 step is deliberately compressed (only 5% of the Light-to-Base range) so y
 
 The output looks like this (using `brand` as the name and a blue base):
 
+<!-- prettier-ignore -->
 ```css
---brand-0: #ffffff --brand-50: #f0f4ff --brand-100: #c9d8fe --brand-200: #93b1fd
-  --brand-300: #5d8afc --brand-400: #2763fb --brand-500: #003cfa
-  --brand-600: #0031cf --brand-700: #0026a4 --brand-800: #001b79
-  --brand-900: #00104e --brand-1000: #222222;
+--brand-0: #ffffff;
+--brand-50: #f0f4ff;
+--brand-100: #c9d8fe;
+--brand-200: #93b1fd;
+--brand-300: #5d8afc;
+--brand-400: #2763fb;
+--brand-500: #003cfa;
+--brand-600: #0031cf;
+--brand-700: #0026a4;
+--brand-800: #001b79;
+--brand-900: #00104e;
+--brand-1000: #222222;
 ```
 
 Paste this inside a `:root {}` rule in your stylesheet, then use `var(--brand-500)` anywhere in your CSS.
