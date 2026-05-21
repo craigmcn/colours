@@ -76,7 +76,7 @@ A repository ruleset ("Branch Protection Best Practices") is active and applies 
 
 ### Completed (2026-05-01)
 
-- Added `.github/CODEOWNERS` (`* @craigmcn`) — PR #64, commit `29c105a`; closes cross-repo task A from the repo-modernisation plan
+- Added `.github/CODEOWNERS` (`* @craigmcn`) — PR #64, commit `29c105a`; closes cross-repo task A from the repo-modernization plan
 - Confirmed branch protection ruleset (14897154) already had 1 required approval + Admin role bypass; closed cross-repo task B
 - Fixed gap vs. standard: enabled `dismiss_stale_reviews_on_push` on the ruleset via `gh api`
 

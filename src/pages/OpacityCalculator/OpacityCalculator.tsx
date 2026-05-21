@@ -190,11 +190,7 @@ export const OpacityCalculator = () => {
           Solve for
         </legend>
 
-        <div
-          className="button-group"
-          role="group"
-          aria-labelledby="solve-for-legend"
-        >
+        <div className="button-group">
           {(["fg", "bg", "result", "opacity"] as SolveFor[]).map((field) => (
             <Fragment key={field}>
               <input
@@ -202,6 +198,7 @@ export const OpacityCalculator = () => {
                 className="button-group__input"
                 type="radio"
                 name="solveFor"
+                value={field}
                 checked={solveFor === field}
                 onChange={() => handleSolveForChange(field)}
               />
