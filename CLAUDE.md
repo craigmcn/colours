@@ -76,7 +76,7 @@ A repository ruleset ("Branch Protection Best Practices") is active and applies 
 
 ### Completed (2026-05-01)
 
-- Added `.github/CODEOWNERS` (`* @craigmcn`) — PR #64, commit `29c105a`; closes cross-repo task A from the repo-modernisation plan
+- Added `.github/CODEOWNERS` (`* @craigmcn`) — PR #64, commit `29c105a`; closes cross-repo task A from the repo-modernization plan
 - Confirmed branch protection ruleset (14897154) already had 1 required approval + Admin role bypass; closed cross-repo task B
 - Fixed gap vs. standard: enabled `dismiss_stale_reviews_on_push` on the ruleset via `gh api`
 
@@ -110,9 +110,16 @@ A repository ruleset ("Branch Protection Best Practices") is active and applies 
 
 - Docs-only: removed stale "(open, pending merge)" qualifier from PR #67 entry; merged directly by admin
 
+### Completed (2026-05-21) — PR #71 (pending)
+
+- Migrated `OpacityCalculator` "Solve for" button group from custom module SCSS to AlbertCSS `.button-group` / `.button-group__input` pattern
+- Restructured JSX from wrapper-label to sibling `<input id="…">` + `<label htmlFor="…">` pattern
+- `<fieldset>` + `<legend>` provide group semantics and accessible name implicitly; no `role` or `aria-labelledby` needed on the inner `.button-group` div
+- Deleted `.buttonGroup` and `.buttonGroupItem` blocks from `OpacityCalculator.module.scss`
+
 ### Outstanding / next (this repo)
 
-- No known outstanding work for `colours` specifically
+No known outstanding work for `colours` specifically.
 
 ### Outstanding / next (cross-repo — other repos)
 
@@ -131,6 +138,7 @@ A repository ruleset ("Branch Protection Best Practices") is active and applies 
 - `.prettierrc` is `{}` (empty) — Prettier defaults apply (double quotes, semicolons); intentional, not a placeholder
 - Router basename redirect uses Vite's `%BASE_URL%` template so the same `index.html` works for both builds; the redirect also forwards `location.search` and `location.hash`
 - Palette Generator CSS custom property lines end with `;` — output is valid CSS ready to paste into `:root {}`
+- AlbertCSS button group pattern uses **sibling** `<input class="button-group__input">` + `<label class="button button--*">` (not wrapper-label); checked state driven by CSS `input:checked + .button` — do not use `:has(:checked)` or wrap input inside label
 
 ## External dependencies
 

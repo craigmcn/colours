@@ -113,6 +113,37 @@ describe("initial render", () => {
   });
 });
 
+// ─── Button group structure ───────────────────────────────────────────────────
+
+describe("solve-for button group", () => {
+  it("renders the solve-for group with an accessible name", () => {
+    renderComponent();
+    expect(
+      screen.getByRole("group", { name: /solve for/i }),
+    ).toBeInTheDocument();
+  });
+
+  it("each radio carries the correct form value", () => {
+    renderComponent();
+    expect(screen.getByRole("radio", { name: "Foreground" })).toHaveAttribute(
+      "value",
+      "fg",
+    );
+    expect(screen.getByRole("radio", { name: "Background" })).toHaveAttribute(
+      "value",
+      "bg",
+    );
+    expect(screen.getByRole("radio", { name: "Result" })).toHaveAttribute(
+      "value",
+      "result",
+    );
+    expect(screen.getByRole("radio", { name: "Opacity" })).toHaveAttribute(
+      "value",
+      "opacity",
+    );
+  });
+});
+
 // ─── Solve for Result (default) ───────────────────────────────────────────────
 
 describe("solve for Result", () => {
