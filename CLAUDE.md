@@ -114,7 +114,7 @@ A repository ruleset ("Branch Protection Best Practices") is active and applies 
 
 - Migrated `OpacityCalculator` "Solve for" button group from custom module SCSS to AlbertCSS `.button-group` / `.button-group__input` pattern
 - Restructured JSX from wrapper-label to sibling `<input id="…">` + `<label htmlFor="…">` pattern
-- Added `role="group"` and `aria-labelledby` referencing the `<legend>` id
+- `<fieldset>` + `<legend>` provide group semantics and accessible name implicitly; no `role` or `aria-labelledby` needed on the inner `.button-group` div
 - Deleted `.buttonGroup` and `.buttonGroupItem` blocks from `OpacityCalculator.module.scss`
 
 ### Outstanding / next (this repo)

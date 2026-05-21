@@ -186,9 +186,7 @@ export const OpacityCalculator = () => {
       />
 
       <fieldset className="form__group">
-        <legend id="solve-for-legend" className="form__label">
-          Solve for
-        </legend>
+        <legend className="form__label">Solve for</legend>
 
         <div className="button-group">
           {(["fg", "bg", "result", "opacity"] as SolveFor[]).map((field) => (
