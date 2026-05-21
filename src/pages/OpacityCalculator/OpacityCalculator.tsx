@@ -203,7 +203,7 @@ export const OpacityCalculator = () => {
                 onChange={() => handleSolveForChange(field)}
               />
               <label
-                className="button button--secondary"
+                className="button button--secondary button--sm"
                 htmlFor={`solve-for-${field}`}
               >
                 {SOLVE_FOR_LABELS[field]}
