@@ -110,9 +110,16 @@ A repository ruleset ("Branch Protection Best Practices") is active and applies 
 
 - Docs-only: removed stale "(open, pending merge)" qualifier from PR #67 entry; merged directly by admin
 
+### Completed (2026-05-21) — PR #71 (pending)
+
+- Migrated `OpacityCalculator` "Solve for" button group from custom module SCSS to AlbertCSS `.button-group` / `.button-group__input` pattern
+- Restructured JSX from wrapper-label to sibling `<input id="…">` + `<label htmlFor="…">` pattern
+- Added `role="group"` and `aria-labelledby` referencing the `<legend>` id
+- Deleted `.buttonGroup` and `.buttonGroupItem` blocks from `OpacityCalculator.module.scss`
+
 ### Outstanding / next (this repo)
 
-- No known outstanding work for `colours` specifically
+No known outstanding work for `colours` specifically.
 
 ### Outstanding / next (cross-repo — other repos)
 
@@ -131,6 +138,7 @@ A repository ruleset ("Branch Protection Best Practices") is active and applies 
 - `.prettierrc` is `{}` (empty) — Prettier defaults apply (double quotes, semicolons); intentional, not a placeholder
 - Router basename redirect uses Vite's `%BASE_URL%` template so the same `index.html` works for both builds; the redirect also forwards `location.search` and `location.hash`
 - Palette Generator CSS custom property lines end with `;` — output is valid CSS ready to paste into `:root {}`
+- AlbertCSS button group pattern uses **sibling** `<input class="button-group__input">` + `<label class="button button--*">` (not wrapper-label); checked state driven by CSS `input:checked + .button` — do not use `:has(:checked)` or wrap input inside label
 
 ## External dependencies
 

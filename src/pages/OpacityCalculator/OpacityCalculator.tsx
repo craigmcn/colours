@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, Fragment } from "react";
 import type { RGB } from "../../types/colour";
 import { useColor } from "../../hooks/useColor";
 import { ColorInput } from "../../components/ColorInput/ColorInput";
@@ -186,19 +186,32 @@ export const OpacityCalculator = () => {
       />
 
       <fieldset className="form__group">
-        <legend className="form__label">Solve for</legend>
-        <div className={styles.buttonGroup}>
+        <legend id="solve-for-legend" className="form__label">
+          Solve for
+        </legend>
+
+        <div
+          className="button-group"
+          role="group"
+          aria-labelledby="solve-for-legend"
+        >
           {(["fg", "bg", "result", "opacity"] as SolveFor[]).map((field) => (
-            <label key={field} className={styles.buttonGroupItem}>
+            <Fragment key={field}>
               <input
+                id={`solve-for-${field}`}
+                className="button-group__input"
                 type="radio"
                 name="solveFor"
-                value={field}
                 checked={solveFor === field}
                 onChange={() => handleSolveForChange(field)}
               />
-              <span>{SOLVE_FOR_LABELS[field]}</span>
-            </label>
+              <label
+                className="button button--secondary"
+                htmlFor={`solve-for-${field}`}
+              >
+                {SOLVE_FOR_LABELS[field]}
+              </label>
+            </Fragment>
           ))}
         </div>
       </fieldset>
