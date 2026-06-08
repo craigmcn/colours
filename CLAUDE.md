@@ -110,16 +110,19 @@ A repository ruleset ("Branch Protection Best Practices") is active and applies 
 
 - Docs-only: removed stale "(open, pending merge)" qualifier from PR #67 entry; merged directly by admin
 
-### Completed (2026-05-21) — PR #71 (pending)
+### Completed (2026-05-21) — PR #71
 
 - Migrated `OpacityCalculator` "Solve for" button group from custom module SCSS to AlbertCSS `.button-group` / `.button-group__input` pattern
 - Restructured JSX from wrapper-label to sibling `<input id="…">` + `<label htmlFor="…">` pattern
 - `<fieldset>` + `<legend>` provide group semantics and accessible name implicitly; no `role` or `aria-labelledby` needed on the inner `.button-group` div
 - Deleted `.buttonGroup` and `.buttonGroupItem` blocks from `OpacityCalculator.module.scss`
+- Added "solve-for button group" test block (group accessible name + radio value attributes); 380 tests total
 
 ### Outstanding / next (this repo)
 
-No known outstanding work for `colours` specifically.
+Minor carry-forward from PR #71 review — fold into next substantive change:
+
+- Remove orphaned `id="solve-for-legend"` from `<legend>` in `OpacityCalculator.tsx` (referenced `aria-labelledby` was removed; `id` now unused)
 
 ### Outstanding / next (cross-repo — other repos)
 
