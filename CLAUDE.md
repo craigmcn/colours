@@ -118,19 +118,9 @@ A repository ruleset ("Branch Protection Best Practices") is active and applies 
 - Deleted `.buttonGroup` and `.buttonGroupItem` blocks from `OpacityCalculator.module.scss`
 - Added "solve-for button group" test block (group accessible name + radio value attributes); 380 tests total
 
-### Outstanding / next (this repo)
+### Outstanding / next
 
-Minor carry-forward from PR #71 review — fold into next substantive change:
-
-- Remove orphaned `id="solve-for-legend"` from `<legend>` in `OpacityCalculator.tsx` (referenced `aria-labelledby` was removed; `id` now unused)
-
-### Outstanding / next (cross-repo — other repos)
-
-- `order` — remove `.eslintrc.cjs` (next in the sync plan)
-- `unixtime` — upgrade React 18.2 → 19; clean up `resolutions` block
-- `currency`, `markdown`, `math-tiles`, `number-magic`, `unixtime`, `words` — add Husky pre-commit hooks and `.github/CODEOWNERS`
-- `albertcss`, `words`, `cryptogram` — branch-protection ruleset alignment (tasks A & B)
-- Low-priority: rename `vite.config.js` → `.ts` in `words`, `unixtime`, `cryptogram`; fix cryptogram PnP → node-modules; bump Yarn in several repos
+Open TODOs (including the former cross-repo carry-forward list, now confirmed resolved elsewhere) are tracked as issues in the [colours GitHub Project](https://github.com/users/craigmcn/projects/2).
 
 ### Key decisions
 
