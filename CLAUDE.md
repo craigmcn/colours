@@ -118,6 +118,10 @@ A repository ruleset ("Branch Protection Best Practices") is active and applies 
 - Deleted `.buttonGroup` and `.buttonGroupItem` blocks from `OpacityCalculator.module.scss`
 - Added "solve-for button group" test block (group accessible name + radio value attributes); 380 tests total
 
+### Completed (2026-07-13)
+
+- Bumped `.github/workflows/test.yml` action versions: `actions/checkout@v4` → `v7`, `actions/setup-node@v4` → `v6`; closes cross-repo task 0a (bump GitHub Actions to current majors) for this repo
+
 ### Outstanding / next
 
 Open TODOs (including the former cross-repo carry-forward list, now confirmed resolved elsewhere) are tracked as issues in the [colours GitHub Project](https://github.com/users/craigmcn/projects/2).
