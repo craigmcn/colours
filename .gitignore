@@ -6,6 +6,10 @@
 /coverage
 /dist
 /netlify
+/playwright-report
+/test-results
+/blob-report
+playwright/.cache
 .vscode
 /memory
 # yarn 4
