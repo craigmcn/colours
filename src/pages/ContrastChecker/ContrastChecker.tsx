@@ -61,6 +61,7 @@ export const ContrastChecker = () => {
 
   return (
     <main className="main">
+      <h1>Contrast checker</h1>
       <section className="flex flex--grid">
         <SwatchCard
           id="linkColor"

@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { axe } from "vitest-axe";
 import App from "./App";
 import { useClipboard } from "./hooks/useClipboard";
 
@@ -115,5 +116,20 @@ describe("App — direct URL routes", () => {
     expect(
       screen.getByRole("heading", { name: /colour blender/i }),
     ).toBeInTheDocument();
+  });
+});
+
+// ─── Accessibility ────────────────────────────────────────────────────────────
+
+describe("App — accessibility", () => {
+  it.each([
+    ["/", "ContrastChecker"],
+    ["/opacity", "OpacityCalculator"],
+    ["/palette", "PaletteGenerator"],
+    ["/blender", "ColourBlender"],
+  ])("has no detectable accessibility violations at %s (%s)", async (path) => {
+    window.history.pushState({}, "", path);
+    const { container } = render(<App />);
+    expect(await axe(container)).toHaveNoViolations();
   });
 });
