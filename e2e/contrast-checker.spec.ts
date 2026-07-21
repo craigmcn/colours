@@ -5,9 +5,9 @@ test("updates contrast ratios when a swatch colour changes", async ({
 }) => {
   await page.goto("/");
 
-  const section = page
-    .getByText("Link to Body text")
-    .locator("xpath=ancestor::section[1]");
+  const section = page.locator("section", {
+    has: page.getByText("Link to Body text"),
+  });
   await expect(section.getByText("1.85")).toBeVisible();
 
   await page.getByLabel("Links").fill("#ffff00");
@@ -22,8 +22,8 @@ test("WCAG AA button sets accessible link and text colours", async ({
 
   await page.getByRole("button", { name: "WCAG AA", exact: true }).click();
 
-  const section = page
-    .getByText("Body text to Background")
-    .locator("xpath=ancestor::section[1]");
+  const section = page.locator("section", {
+    has: page.getByText("Body text to Background"),
+  });
   await expect(section.getByText("Pass").first()).toBeVisible();
 });
