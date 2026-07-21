@@ -122,6 +122,14 @@ A repository ruleset ("Branch Protection Best Practices") is active and applies 
 
 - Bumped `.github/workflows/test.yml` action versions: `actions/checkout@v4` → `v7`, `actions/setup-node@v4` → `v6`; closes cross-repo task 0a (bump GitHub Actions to current majors) for this repo
 
+### Completed (2026-07-21) — PR #92
+
+- Added Playwright E2E testing, rolling out the wordle-helper/sudoku pattern: `playwright.config.ts` (chromium project, `webServer` runs `yarn dev` on port 3060), `e2e/` directory, `test:e2e` script, CI browser caching/install/run steps
+- Five specs: cross-tool navigation plus one golden-path spec per tool; all 11 verified locally against a real Chromium build
+- `yarn lint` now covers `e2e/` and `playwright.config.ts`; `tsconfig.node.json` includes both for typechecking; vitest's `test.exclude` keeps `e2e/**` out of the unit runner
+- Not added to the pre-commit hook — E2E runs in CI only, per the cross-repo standard (browser install + startup too slow for a hook)
+- Closes #80
+
 ### Outstanding / next
 
 Open TODOs (including the former cross-repo carry-forward list, now confirmed resolved elsewhere) are tracked as issues in the [colours GitHub Project](https://github.com/users/craigmcn/projects/2).
