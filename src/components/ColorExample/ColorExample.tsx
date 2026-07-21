@@ -13,10 +13,9 @@ export const ColorExample = ({ linkColor, textColor, bgColor }: Props) => (
   >
     <p className={styles.exText} style={{ color: textColor }}>
       Foreground text{" "}
-      {/* eslint-disable-next-line jsx-a11y/anchor-is-valid -- decorative preview of link styling, not a real navigation target */}
-      <a href="#" className={styles.exLink} style={{ color: linkColor }}>
+      <span className={styles.exLink} style={{ color: linkColor }}>
         link text
-      </a>{" "}
+      </span>{" "}
       foreground text
     </p>
   </div>

@@ -16,8 +16,4 @@
 
 .exLink {
   // color set via inline style
-  &:focus {
-    outline: 2px solid currentColor;
-    outline-offset: 2px;
-  }
 }

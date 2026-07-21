@@ -1585,7 +1585,7 @@ __metadata:
     "@vitest/coverage-v8": "npm:^4.1.2"
     eslint: "npm:^9.39.4"
     eslint-config-prettier: "npm:^10.1.8"
-    eslint-plugin-jsx-a11y: "npm:^6.10.2"
+    eslint-plugin-jsx-a11y: "npm:^6"
     eslint-plugin-react-hooks: "npm:^7.0.1"
     happy-dom: "npm:^20.8.9"
     husky: "npm:^9.1.7"
@@ -1960,7 +1960,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-jsx-a11y@npm:^6.10.2":
+"eslint-plugin-jsx-a11y@npm:^6":
   version: 6.10.2
   resolution: "eslint-plugin-jsx-a11y@npm:6.10.2"
   dependencies:
