@@ -122,6 +122,10 @@ A repository ruleset ("Branch Protection Best Practices") is active and applies 
 
 - Bumped `.github/workflows/test.yml` action versions: `actions/checkout@v4` → `v7`, `actions/setup-node@v4` → `v6`; closes cross-repo task 0a (bump GitHub Actions to current majors) for this repo
 
+### Completed (2026-07-21) — PR #90
+
+- Switched `index.html`'s AlbertCSS `<link>`/`<script>` from the legacy `www.craigmcn.com/albertcss/` path to the canonical `albertcss.craigmcn.com` host; closes #83
+
 ### Completed (2026-07-21) — PR #91
 
 - Added `eslint-plugin-jsx-a11y` (flat config recommended ruleset) and `vitest-axe` (pinned `1.0.0-pre.5`, matching wordle-helper/math-tiles/order/number-magic/currency); axe checks now run against all four routes in `App.test.tsx`
