@@ -122,6 +122,13 @@ A repository ruleset ("Branch Protection Best Practices") is active and applies 
 
 - Bumped `.github/workflows/test.yml` action versions: `actions/checkout@v4` → `v7`, `actions/setup-node@v4` → `v6`; closes cross-repo task 0a (bump GitHub Actions to current majors) for this repo
 
+### Completed (2026-07-21) — PR #91
+
+- Added `eslint-plugin-jsx-a11y` (flat config recommended ruleset) and `vitest-axe` (pinned `1.0.0-pre.5`, matching wordle-helper/math-tiles/order/number-magic/currency); axe checks now run against all four routes in `App.test.tsx`
+- Fixed a real heading-order violation the new tooling caught: `ContrastChecker` had no page-level `h1`, so `SwatchCard`'s `h3` card titles skipped a level under `Layout`'s `h1`. Added the missing `h1` to `ContrastChecker` and changed `SwatchCard`'s title from `h3` to `h2`, matching the `h1`→`h2` pattern `PaletteGenerator` already uses for its card title
+- `ColorExample`'s decorative `href="#"` preview link triggered `anchor-is-valid`; disabled inline with a comment rather than restructuring — it's intentionally not a real navigation target, and existing tests query it by `role="link"`
+- Closes #79
+
 ### Outstanding / next
 
 Open TODOs (including the former cross-repo carry-forward list, now confirmed resolved elsewhere) are tracked as issues in the [colours GitHub Project](https://github.com/users/craigmcn/projects/2).
@@ -136,6 +143,7 @@ Open TODOs (including the former cross-repo carry-forward list, now confirmed re
 - Router basename redirect uses Vite's `%BASE_URL%` template so the same `index.html` works for both builds; the redirect also forwards `location.search` and `location.hash`
 - Palette Generator CSS custom property lines end with `;` — output is valid CSS ready to paste into `:root {}`
 - AlbertCSS button group pattern uses **sibling** `<input class="button-group__input">` + `<label class="button button--*">` (not wrapper-label); checked state driven by CSS `input:checked + .button` — do not use `:has(:checked)` or wrap input inside label
+- Page heading hierarchy: `Layout` renders the site `h1` ("colours"); each page also renders its own `h1` (page title); any card/section titles nested under a page must step down one level at a time (`PaletteGenerator`'s card title is `h2`; `SwatchCard`'s card title is `h2` for the same reason) — do not skip straight to `h3`
 
 ## External dependencies
 
