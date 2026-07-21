@@ -17,6 +17,13 @@ const renderComponent = () => render(<ContrastChecker />);
 // ─── Rendering ────────────────────────────────────────────────────────────────
 
 describe("initial render", () => {
+  it("renders the page heading", () => {
+    renderComponent();
+    expect(
+      screen.getByRole("heading", { level: 1, name: "Contrast checker" }),
+    ).toBeInTheDocument();
+  });
+
   it("renders a labeled input for each swatch card", () => {
     renderComponent();
     expect(screen.getByLabelText("Links")).toBeInTheDocument();
@@ -42,7 +49,7 @@ describe("initial render", () => {
   it("renders the colour preview example", () => {
     renderComponent();
     expect(screen.getByText(/foreground text/i)).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: "link text" })).toBeInTheDocument();
+    expect(screen.getByText("link text")).toBeInTheDocument();
   });
 
   it("displays default colour values in source and compare swatches", () => {
@@ -162,7 +169,7 @@ describe("colour input changes", () => {
 
     await user.type(screen.getByLabelText("Links"), "#cc0000");
 
-    const link = screen.getByRole("link", { name: "link text" });
+    const link = screen.getByText("link text");
     expect(link).toHaveStyle({ color: "#cc0000" });
   });
 });

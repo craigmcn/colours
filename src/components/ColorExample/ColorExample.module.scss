@@ -16,7 +16,9 @@
 
 .exLink {
   // color set via inline style
-  &:focus {
+  text-decoration: underline;
+
+  &:hover {
     outline: 2px solid currentColor;
     outline-offset: 2px;
   }
