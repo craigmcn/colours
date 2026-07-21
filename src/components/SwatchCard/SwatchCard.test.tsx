@@ -43,9 +43,11 @@ beforeEach(() => {
 // ─── Rendering ────────────────────────────────────────────────────────────────
 
 describe("SwatchCard — rendering", () => {
-  it("renders the card title as a heading", () => {
+  it("renders the card title as a level-2 heading", () => {
     render(<SwatchCard {...makeProps()} />);
-    expect(screen.getByRole("heading", { name: "Links" })).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { level: 2, name: "Links" }),
+    ).toBeInTheDocument();
   });
 
   it("renders a text input labelled with the title", () => {

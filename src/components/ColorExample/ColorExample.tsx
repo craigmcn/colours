@@ -13,9 +13,9 @@ export const ColorExample = ({ linkColor, textColor, bgColor }: Props) => (
   >
     <p className={styles.exText} style={{ color: textColor }}>
       Foreground text{" "}
-      <a href="#" className={styles.exLink} style={{ color: linkColor }}>
+      <span className={styles.exLink} style={{ color: linkColor }}>
         link text
-      </a>{" "}
+      </span>{" "}
       foreground text
     </p>
   </div>

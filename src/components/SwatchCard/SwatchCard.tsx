@@ -61,7 +61,7 @@ export const SwatchCard = ({
   return (
     <div className="card flex__item flex__item--12 flex__item--4-lg">
       <div className="card__title">
-        <h3>{title}</h3>
+        <h2>{title}</h2>
       </div>
       <div className="card__body">
         <ColorInput
