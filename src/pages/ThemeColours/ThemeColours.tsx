@@ -178,7 +178,7 @@ export const ThemeColours = () => {
               className={`button button--sm${copiedKey === "variables" ? " button--success" : ""}`}
               onClick={() => copy(variablesText, "variables")}
             >
-              <span className="fad fa-copy" /> Copy
+              <span className="fad fa-copy" aria-hidden="true" /> Copy
             </button>
           </div>
         </div>

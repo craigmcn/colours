@@ -1,6 +1,6 @@
 import { test, expect } from "@playwright/test";
 
-test("navigates between all four tools via the nav bar", async ({ page }) => {
+test("navigates between all tools via the nav bar", async ({ page }) => {
   await page.goto("/");
   await expect(page.getByRole("heading", { name: "Links" })).toBeVisible();
 
