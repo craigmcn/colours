@@ -9,11 +9,12 @@ vi.mock("../../hooks/useClipboard");
 //   Brand colour  #0d6efd  rgb(13, 110, 253) — Bootstrap-blue-ish default
 //   Prefix        'theme'
 //
-// Roles rendered, in order: primary, secondary, success, danger, warning,
-// info, light, dark, white, grayLight, grayDark, black (12 swatches total).
-// white/grayLight/grayDark/black are fixed a11y-recommended off-white/off-black
-// neutrals (not pure #fff/#000, to avoid eye strain) and don't depend on the
-// brand colour at all.
+// Roles rendered, in order: primary, secondary, accent, success, danger,
+// warning, info, light, dark, white, grayLight, grayDark, black (13 swatches
+// total). accent sits on the opposite side of the colour wheel from primary
+// (hue +180°). white/grayLight/grayDark/black are fixed a11y-recommended
+// off-white/off-black neutrals (not pure #fff/#000, to avoid eye strain) and
+// don't depend on the brand colour at all.
 
 beforeEach(() => {
   vi.mocked(useClipboard).mockReturnValue({
@@ -56,9 +57,9 @@ describe("initial render", () => {
     expect(screen.getByLabelText("Brand colour")).toHaveValue("");
   });
 
-  it("renders 12 swatches — one HEX copy button per theme role", () => {
+  it("renders 13 swatches — one HEX copy button per theme role", () => {
     renderComponent();
-    expect(screen.getAllByRole("button", { name: "HEX" })).toHaveLength(12);
+    expect(screen.getAllByRole("button", { name: "HEX" })).toHaveLength(13);
   });
 
   it("renders a Custom properties heading", () => {
@@ -77,17 +78,18 @@ describe("initial render", () => {
 // ─── CSS variable output ──────────────────────────────────────────────────────
 
 describe("CSS variable output", () => {
-  it("produces 12 CSS variable lines", () => {
+  it("produces 13 CSS variable lines", () => {
     renderComponent();
-    expect(preLines()).toHaveLength(12);
+    expect(preLines()).toHaveLength(13);
   });
 
-  it("uses all 12 role suffixes, kebab-cased", () => {
+  it("uses all 13 role suffixes, kebab-cased", () => {
     renderComponent();
     const text = preText();
     for (const role of [
       "primary",
       "secondary",
+      "accent",
       "success",
       "danger",
       "warning",
@@ -168,9 +170,9 @@ describe("Brand colour input", () => {
 describe("palette structure", () => {
   it("each swatch has HEX, RGB, and HSL copy buttons", () => {
     renderComponent();
-    expect(screen.getAllByRole("button", { name: "HEX" })).toHaveLength(12);
-    expect(screen.getAllByRole("button", { name: "RGB" })).toHaveLength(12);
-    expect(screen.getAllByRole("button", { name: "HSL" })).toHaveLength(12);
+    expect(screen.getAllByRole("button", { name: "HEX" })).toHaveLength(13);
+    expect(screen.getAllByRole("button", { name: "RGB" })).toHaveLength(13);
+    expect(screen.getAllByRole("button", { name: "HSL" })).toHaveLength(13);
   });
 
   it("all hex values in the variables are valid 6-char hex codes", () => {
@@ -187,6 +189,7 @@ describe("palette structure", () => {
     for (const label of [
       "primary",
       "secondary",
+      "accent",
       "success",
       "danger",
       "warning",
@@ -206,6 +209,14 @@ describe("palette structure", () => {
     renderComponent();
     expect(preText()).not.toMatch(/--theme-white: #ffffff/);
     expect(preText()).not.toMatch(/--theme-black: #000000/);
+  });
+
+  it("accent renders a distinct colour from primary (opposite side of the colour wheel)", () => {
+    renderComponent();
+    const text = preText();
+    const primaryHex = text.match(/--theme-primary: (#[0-9a-f]{6})/)![1];
+    const accentHex = text.match(/--theme-accent: (#[0-9a-f]{6})/)![1];
+    expect(accentHex).not.toEqual(primaryHex);
   });
 });
 
@@ -294,7 +305,7 @@ describe("copy interactions", () => {
     );
   });
 
-  it("clicking the Copy button copies all 12 CSS variable lines", async () => {
+  it("clicking the Copy button copies all 13 CSS variable lines", async () => {
     const mockCopy = vi.fn() as (text: string, key: string) => void;
     vi.mocked(useClipboard).mockReturnValue({
       copy: mockCopy,
@@ -310,7 +321,7 @@ describe("copy interactions", () => {
       string,
       string,
     ];
-    expect(text.split("\n")).toHaveLength(12);
+    expect(text.split("\n")).toHaveLength(13);
     expect(text).toMatch(/--theme-primary: #0d6efd;/);
     expect(text).not.toMatch(/\n$/);
     expect(text).not.toMatch(/;;/);

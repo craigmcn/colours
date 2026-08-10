@@ -1,9 +1,11 @@
 import type { RGB } from "../types/colour";
 import { rgb2Hsl, hsl2Rgb } from "./convertColours";
+import { contrastRatio } from "./contrastRatio";
 
 export type ThemeRole =
   | "primary"
   | "secondary"
+  | "accent"
   | "success"
   | "danger"
   | "warning"
@@ -22,6 +24,7 @@ export type ThemePalette = Record<ThemeRole, RGB>;
 export const THEME_ROLES: ThemeRole[] = [
   "primary",
   "secondary",
+  "accent",
   "success",
   "danger",
   "warning",
@@ -102,11 +105,48 @@ const SECONDARY_LIGHTNESS_BAND: Record<ThemeMode, [number, number]> = {
   dark: [60, 75],
 };
 
+// Secondary shares primary's hue (just desaturated), so if primary's own
+// lightness already falls inside SECONDARY_LIGHTNESS_BAND, clamping alone
+// leaves the two nearly indistinguishable — e.g. primary #677fa3 (l=52%)
+// produces secondary #7d838c, a contrast ratio of only ~1.07:1. Secondary is
+// meant for less prominent, supporting elements that shouldn't compete with
+// primary, so its lightness is walked away from primary's actual rendered
+// lightness (lighter if primary is dark-ish, darker otherwise) until it
+// clears this minimum — a "clearly distinct swatch" bar, not the 4.5:1 WCAG
+// text-contrast bar, since these are two UI accents, not text-on-background.
+const MIN_SECONDARY_CONTRAST = 1.6;
+const SECONDARY_LIGHTNESS_SEARCH_BOUNDS: [number, number] = [10, 92];
+
+const ensureSecondaryContrast = (
+  hue: number,
+  saturation: number,
+  startLightness: number,
+  against: RGB,
+): RGB => {
+  const [boundMin, boundMax] = SECONDARY_LIGHTNESS_SEARCH_BOUNDS;
+  const againstLightness = parseInt(rgb2Hsl(against)[2]);
+  const direction = againstLightness < 50 ? 1 : -1;
+
+  let lightness = startLightness;
+  let candidate = buildColor(hue, saturation, lightness);
+  while (
+    contrastRatio(against, candidate) < MIN_SECONDARY_CONTRAST &&
+    lightness > boundMin &&
+    lightness < boundMax
+  ) {
+    lightness = clamp(lightness + direction, boundMin, boundMax);
+    candidate = buildColor(hue, saturation, lightness);
+  }
+  return candidate;
+};
+
 // In dark mode, even the primary brand colour itself usually needs lightening:
 // a dark, highly saturated brand blue like #005b99 (hue 204°, l≈30%) reads
 // fine on a white background but is nearly invisible against a near-black
 // one. Light mode leaves primary untouched (it *is* the brand colour), but
-// dark mode re-bands it the same way as the other status roles.
+// dark mode re-bands it the same way as the other status roles. Accent (see
+// below) reuses this same band, since it's equally a brand-defining colour
+// that needs to stay legible in dark mode.
 const DARK_PRIMARY_BAND: SaturationLightnessBand = {
   minSat: 50,
   maxSat: 100,
@@ -115,21 +155,33 @@ const DARK_PRIMARY_BAND: SaturationLightnessBand = {
 };
 
 // Given a single brand colour, derives a full Bootstrap-style "theme colors"
-// palette for the given mode. In dark mode, primary and the other status
-// roles (secondary/success/danger/warning/info) keep the brand's hue but
-// re-band their saturation/lightness (see DARK_PRIMARY_BAND/STATUS_BANDS) so
-// they stay legible against a near-black background instead of reading as
-// muddy or low-contrast. light/dark are brand-tinted "surface" endpoints and
-// invert between modes — light mode's near-white "light" surface becomes dark
-// mode's near-black one, and vice versa. white/grayLight/grayDark/black are
-// fixed a11y neutrals (see A11Y_NEUTRALS) that don't depend on the brand
-// colour, but — like light/dark — swap ends between modes.
+// palette for the given mode.
+//
+// - primary is the brand colour itself in light mode; in dark mode (and for
+//   accent, in both modes' dark variant) it's re-banded via DARK_PRIMARY_BAND
+//   so it stays legible against a near-black background.
+// - accent sits on the opposite side of the colour wheel from primary (hue
+//   +180°) for a standout colour that reads as clearly distinct from primary
+//   by hue alone, e.g. for a call-to-action that shouldn't be mistaken for a
+//   primary-coloured element.
+// - secondary keeps primary's hue but is desaturated and pushed to a
+//   guaranteed-distinguishable lightness (see ensureSecondaryContrast) so it
+//   reads as "supporting", not as a near-duplicate of primary.
+// - success/danger/warning/info keep the brand's hue/saturation but re-band
+//   their lightness per mode (see STATUS_BANDS).
+// - light/dark are brand-tinted "surface" endpoints and invert between modes
+//   — light mode's near-white "light" surface becomes dark mode's near-black
+//   one, and vice versa.
+// - white/grayLight/grayDark/black are fixed a11y neutrals (see
+//   A11Y_NEUTRALS) that don't depend on the brand colour, but — like
+//   light/dark — swap ends between modes.
 const buildPalette = (primary: RGB, mode: ThemeMode): ThemePalette => {
   const [hue, satStr, lightStr] = rgb2Hsl(primary);
   const saturation = parseInt(satStr);
   const lightness = parseInt(lightStr);
   const bands = STATUS_BANDS[mode];
   const [secMin, secMax] = SECONDARY_LIGHTNESS_BAND[mode];
+  const complementHue = (hue + 180) % 360;
 
   const nearWhiteSurface = buildColor(hue, saturation * 0.3, 96);
   const nearBlackSurface = buildColor(hue, saturation * 0.6, 18);
@@ -139,28 +191,43 @@ const buildPalette = (primary: RGB, mode: ThemeMode): ThemePalette => {
   const grayLight = buildColor(0, 0, A11Y_NEUTRALS.grayLight);
   const grayDark = buildColor(0, 0, A11Y_NEUTRALS.grayDark);
 
-  return {
-    primary:
-      mode === "light"
-        ? primary
-        : buildColor(
-            hue,
-            clamp(
-              saturation,
-              DARK_PRIMARY_BAND.minSat,
-              DARK_PRIMARY_BAND.maxSat,
-            ),
-            clamp(
-              lightness,
-              DARK_PRIMARY_BAND.minLight,
-              DARK_PRIMARY_BAND.maxLight,
-            ),
+  const finalPrimary =
+    mode === "light"
+      ? primary
+      : buildColor(
+          hue,
+          clamp(saturation, DARK_PRIMARY_BAND.minSat, DARK_PRIMARY_BAND.maxSat),
+          clamp(
+            lightness,
+            DARK_PRIMARY_BAND.minLight,
+            DARK_PRIMARY_BAND.maxLight,
           ),
-    secondary: buildColor(
-      hue,
-      saturation * 0.25,
-      clamp(lightness, secMin, secMax),
-    ),
+        );
+
+  const finalAccent =
+    mode === "light"
+      ? buildColor(complementHue, saturation, lightness)
+      : buildColor(
+          complementHue,
+          clamp(saturation, DARK_PRIMARY_BAND.minSat, DARK_PRIMARY_BAND.maxSat),
+          clamp(
+            lightness,
+            DARK_PRIMARY_BAND.minLight,
+            DARK_PRIMARY_BAND.maxLight,
+          ),
+        );
+
+  const finalSecondary = ensureSecondaryContrast(
+    hue,
+    saturation * 0.25,
+    clamp(lightness, secMin, secMax),
+    finalPrimary,
+  );
+
+  return {
+    primary: finalPrimary,
+    secondary: finalSecondary,
+    accent: finalAccent,
     success: buildColor(
       SEMANTIC_HUES.success,
       clamp(saturation, bands.success.minSat, bands.success.maxSat),

@@ -5,6 +5,7 @@ import {
   THEME_ROLES,
 } from "./themePalette";
 import { rgb2Hsl } from "./convertColours";
+import { contrastRatio } from "./contrastRatio";
 import type { RGB } from "../types/colour";
 
 const hueOf = (rgb: RGB): number => rgb2Hsl(rgb)[0];
@@ -18,7 +19,7 @@ const expectHueNear = (rgb: RGB, target: number, tolerance = 3) => {
 };
 
 describe("generateThemePalette", () => {
-  it("returns all 12 theme roles", () => {
+  it("returns all 13 theme roles", () => {
     const palette = generateThemePalette([13, 110, 253]);
     expect(Object.keys(palette).sort()).toEqual([...THEME_ROLES].sort());
   });
@@ -58,6 +59,67 @@ describe("generateThemePalette", () => {
     const input: RGB = [13, 110, 253];
     const palette = generateThemePalette(input);
     expect(satOf(palette.secondary)).toBeLessThan(satOf(input));
+  });
+
+  describe("secondary vs primary contrast", () => {
+    it("guarantees a minimum contrast ratio against primary, even when the naive clamp would nearly match it", () => {
+      // #677fa3 (hue 216°, l=52%) — inside the un-forced secondary band
+      // (35–55%), so a plain clamp lands secondary at #7d838c, only ~1.07:1
+      // against primary. This is the reported regression case.
+      const input: RGB = [0x67, 0x7f, 0xa3];
+      const palette = generateThemePalette(input);
+      expect(
+        contrastRatio(palette.primary, palette.secondary),
+      ).toBeGreaterThanOrEqual(1.6);
+    });
+
+    it("still meets the minimum contrast ratio across a range of brand lightnesses", () => {
+      for (const input of [
+        [20, 40, 90], // dark, saturated
+        [100, 120, 160], // mid-lightness — the regression case's neighbourhood
+        [200, 210, 230], // light
+      ] as RGB[]) {
+        const palette = generateThemePalette(input);
+        expect(
+          contrastRatio(palette.primary, palette.secondary),
+        ).toBeGreaterThanOrEqual(1.6);
+      }
+    });
+
+    it("pushes secondary lighter when primary is dark, darker when primary is light", () => {
+      const darkPrimary = generateThemePalette([10, 20, 40]);
+      expect(lightOf(darkPrimary.secondary)).toBeGreaterThan(
+        lightOf(darkPrimary.primary),
+      );
+
+      const lightPrimary = generateThemePalette([200, 210, 230]);
+      expect(lightOf(lightPrimary.secondary)).toBeLessThan(
+        lightOf(lightPrimary.primary),
+      );
+    });
+  });
+
+  describe("accent", () => {
+    it("sits on the opposite side of the colour wheel from primary (hue +180°)", () => {
+      const input: RGB = [13, 110, 253]; // hue 216-ish blue
+      const palette = generateThemePalette(input);
+      const brandHue = hueOf(input);
+      expectHueNear(palette.accent, (brandHue + 180) % 360);
+    });
+
+    it("matches primary's own saturation/lightness in light mode", () => {
+      const input: RGB = [13, 110, 253];
+      const palette = generateThemePalette(input);
+      expect(satOf(palette.accent)).toBe(satOf(input));
+      expect(lightOf(palette.accent)).toBe(lightOf(input));
+    });
+
+    it("wraps correctly for a brand hue already past 180°", () => {
+      const input: RGB = [220, 20, 60]; // crimson, hue ~348°
+      const palette = generateThemePalette(input);
+      const brandHue = hueOf(input);
+      expectHueNear(palette.accent, (brandHue + 180) % 360);
+    });
   });
 
   it("produces a recognisable green/red/amber/cyan even for a fully desaturated (grey) brand colour", () => {
@@ -133,7 +195,7 @@ describe("generateThemePalette", () => {
 });
 
 describe("generateDarkThemePalette", () => {
-  it("returns all 12 theme roles", () => {
+  it("returns all 13 theme roles", () => {
     const palette = generateDarkThemePalette([13, 110, 253]);
     expect(Object.keys(palette).sort()).toEqual([...THEME_ROLES].sort());
   });
@@ -161,6 +223,22 @@ describe("generateDarkThemePalette", () => {
     expectHueNear(palette.danger, 354);
     expectHueNear(palette.warning, 45);
     expectHueNear(palette.info, 190);
+  });
+
+  it("keeps accent on primary's complementary hue and lifts its lightness like primary", () => {
+    const input: RGB = [13, 110, 253];
+    const lightAccent = generateThemePalette(input).accent;
+    const darkAccent = generateDarkThemePalette(input).accent;
+    expectHueNear(darkAccent, hueOf(lightAccent));
+    expect(lightOf(darkAccent)).toBeGreaterThan(lightOf(lightAccent));
+  });
+
+  it("still guarantees a minimum secondary/primary contrast ratio", () => {
+    const input: RGB = [0x67, 0x7f, 0xa3];
+    const palette = generateDarkThemePalette(input);
+    expect(
+      contrastRatio(palette.primary, palette.secondary),
+    ).toBeGreaterThanOrEqual(1.6);
   });
 
   it("lifts success/danger/warning/info/secondary into a higher lightness band than light mode", () => {

@@ -9,20 +9,35 @@ test("generates a Bootstrap-style theme palette from a brand colour", async ({
   await page.getByLabel("Brand colour").fill("#ff6600");
 
   await expect(page.getByText(/--brand-primary: #ff6600/)).toBeVisible();
+  await expect(page.getByText(/--brand-accent:/)).toBeVisible();
   await expect(page.getByText(/--brand-success:/)).toBeVisible();
   await expect(page.getByText(/--brand-danger:/)).toBeVisible();
   await expect(page.getByText(/--brand-warning:/)).toBeVisible();
   await expect(page.getByText(/--brand-info:/)).toBeVisible();
 });
 
-test("shows 12 theme swatches by default", async ({ page }) => {
+test("shows 13 theme swatches by default", async ({ page }) => {
   await page.goto("/theme");
 
   // Scoped to the swatches card — the Mode fieldset is also an implicit
   // ARIA group, so an unscoped getByRole("group") would over-count by one.
   await expect(page.locator(".card").first().getByRole("group")).toHaveCount(
-    12,
+    13,
   );
+});
+
+test("accent sits opposite primary on the colour wheel, and secondary is clearly distinct from primary", async ({
+  page,
+}) => {
+  await page.goto("/theme");
+
+  // #677fa3 — the reported regression case: naive clamping left secondary
+  // (#7d838c) only ~1.07:1 against primary, far too close.
+  await page.getByLabel("Brand colour").fill("#677fa3");
+
+  await expect(page.getByText("--theme-primary: #677fa3;")).toBeVisible();
+  await expect(page.getByText("--theme-secondary: #7d838c;")).not.toBeVisible();
+  await expect(page.getByText(/--theme-accent: #[0-9a-f]{6};/)).toBeVisible();
 });
 
 test("includes off-white/off-black a11y neutrals, not pure #fff/#000", async ({
