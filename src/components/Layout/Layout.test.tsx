@@ -64,6 +64,11 @@ describe("Layout — navigation links", () => {
     expect(screen.getByRole("link", { name: /blender/i })).toBeInTheDocument();
   });
 
+  it("renders a Theme link", () => {
+    renderLayout();
+    expect(screen.getByRole("link", { name: /theme/i })).toBeInTheDocument();
+  });
+
   it("Contrast link points to /", () => {
     renderLayout();
     expect(screen.getByRole("link", { name: /^contrast$/i })).toHaveAttribute(
@@ -93,6 +98,14 @@ describe("Layout — navigation links", () => {
     expect(screen.getByRole("link", { name: /^blender$/i })).toHaveAttribute(
       "href",
       "/blender",
+    );
+  });
+
+  it("Theme link points to /theme", () => {
+    renderLayout();
+    expect(screen.getByRole("link", { name: /^theme$/i })).toHaveAttribute(
+      "href",
+      "/theme",
     );
   });
 });

@@ -86,6 +86,11 @@ export const Layout = ({ children }: Props) => (
               Blender
             </NavLink>
           </li>
+          <li className="nav__item">
+            <NavLink className="nav__link" to="/theme">
+              Theme
+            </NavLink>
+          </li>
         </ul>
       </nav>
 
