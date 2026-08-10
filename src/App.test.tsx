@@ -49,6 +49,7 @@ describe("App — default route", () => {
     expect(
       screen.getByRole("link", { name: /^blender$/i }),
     ).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /^theme$/i })).toBeInTheDocument();
   });
 });
 
@@ -89,6 +90,15 @@ describe("App — navigation", () => {
     await user.click(screen.getByRole("link", { name: /^contrast$/i }));
     expect(screen.getByRole("heading", { name: "Links" })).toBeInTheDocument();
   });
+
+  it("navigates to ThemeColours when Theme is clicked", async () => {
+    const user = userEvent.setup();
+    render(<App />);
+    await user.click(screen.getByRole("link", { name: /^theme$/i }));
+    expect(
+      screen.getByRole("heading", { name: /theme colours/i }),
+    ).toBeInTheDocument();
+  });
 });
 
 // ─── Direct URL routes ────────────────────────────────────────────────────────
@@ -117,6 +127,14 @@ describe("App — direct URL routes", () => {
       screen.getByRole("heading", { name: /colour blender/i }),
     ).toBeInTheDocument();
   });
+
+  it("renders ThemeColours at /theme", () => {
+    window.history.pushState({}, "", "/theme");
+    render(<App />);
+    expect(
+      screen.getByRole("heading", { name: /theme colours/i }),
+    ).toBeInTheDocument();
+  });
 });
 
 // ─── Accessibility ────────────────────────────────────────────────────────────
@@ -127,6 +145,7 @@ describe("App — accessibility", () => {
     ["/opacity", "OpacityCalculator"],
     ["/palette", "PaletteGenerator"],
     ["/blender", "ColourBlender"],
+    ["/theme", "ThemeColours"],
   ])("has no detectable accessibility violations at %s (%s)", async (path) => {
     window.history.pushState({}, "", path);
     const { container } = render(<App />);

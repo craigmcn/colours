@@ -4,6 +4,7 @@ import { ContrastChecker } from "./pages/ContrastChecker/ContrastChecker";
 import { OpacityCalculator } from "./pages/OpacityCalculator/OpacityCalculator";
 import { PaletteGenerator } from "./pages/PaletteGenerator/PaletteGenerator";
 import { ColourBlender } from "./pages/ColourBlender/ColourBlender";
+import { ThemeColours } from "./pages/ThemeColours/ThemeColours";
 
 const App = () => (
   <BrowserRouter basename={import.meta.env.BASE_URL}>
@@ -13,6 +14,7 @@ const App = () => (
         <Route path="/opacity" element={<OpacityCalculator />} />
         <Route path="/palette" element={<PaletteGenerator />} />
         <Route path="/blender" element={<ColourBlender />} />
+        <Route path="/theme" element={<ThemeColours />} />
       </Routes>
     </Layout>
   </BrowserRouter>
