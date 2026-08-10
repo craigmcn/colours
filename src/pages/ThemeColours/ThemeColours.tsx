@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import { useColor } from "../../hooks/useColor";
 import { useClipboard } from "../../hooks/useClipboard";
 import { ColorInput } from "../../components/ColorInput/ColorInput";
+import type { ThemeMode } from "../../utils/themePalette";
 import {
   generateThemePalette,
+  generateDarkThemePalette,
   roleToKebab,
   THEME_ROLES,
 } from "../../utils/themePalette";
@@ -19,6 +21,11 @@ import styles from "./ThemeColours.module.scss";
 
 const DEFAULT_BASE = "#0d6efd";
 
+const MODE_LABELS: Record<ThemeMode, string> = {
+  light: "Light",
+  dark: "Dark",
+};
+
 const toCssIdent = (s: string): string =>
   s
     .toLowerCase()
@@ -27,10 +34,14 @@ const toCssIdent = (s: string): string =>
 
 export const ThemeColours = () => {
   const [prefix, setPrefix] = useState("theme");
+  const [mode, setMode] = useState<ThemeMode>("light");
   const base = useColor(DEFAULT_BASE);
   const { copy, copiedKey } = useClipboard();
 
-  const palette = generateThemePalette(base.color.rgb);
+  const palette =
+    mode === "light"
+      ? generateThemePalette(base.color.rgb)
+      : generateDarkThemePalette(base.color.rgb);
   const varPrefix = toCssIdent(prefix);
 
   const variables = THEME_ROLES.map(
@@ -63,6 +74,32 @@ export const ThemeColours = () => {
             value={base.inputValue}
             onChange={base.update}
           />
+
+          <fieldset className="form__group">
+            <legend className="form__label">Mode</legend>
+
+            <div className="button-group">
+              {(["light", "dark"] as ThemeMode[]).map((m) => (
+                <Fragment key={m}>
+                  <input
+                    id={`theme-mode-${m}`}
+                    className="button-group__input"
+                    type="radio"
+                    name="themeMode"
+                    value={m}
+                    checked={mode === m}
+                    onChange={() => setMode(m)}
+                  />
+                  <label
+                    className="button button--secondary button--sm"
+                    htmlFor={`theme-mode-${m}`}
+                  >
+                    {MODE_LABELS[m]}
+                  </label>
+                </Fragment>
+              ))}
+            </div>
+          </fieldset>
         </div>
 
         <div className="card flex__item flex__item--12 flex__item--5-sm">
@@ -125,7 +162,7 @@ export const ThemeColours = () => {
 
         <div className="card flex__item flex__item--12 flex__item--4-sm">
           <div className="card__title">
-            <h2>Custom properties</h2>
+            <h2>Custom properties — {MODE_LABELS[mode].toLowerCase()}</h2>
           </div>
           <div className="card__body">
             <pre className={`text--small ${styles.variables}`}>

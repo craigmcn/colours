@@ -199,6 +199,70 @@ describe("palette structure", () => {
   });
 });
 
+// ─── Mode toggle ──────────────────────────────────────────────────────────────
+
+describe("Mode toggle", () => {
+  it("renders Light and Dark mode options, with Light selected by default", () => {
+    renderComponent();
+    expect(screen.getByLabelText("Light")).toBeChecked();
+    expect(screen.getByLabelText("Dark")).not.toBeChecked();
+  });
+
+  it("heading shows the current mode", () => {
+    renderComponent();
+    expect(
+      screen.getByRole("heading", { name: /custom properties — light/i }),
+    ).toBeInTheDocument();
+  });
+
+  it("switching to Dark updates the heading and selects the Dark radio", async () => {
+    const user = userEvent.setup();
+    renderComponent();
+    await user.click(screen.getByLabelText("Dark"));
+    expect(screen.getByLabelText("Dark")).toBeChecked();
+    expect(
+      screen.getByRole("heading", { name: /custom properties — dark/i }),
+    ).toBeInTheDocument();
+  });
+
+  it("re-lightens the primary variable for Dark mode rather than keeping it identical", async () => {
+    const user = userEvent.setup();
+    renderComponent();
+    const lightText = preText();
+    expect(lightText).toMatch(/--theme-primary: #0d6efd;/);
+
+    await user.click(screen.getByLabelText("Dark"));
+    expect(preText()).toMatch(/--theme-primary: #[0-9a-f]{6};/);
+    expect(preText()).not.toMatch(/--theme-primary: #0d6efd;/);
+  });
+
+  it("swaps the light/dark surface variable values between modes", async () => {
+    const user = userEvent.setup();
+    renderComponent();
+    const lightText = preText();
+    const lightSurface = lightText.match(/--theme-light: (#[0-9a-f]{6})/)![1];
+    const darkSurface = lightText.match(/--theme-dark: (#[0-9a-f]{6})/)![1];
+
+    await user.click(screen.getByLabelText("Dark"));
+    const darkModeText = preText();
+    expect(darkModeText).toMatch(new RegExp(`--theme-light: ${darkSurface}`));
+    expect(darkModeText).toMatch(new RegExp(`--theme-dark: ${lightSurface}`));
+  });
+
+  it("swaps the a11y neutrals between modes, mirroring light/dark", async () => {
+    const user = userEvent.setup();
+    renderComponent();
+    const lightText = preText();
+    const lightWhite = lightText.match(/--theme-white: (#[0-9a-f]{6})/)![1];
+    const lightBlack = lightText.match(/--theme-black: (#[0-9a-f]{6})/)![1];
+
+    await user.click(screen.getByLabelText("Dark"));
+    const darkModeText = preText();
+    expect(darkModeText).toMatch(new RegExp(`--theme-white: ${lightBlack}`));
+    expect(darkModeText).toMatch(new RegExp(`--theme-black: ${lightWhite}`));
+  });
+});
+
 // ─── Copy interactions ────────────────────────────────────────────────────────
 
 describe("copy interactions", () => {
@@ -220,7 +284,7 @@ describe("copy interactions", () => {
     );
   });
 
-  it("clicking the Copy button copies all 8 CSS variable lines", async () => {
+  it("clicking the Copy button copies all 12 CSS variable lines", async () => {
     const mockCopy = vi.fn() as (text: string, key: string) => void;
     vi.mocked(useClipboard).mockReturnValue({
       copy: mockCopy,

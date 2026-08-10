@@ -1,4 +1,9 @@
-import { generateThemePalette, roleToKebab, THEME_ROLES } from "./themePalette";
+import {
+  generateThemePalette,
+  generateDarkThemePalette,
+  roleToKebab,
+  THEME_ROLES,
+} from "./themePalette";
 import { rgb2Hsl } from "./convertColours";
 import type { RGB } from "../types/colour";
 
@@ -124,6 +129,96 @@ describe("generateThemePalette", () => {
       expect(a.grayDark).toEqual(b.grayDark);
       expect(a.black).toEqual(b.black);
     });
+  });
+});
+
+describe("generateDarkThemePalette", () => {
+  it("returns all 12 theme roles", () => {
+    const palette = generateDarkThemePalette([13, 110, 253]);
+    expect(Object.keys(palette).sort()).toEqual([...THEME_ROLES].sort());
+  });
+
+  it("keeps primary on the brand's own hue but lifts its lightness for a dark background", () => {
+    const input: RGB = [13, 110, 253];
+    const lightPrimary = generateThemePalette(input).primary;
+    const darkPrimary = generateDarkThemePalette(input).primary;
+    expectHueNear(darkPrimary, hueOf(input));
+    expect(lightOf(darkPrimary)).toBeGreaterThan(lightOf(lightPrimary));
+  });
+
+  it("re-lightens a dark, saturated brand colour into a legible dark-mode primary", () => {
+    // #005b99 — hue 204°, l≈30% — reads fine on white but is nearly invisible
+    // against a near-black background unless lightened.
+    const input: RGB = [0, 91, 153];
+    const darkPrimary = generateDarkThemePalette(input).primary;
+    expectHueNear(darkPrimary, 204);
+    expect(lightOf(darkPrimary)).toBeGreaterThanOrEqual(55);
+  });
+
+  it("rotates success/danger/warning/info to the same fixed semantic hues as light mode", () => {
+    const palette = generateDarkThemePalette([13, 110, 253]);
+    expectHueNear(palette.success, 134);
+    expectHueNear(palette.danger, 354);
+    expectHueNear(palette.warning, 45);
+    expectHueNear(palette.info, 190);
+  });
+
+  it("lifts success/danger/warning/info/secondary into a higher lightness band than light mode", () => {
+    const input: RGB = [13, 110, 253];
+    const lightPalette = generateThemePalette(input);
+    const darkPalette = generateDarkThemePalette(input);
+    for (const role of [
+      "secondary",
+      "success",
+      "danger",
+      "warning",
+      "info",
+    ] as const) {
+      expect(lightOf(darkPalette[role])).toBeGreaterThan(
+        lightOf(lightPalette[role]),
+      );
+    }
+  });
+
+  it("swaps the light/dark brand-tinted surfaces relative to light mode", () => {
+    const input: RGB = [13, 110, 253];
+    const lightPalette = generateThemePalette(input);
+    const darkPalette = generateDarkThemePalette(input);
+    expect(darkPalette.light).toEqual(lightPalette.dark);
+    expect(darkPalette.dark).toEqual(lightPalette.light);
+  });
+
+  it("swaps the a11y neutrals (white/grayLight/grayDark/black) relative to light mode, mirroring light/dark", () => {
+    const input: RGB = [13, 110, 253];
+    const lightPalette = generateThemePalette(input);
+    const darkPalette = generateDarkThemePalette(input);
+    expect(darkPalette.white).toEqual(lightPalette.black);
+    expect(darkPalette.black).toEqual(lightPalette.white);
+    expect(darkPalette.grayLight).toEqual(lightPalette.grayDark);
+    expect(darkPalette.grayDark).toEqual(lightPalette.grayLight);
+  });
+
+  it("handles pure black and pure white brand colours without producing NaN", () => {
+    for (const input of [
+      [0, 0, 0],
+      [255, 255, 255],
+    ] as RGB[]) {
+      const palette = generateDarkThemePalette(input);
+      for (const role of THEME_ROLES) {
+        for (const channel of palette[role]) {
+          expect(Number.isNaN(channel)).toBe(false);
+          expect(channel).toBeGreaterThanOrEqual(0);
+          expect(channel).toBeLessThanOrEqual(255);
+        }
+      }
+    }
+  });
+
+  it("is a pure function — same input always produces the same output", () => {
+    const input: RGB = [200, 40, 90];
+    expect(generateDarkThemePalette(input)).toEqual(
+      generateDarkThemePalette(input),
+    );
   });
 });
 
