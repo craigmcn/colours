@@ -1,4 +1,4 @@
-import { generateThemePalette, THEME_ROLES } from "./themePalette";
+import { generateThemePalette, roleToKebab, THEME_ROLES } from "./themePalette";
 import { rgb2Hsl } from "./convertColours";
 import type { RGB } from "../types/colour";
 
@@ -13,7 +13,7 @@ const expectHueNear = (rgb: RGB, target: number, tolerance = 3) => {
 };
 
 describe("generateThemePalette", () => {
-  it("returns all 8 theme roles", () => {
+  it("returns all 12 theme roles", () => {
     const palette = generateThemePalette([13, 110, 253]);
     expect(Object.keys(palette).sort()).toEqual([...THEME_ROLES].sort());
   });
@@ -86,5 +86,55 @@ describe("generateThemePalette", () => {
   it("is a pure function — same input always produces the same output", () => {
     const input: RGB = [200, 40, 90];
     expect(generateThemePalette(input)).toEqual(generateThemePalette(input));
+  });
+
+  describe("a11y neutrals — white/grayLight/grayDark/black", () => {
+    it("are fully desaturated regardless of the brand colour", () => {
+      const palette = generateThemePalette([200, 40, 90]); // highly saturated brand
+      expect(satOf(palette.white)).toBe(0);
+      expect(satOf(palette.grayLight)).toBe(0);
+      expect(satOf(palette.grayDark)).toBe(0);
+      expect(satOf(palette.black)).toBe(0);
+    });
+
+    it("are off-white/off-black rather than pure #fff/#000, to reduce eye strain", () => {
+      const palette = generateThemePalette([13, 110, 253]);
+      expect(palette.white).not.toEqual([255, 255, 255]);
+      expect(palette.black).not.toEqual([0, 0, 0]);
+      expect(lightOf(palette.white)).toBeGreaterThanOrEqual(95);
+      expect(lightOf(palette.black)).toBeLessThanOrEqual(15);
+    });
+
+    it("form a light-to-dark scale: white > grayLight > grayDark > black", () => {
+      const palette = generateThemePalette([13, 110, 253]);
+      expect(lightOf(palette.white)).toBeGreaterThan(
+        lightOf(palette.grayLight),
+      );
+      expect(lightOf(palette.grayLight)).toBeGreaterThan(
+        lightOf(palette.grayDark),
+      );
+      expect(lightOf(palette.grayDark)).toBeGreaterThan(lightOf(palette.black));
+    });
+
+    it("are identical across very different brand colours (brand-independent)", () => {
+      const a = generateThemePalette([13, 110, 253]);
+      const b = generateThemePalette([220, 20, 60]);
+      expect(a.white).toEqual(b.white);
+      expect(a.grayLight).toEqual(b.grayLight);
+      expect(a.grayDark).toEqual(b.grayDark);
+      expect(a.black).toEqual(b.black);
+    });
+  });
+});
+
+describe("roleToKebab", () => {
+  it("leaves single-word roles unchanged", () => {
+    expect(roleToKebab("primary")).toBe("primary");
+    expect(roleToKebab("white")).toBe("white");
+  });
+
+  it("converts camelCase roles to kebab-case", () => {
+    expect(roleToKebab("grayLight")).toBe("gray-light");
+    expect(roleToKebab("grayDark")).toBe("gray-dark");
   });
 });

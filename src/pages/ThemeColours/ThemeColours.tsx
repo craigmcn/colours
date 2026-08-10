@@ -2,7 +2,11 @@ import { useState } from "react";
 import { useColor } from "../../hooks/useColor";
 import { useClipboard } from "../../hooks/useClipboard";
 import { ColorInput } from "../../components/ColorInput/ColorInput";
-import { generateThemePalette, THEME_ROLES } from "../../utils/themePalette";
+import {
+  generateThemePalette,
+  roleToKebab,
+  THEME_ROLES,
+} from "../../utils/themePalette";
 import {
   rgb2Hex,
   rgb2Hsl,
@@ -30,7 +34,8 @@ export const ThemeColours = () => {
   const varPrefix = toCssIdent(prefix);
 
   const variables = THEME_ROLES.map(
-    (role) => `--${varPrefix}-${role}: ${rgb2Hex(palette[role], true)};`,
+    (role) =>
+      `--${varPrefix}-${roleToKebab(role)}: ${rgb2Hex(palette[role], true)};`,
   );
   const variablesText = variables.join("\n");
 
@@ -70,16 +75,17 @@ export const ThemeColours = () => {
               const hslStr = hsl2Str(rgb2Hsl(rgb));
               const textColor = hex2Str(contrastTextColor(rgb).AAA.hex);
               const key = `swatch-${role}`;
+              const label = roleToKebab(role).replace(/-/g, " ");
               return (
                 <div
                   key={key}
                   role="group"
-                  aria-label={`${role}: ${hexStr}`}
+                  aria-label={`${label}: ${hexStr}`}
                   className={`flex ${styles.result}`}
                   style={{ color: textColor, backgroundColor: rgbStr }}
                 >
                   <div>
-                    <strong className={styles.roleLabel}>{role}</strong>
+                    <strong className={styles.roleLabel}>{label}</strong>
                     <br />
                     <span>{rgbStr}</span>
                     <br />

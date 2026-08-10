@@ -10,7 +10,10 @@ vi.mock("../../hooks/useClipboard");
 //   Prefix        'theme'
 //
 // Roles rendered, in order: primary, secondary, success, danger, warning,
-// info, light, dark (8 swatches total).
+// info, light, dark, white, grayLight, grayDark, black (12 swatches total).
+// white/grayLight/grayDark/black are fixed a11y-recommended off-white/off-black
+// neutrals (not pure #fff/#000, to avoid eye strain) and don't depend on the
+// brand colour at all.
 
 beforeEach(() => {
   vi.mocked(useClipboard).mockReturnValue({
@@ -53,9 +56,9 @@ describe("initial render", () => {
     expect(screen.getByLabelText("Brand colour")).toHaveValue("");
   });
 
-  it("renders 8 swatches — one HEX copy button per theme role", () => {
+  it("renders 12 swatches — one HEX copy button per theme role", () => {
     renderComponent();
-    expect(screen.getAllByRole("button", { name: "HEX" })).toHaveLength(8);
+    expect(screen.getAllByRole("button", { name: "HEX" })).toHaveLength(12);
   });
 
   it("renders a Custom properties heading", () => {
@@ -74,12 +77,12 @@ describe("initial render", () => {
 // ─── CSS variable output ──────────────────────────────────────────────────────
 
 describe("CSS variable output", () => {
-  it("produces 8 CSS variable lines", () => {
+  it("produces 12 CSS variable lines", () => {
     renderComponent();
-    expect(preLines()).toHaveLength(8);
+    expect(preLines()).toHaveLength(12);
   });
 
-  it("uses all 8 role suffixes", () => {
+  it("uses all 12 role suffixes, kebab-cased", () => {
     renderComponent();
     const text = preText();
     for (const role of [
@@ -91,6 +94,10 @@ describe("CSS variable output", () => {
       "info",
       "light",
       "dark",
+      "white",
+      "gray-light",
+      "gray-dark",
+      "black",
     ]) {
       expect(text).toMatch(new RegExp(`--theme-${role}:`));
     }
@@ -151,9 +158,9 @@ describe("Brand colour input", () => {
 describe("palette structure", () => {
   it("each swatch has HEX, RGB, and HSL copy buttons", () => {
     renderComponent();
-    expect(screen.getAllByRole("button", { name: "HEX" })).toHaveLength(8);
-    expect(screen.getAllByRole("button", { name: "RGB" })).toHaveLength(8);
-    expect(screen.getAllByRole("button", { name: "HSL" })).toHaveLength(8);
+    expect(screen.getAllByRole("button", { name: "HEX" })).toHaveLength(12);
+    expect(screen.getAllByRole("button", { name: "RGB" })).toHaveLength(12);
+    expect(screen.getAllByRole("button", { name: "HSL" })).toHaveLength(12);
   });
 
   it("all hex values in the variables are valid 6-char hex codes", () => {
@@ -167,7 +174,7 @@ describe("palette structure", () => {
 
   it("renders a role label for each swatch", () => {
     renderComponent();
-    for (const role of [
+    for (const label of [
       "primary",
       "secondary",
       "success",
@@ -176,9 +183,19 @@ describe("palette structure", () => {
       "info",
       "light",
       "dark",
+      "white",
+      "gray light",
+      "gray dark",
+      "black",
     ]) {
-      expect(screen.getByText(role)).toBeInTheDocument();
+      expect(screen.getByText(label)).toBeInTheDocument();
     }
+  });
+
+  it("white and black are off-white/off-black, not pure #fff/#000", () => {
+    renderComponent();
+    expect(preText()).not.toMatch(/--theme-white: #ffffff/);
+    expect(preText()).not.toMatch(/--theme-black: #000000/);
   });
 });
 
@@ -219,7 +236,7 @@ describe("copy interactions", () => {
       string,
       string,
     ];
-    expect(text.split("\n")).toHaveLength(8);
+    expect(text.split("\n")).toHaveLength(12);
     expect(text).toMatch(/--theme-primary: #0d6efd;/);
     expect(text).not.toMatch(/\n$/);
     expect(text).not.toMatch(/;;/);

@@ -15,8 +15,19 @@ test("generates a Bootstrap-style theme palette from a brand colour", async ({
   await expect(page.getByText(/--brand-info:/)).toBeVisible();
 });
 
-test("shows 8 theme swatches by default", async ({ page }) => {
+test("shows 12 theme swatches by default", async ({ page }) => {
   await page.goto("/theme");
 
-  await expect(page.getByRole("group")).toHaveCount(8);
+  await expect(page.getByRole("group")).toHaveCount(12);
+});
+
+test("includes off-white/off-black a11y neutrals, not pure #fff/#000", async ({
+  page,
+}) => {
+  await page.goto("/theme");
+
+  await expect(page.getByText(/--theme-white: #(?!ffffff)/)).toBeVisible();
+  await expect(page.getByText(/--theme-black: #(?!000000)/)).toBeVisible();
+  await expect(page.getByText(/--theme-gray-light:/)).toBeVisible();
+  await expect(page.getByText(/--theme-gray-dark:/)).toBeVisible();
 });
