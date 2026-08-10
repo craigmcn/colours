@@ -124,6 +124,16 @@ describe("CSS variable output", () => {
     expect(preText()).toMatch(/--brand-primary:/);
     expect(preText()).not.toMatch(/--theme-/);
   });
+
+  it("falls back to 'theme' when the prefix is whitespace-only", async () => {
+    const user = userEvent.setup();
+    renderComponent();
+    const prefixInput = screen.getByLabelText("Prefix");
+    await user.clear(prefixInput);
+    await user.type(prefixInput, "   ");
+    expect(preText()).toMatch(/--theme-primary:/);
+    expect(preText()).not.toMatch(/---/);
+  });
 });
 
 // ─── Brand colour input ───────────────────────────────────────────────────────

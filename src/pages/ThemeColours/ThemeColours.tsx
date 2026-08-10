@@ -28,6 +28,7 @@ const MODE_LABELS: Record<ThemeMode, string> = {
 
 const toCssIdent = (s: string): string =>
   s
+    .trim()
     .toLowerCase()
     .replace(/\s+/g, "-")
     .replace(/[^a-z0-9-]/g, "") || "theme";
