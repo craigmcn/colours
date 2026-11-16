@@ -1,5 +1,7 @@
 import { useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { useColor } from "../../hooks/useColor";
+import { useSearchParamsSync } from "../../hooks/useSearchParamsSync";
 import { ColorInput } from "../../components/ColorInput/ColorInput";
 import { useClipboard } from "../../hooks/useClipboard";
 import {
@@ -13,6 +15,7 @@ import { contrastTextColor } from "../../utils/contrastRatio";
 import { nearestNamedColor } from "../../utils/nearestNamedColor";
 import { buildPaletteScale } from "../../utils/paletteScale";
 import { cssDeclarations, paletteTokens } from "../../utils/tokens";
+import { readPaletteParams, writePaletteParams } from "../../utils/toolParams";
 import styles from "./PaletteGenerator.module.scss";
 
 const DEFAULT_BASE = "#808080";
@@ -20,10 +23,12 @@ const DEFAULT_LIGHT = "#ffffff";
 const DEFAULT_DARK = "#222222";
 
 export const PaletteGenerator = () => {
-  const [name, setName] = useState("");
-  const base = useColor(DEFAULT_BASE);
-  const light = useColor(DEFAULT_LIGHT);
-  const dark = useColor(DEFAULT_DARK);
+  const [searchParams] = useSearchParams();
+  const [initial] = useState(() => readPaletteParams(searchParams));
+  const [name, setName] = useState(initial.name);
+  const base = useColor(DEFAULT_BASE, initial.base);
+  const light = useColor(DEFAULT_LIGHT, initial.light);
+  const dark = useColor(DEFAULT_DARK, initial.dark);
   const { copy, copiedKey } = useClipboard();
 
   const palette = buildPaletteScale(
@@ -36,6 +41,15 @@ export const PaletteGenerator = () => {
     (base.inputValue ? nearestNamedColor(base.color.rgb) : "grey");
   const variables = cssDeclarations(paletteTokens(palette, colorName));
   const variablesText = variables.join("\n");
+
+  useSearchParamsSync(
+    writePaletteParams({
+      base: base.inputValue ? base.color.hex : undefined,
+      light: light.inputValue ? light.color.hex : undefined,
+      dark: dark.inputValue ? dark.color.hex : undefined,
+      name,
+    }),
+  );
 
   return (
     <main className="main main--fixed">

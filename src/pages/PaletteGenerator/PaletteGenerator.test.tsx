@@ -1,7 +1,9 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { MemoryRouter } from "react-router-dom";
 import { PaletteGenerator } from "./PaletteGenerator";
 import { useClipboard } from "../../hooks/useClipboard";
+import { currentSearch, LocationProbe } from "../../test/LocationProbe";
 
 vi.mock("../../hooks/useClipboard");
 
@@ -29,7 +31,13 @@ beforeEach(() => {
   });
 });
 
-const renderComponent = () => render(<PaletteGenerator />);
+const renderComponent = (search = "") =>
+  render(
+    <MemoryRouter initialEntries={[`/palette${search}`]}>
+      <PaletteGenerator />
+      <LocationProbe />
+    </MemoryRouter>,
+  );
 
 // Helpers — the pre renders each variable as a <span> (with a <br> sibling)
 const pre = () => document.querySelector("pre")!;
@@ -385,5 +393,46 @@ describe("copy interactions", () => {
       string,
     ];
     expect(text).toMatch(/--brand-500:/);
+  });
+});
+
+// ─── URL query params ─────────────────────────────────────────────────────────
+
+describe("URL query params", () => {
+  it("leaves the URL clean in the default state", () => {
+    renderComponent();
+    expect(currentSearch().toString()).toBe("");
+  });
+
+  it("restores base, light, dark and name from the URL", () => {
+    renderComponent("?base=ff0000&light=fafafa&dark=111111&name=brand");
+    expect(screen.getByLabelText("Base")).toHaveValue("#ff0000");
+    expect(screen.getByLabelText("Name")).toHaveValue("brand");
+    expect(preText()).toMatch(/--brand-0: #fafafa;/);
+    expect(preText()).toMatch(/--brand-500: #ff0000;/);
+    expect(preText()).toMatch(/--brand-1000: #111111;/);
+  });
+
+  it("uses the nearest named colour when the URL has a base but no name", () => {
+    renderComponent("?base=ff0000");
+    expect(preText()).toMatch(/--red-500: #ff0000;/);
+  });
+
+  it("ignores malformed colour params", () => {
+    renderComponent("?base=12345g");
+    expect(screen.getByLabelText("Base")).toHaveValue("");
+    expect(preText()).toMatch(/--gr[ae]y-500: #808080;/);
+  });
+
+  it("writes inputs back to the URL as they change", async () => {
+    const user = userEvent.setup();
+    renderComponent();
+    await user.type(screen.getByLabelText("Base"), "#3366cc");
+    await user.type(screen.getByLabelText("Dark"), "#000");
+    await user.type(screen.getByLabelText("Name"), "blue");
+    expect(currentSearch().get("base")).toBe("3366cc");
+    expect(currentSearch().get("dark")).toBe("000000");
+    expect(currentSearch().get("name")).toBe("blue");
+    expect(currentSearch().has("light")).toBe(false);
   });
 });

@@ -1,7 +1,9 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { MemoryRouter } from "react-router-dom";
 import { ThemeColours } from "./ThemeColours";
 import { useClipboard } from "../../hooks/useClipboard";
+import { currentSearch, LocationProbe } from "../../test/LocationProbe";
 
 vi.mock("../../hooks/useClipboard");
 
@@ -24,7 +26,13 @@ beforeEach(() => {
   });
 });
 
-const renderComponent = () => render(<ThemeColours />);
+const renderComponent = (search = "") =>
+  render(
+    <MemoryRouter initialEntries={[`/theme${search}`]}>
+      <ThemeColours />
+      <LocationProbe />
+    </MemoryRouter>,
+  );
 
 const pre = () => document.querySelector("pre")!;
 const preText = () => pre().textContent!;
@@ -325,5 +333,54 @@ describe("copy interactions", () => {
     expect(text).toMatch(/--theme-primary: #0d6efd;/);
     expect(text).not.toMatch(/\n$/);
     expect(text).not.toMatch(/;;/);
+  });
+});
+
+// ─── URL query params ─────────────────────────────────────────────────────────
+
+describe("URL query params", () => {
+  it("leaves the URL clean in the default state", () => {
+    renderComponent();
+    expect(currentSearch().toString()).toBe("");
+  });
+
+  it("restores brand, mode and prefix from the URL", () => {
+    renderComponent("?brand=3366cc&mode=dark&prefix=brand");
+    expect(screen.getByLabelText("Brand colour")).toHaveValue("#3366cc");
+    expect(screen.getByLabelText("Prefix")).toHaveValue("brand");
+    expect(screen.getByRole("radio", { name: "Dark" })).toBeChecked();
+    expect(preText()).toMatch(/--brand-primary: #[0-9a-f]{6};/);
+  });
+
+  it("generates the palette for the brand in the URL", () => {
+    renderComponent("?brand=3366cc");
+    expect(preText()).toMatch(/--theme-primary: #3366cc;/);
+  });
+
+  it("ignores malformed params and falls back to the defaults", () => {
+    renderComponent("?brand=nope&mode=purple");
+    expect(screen.getByLabelText("Brand colour")).toHaveValue("");
+    expect(screen.getByRole("radio", { name: "Light" })).toBeChecked();
+    expect(preText()).toMatch(/--theme-primary: #0d6efd;/);
+    expect(currentSearch().toString()).toBe("");
+  });
+
+  it("writes inputs back to the URL as they change", async () => {
+    const user = userEvent.setup();
+    renderComponent();
+    await user.type(screen.getByLabelText("Brand colour"), "#ff6600");
+    await user.clear(screen.getByLabelText("Prefix"));
+    await user.type(screen.getByLabelText("Prefix"), "brand");
+    await user.click(screen.getByLabelText("Dark"));
+    expect(currentSearch().get("brand")).toBe("ff6600");
+    expect(currentSearch().get("prefix")).toBe("brand");
+    expect(currentSearch().get("mode")).toBe("dark");
+  });
+
+  it("normalises non-hex colour input to bare hex in the URL", async () => {
+    const user = userEvent.setup();
+    renderComponent();
+    await user.type(screen.getByLabelText("Brand colour"), "rgb(255, 102, 0)");
+    expect(currentSearch().get("brand")).toBe("ff6600");
   });
 });

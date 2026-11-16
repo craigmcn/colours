@@ -26,6 +26,18 @@ describe("useColor — initial state", () => {
     const { result } = renderHook(() => useColor("#ff0000"));
     expect(result.current.inputValue).toBe("");
   });
+
+  it("pre-fills inputValue and colour from initialInput", () => {
+    const { result } = renderHook(() => useColor("#ff0000", "#3366cc"));
+    expect(result.current.inputValue).toBe("#3366cc");
+    expect(result.current.color.hex).toEqual(["33", "66", "cc"]);
+    expect(result.current.sourceColor.hex).toEqual(["33", "66", "cc"]);
+  });
+
+  it("falls back to initialHex when initialInput can't be parsed", () => {
+    const { result } = renderHook(() => useColor("#ff0000", "nope"));
+    expect(result.current.color.hex).toEqual(["ff", "00", "00"]);
+  });
 });
 
 // ─── update() ─────────────────────────────────────────────────────────────────

@@ -1,5 +1,7 @@
 import { Fragment, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { useColor } from "../../hooks/useColor";
+import { useSearchParamsSync } from "../../hooks/useSearchParamsSync";
 import { useClipboard } from "../../hooks/useClipboard";
 import { ColorInput } from "../../components/ColorInput/ColorInput";
 import type { ThemeMode } from "../../utils/themePalette";
@@ -18,6 +20,7 @@ import {
 } from "../../utils/convertColours";
 import { contrastTextColor } from "../../utils/contrastRatio";
 import { cssDeclarations, themeTokens } from "../../utils/tokens";
+import { readThemeParams, writeThemeParams } from "../../utils/toolParams";
 import styles from "./ThemeColours.module.scss";
 
 const DEFAULT_BASE = "#0d6efd";
@@ -28,9 +31,11 @@ const MODE_LABELS: Record<ThemeMode, string> = {
 };
 
 export const ThemeColours = () => {
-  const [prefix, setPrefix] = useState("theme");
-  const [mode, setMode] = useState<ThemeMode>("light");
-  const base = useColor(DEFAULT_BASE);
+  const [searchParams] = useSearchParams();
+  const [initial] = useState(() => readThemeParams(searchParams));
+  const [prefix, setPrefix] = useState(initial.prefix);
+  const [mode, setMode] = useState<ThemeMode>(initial.mode);
+  const base = useColor(DEFAULT_BASE, initial.brand);
   const { copy, copiedKey } = useClipboard();
 
   const palette =
@@ -39,6 +44,14 @@ export const ThemeColours = () => {
       : generateDarkThemePalette(base.color.rgb);
   const variables = cssDeclarations(themeTokens(palette, prefix));
   const variablesText = variables.join("\n");
+
+  useSearchParamsSync(
+    writeThemeParams({
+      brand: base.inputValue ? base.color.hex : undefined,
+      mode,
+      prefix,
+    }),
+  );
 
   return (
     <main className="main main--fixed">
