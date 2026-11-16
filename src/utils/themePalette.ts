@@ -24,6 +24,9 @@ export type ThemeMode = "light" | "dark";
 // test in themePalette.test.ts fails when that happens).
 export const THEME_ALGORITHM_VERSION = 1;
 
+// Shared by the page and the CLI so both start from the same brand colour.
+export const THEME_DEFAULT_BRAND = "#0d6efd";
+
 export type ThemePalette = Record<ThemeRole, RGB>;
 
 export const THEME_ROLES: ThemeRole[] = [

@@ -45,6 +45,12 @@ Enter a base colour (plus optional light and dark endpoint colours) and the tool
 
 ---
 
+### Theme Colours
+
+Enter a brand colour and the tool derives a full Bootstrap-style theme (primary, secondary, accent, success, danger, warning, info, plus surfaces and neutrals) for light or dark mode, output as CSS custom properties.
+
+---
+
 ## Contrast Checker — in depth
 
 ### What is contrast ratio?
@@ -243,6 +249,40 @@ Three swatches across the top show the current **Foreground**, **Result**, and *
 
 ---
 
+## Reproducing tokens
+
+The Theme Colours (`/theme`) and Palette Generator (`/palette`) results can be regenerated without opening the app by hand.
+
+**Links.** Each tool keeps its inputs in the URL, e.g. `/theme?brand=3366cc&mode=dark&prefix=brand` or `/palette?base=ff0000&light=fafafa&dark=111111&name=brand`.
+
+**Recipe header.** The **Copy** button's text starts with a comment that records the algorithm version, every input and a link to the exact result:
+
+```css
+/* colours theme v1: brand #3366cc, mode dark, prefix brand
+   https://www.craigmcn.com/colours/theme?brand=3366cc&mode=dark&prefix=brand */
+```
+
+**CLI.** `colours-tokens` produces the same output offline (e.g. in CI). Pin a tag or commit to keep the algorithm fixed:
+
+```bash
+# Install from GitHub and run (about 20s the first time, since npm installs the dev toolchain)
+npx github:craigmcn/colours#<tag> theme --brand 3366cc --mode dark --prefix brand
+
+# Or run the single committed file with no install
+curl -fsSL https://raw.githubusercontent.com/craigmcn/colours/<tag>/bin/colours-tokens.mjs \
+  | node --input-type=module - palette --base ff0000 --name brand --format json
+```
+
+| Command   | Options                                                                                                        |
+| --------- | -------------------------------------------------------------------------------------------------------------- |
+| `theme`   | `--brand <hex>` (required), `--mode light\|dark`, `--prefix <name>`                                            |
+| `palette` | `--base <hex>` (required), `--light <hex>`, `--dark <hex>`, `--name <name>` (default: nearest CSS colour name) |
+| both      | `--format css\|json`, `--app-url <url>` (for the recipe link), `--help`, `--version`                           |
+
+CSS output is identical to the Copy button's text. JSON output has `tool`, `version`, `inputs`, `url` and an ordered `tokens` map.
+
+---
+
 ## Colour formats
 
 |--------|---------|-------|
@@ -259,4 +299,5 @@ yarn install
 yarn dev         # start local dev server at http://localhost:3060
 yarn build       # production build
 yarn test --run  # run unit tests (Vitest)
+yarn build:cli   # rebuild bin/colours-tokens.mjs (commit the result)
 ```

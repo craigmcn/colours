@@ -1,19 +1,26 @@
 {
   "//": "The build:netlify script builds the app twice: once for the root and once for the /colours/ subdirectory. This is necessary because Netlify serves the app from the root, but GitHub Pages (craigmcn.com) serves it from the /colours/ subdirectory.",
   "name": "colours",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "repository": "github:craigmcn/colours",
   "description": "Colour manipulator and contrast checker",
   "type": "module",
+  "bin": {
+    "colours-tokens": "bin/colours-tokens.mjs"
+  },
+  "files": [
+    "bin"
+  ],
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
+    "build:cli": "vite build --config vite.cli.config.ts",
     "build:netlify": "tsc -b && vite build --outDir=netlify && vite build --base=/colours/ --outDir=netlify/colours",
     "preview": "vite preview",
     "test": "vitest",
     "test:coverage": "vitest run --coverage",
     "test:e2e": "playwright test",
-    "lint": "eslint src e2e playwright.config.ts",
+    "lint": "eslint src e2e cli playwright.config.ts vite.cli.config.ts",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "prepare": "husky"
@@ -31,6 +38,7 @@
     "@testing-library/react": "^16.3.2",
     "@testing-library/user-event": "^14.6.1",
     "@types/eslint-plugin-jsx-a11y": "^6",
+    "@types/node": "^24",
     "@types/react": "^19.1.0",
     "@types/react-dom": "^19.1.0",
     "@vitejs/plugin-react": "^6",

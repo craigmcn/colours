@@ -23,6 +23,20 @@ jobs:
 
       - run: yarn test --run
 
+      # bin/ is committed so git installs need no build; fail if it's stale.
+      - name: Check committed CLI build is up to date
+        # porcelain also catches new untracked files (e.g. a split-off chunk)
+        run: |
+          yarn build:cli
+          if [ -n "$(git status --porcelain -- bin/)" ]; then
+            git status --short -- bin/
+            echo "::error::bin/ is stale: run 'yarn build:cli' and commit bin/"
+            exit 1
+          fi
+
+      - name: Smoke-test the CLI
+        run: node bin/colours-tokens.mjs theme --brand 3366cc --format json > /dev/null
+
       - name: Cache Playwright browsers
         id: playwright-cache
         uses: actions/cache@v6

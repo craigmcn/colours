@@ -52,8 +52,8 @@ export const paletteTokens = (scale: RGB[], name: string): CssToken[] => {
 export const cssDeclarations = (tokens: CssToken[]): string[] =>
   tokens.map(({ name, value }) => `${name}: ${value};`);
 
-// The header only ever contains sanitised idents, hex and URL-encoded params,
-// so user input can't close the comment early with "*/".
+// The header only ever contains sanitised idents, hex, URL-encoded params and
+// a normalised appUrl, so no input can close the comment early with "*/".
 const recipeComment = (
   tool: string,
   version: number,
@@ -64,11 +64,55 @@ const recipeComment = (
     .map(([label, value]) => `${label} ${value}`)
     .join(", ")}\n   ${url} */`;
 
-// appUrl is the app's root, e.g. "https://host/colours/". The slash is added
+// appUrl is the app's root, e.g. "https://host/colours/". The CLI takes it
+// from the user, so line breaks are dropped and "*/" is percent-encoded (the
+// URL still resolves) to keep the header comment intact. The slash is added
 // when missing rather than resolved with new URL(), which would drop a
 // slash-less subpath ("https://host/colours" + "theme" → "https://host/theme").
-const withTrailingSlash = (url: string): string =>
-  url.endsWith("/") ? url : `${url}/`;
+const normaliseAppUrl = (url: string): string => {
+  const safe = url.replace(/[\r\n]/g, "").replace(/\*\//g, "*%2F");
+  return safe.endsWith("/") ? safe : `${safe}/`;
+};
+
+// Full reproducible links: every input is written, defaults included, so the
+// link survives a future change of defaults.
+export const themeRecipeUrl = ({
+  brand,
+  mode,
+  prefix,
+  appUrl,
+}: {
+  brand: Hex;
+  mode: ThemeMode;
+  prefix: string;
+  appUrl: string;
+}): string => {
+  const params = writeThemeParams(
+    { brand, mode, prefix: toCssIdent(prefix, "theme") },
+    { includeDefaults: true },
+  );
+  return `${normaliseAppUrl(appUrl)}theme?${params}`;
+};
+
+export const paletteRecipeUrl = ({
+  base,
+  light,
+  dark,
+  name,
+  appUrl,
+}: {
+  base: Hex;
+  light: Hex;
+  dark: Hex;
+  name: string;
+  appUrl: string;
+}): string => {
+  const params = writePaletteParams(
+    { base, light, dark, name: toCssIdent(name, "colour") },
+    { includeDefaults: true },
+  );
+  return `${normaliseAppUrl(appUrl)}palette?${params}`;
+};
 
 export const themeRecipe = ({
   brand,
@@ -82,10 +126,6 @@ export const themeRecipe = ({
   appUrl: string;
 }): string => {
   const ident = toCssIdent(prefix, "theme");
-  const params = writeThemeParams(
-    { brand, mode, prefix: ident },
-    { includeDefaults: true },
-  );
   return recipeComment(
     "theme",
     THEME_ALGORITHM_VERSION,
@@ -94,7 +134,7 @@ export const themeRecipe = ({
       ["mode", mode],
       ["prefix", ident],
     ],
-    `${withTrailingSlash(appUrl)}theme?${params}`,
+    themeRecipeUrl({ brand, mode, prefix, appUrl }),
   );
 };
 
@@ -112,10 +152,6 @@ export const paletteRecipe = ({
   appUrl: string;
 }): string => {
   const ident = toCssIdent(name, "colour");
-  const params = writePaletteParams(
-    { base, light, dark, name: ident },
-    { includeDefaults: true },
-  );
   return recipeComment(
     "palette",
     PALETTE_ALGORITHM_VERSION,
@@ -125,6 +161,6 @@ export const paletteRecipe = ({
       ["dark", hex2Str(dark)],
       ["name", ident],
     ],
-    `${withTrailingSlash(appUrl)}palette?${params}`,
+    paletteRecipeUrl({ base, light, dark, name, appUrl }),
   );
 };

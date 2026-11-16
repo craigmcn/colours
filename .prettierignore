@@ -3,3 +3,4 @@ netlify
 coverage
 .yarn
 *.lock
+bin

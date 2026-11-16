@@ -11,6 +11,13 @@ export const PALETTE_STEPS = [
 // THEME_ALGORITHM_VERSION and the golden test in paletteScale.test.ts.
 export const PALETTE_ALGORITHM_VERSION = 1;
 
+// Shared by the page and the CLI so both fill unspecified inputs the same way.
+export const PALETTE_DEFAULTS = {
+  base: "#808080",
+  light: "#ffffff",
+  dark: "#222222",
+} as const;
+
 export type PaletteStep = (typeof PALETTE_STEPS)[number];
 
 export const buildPaletteScale = (base: RGB, light: RGB, dark: RGB): RGB[] => {

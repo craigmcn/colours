@@ -9,6 +9,7 @@ import {
   generateThemePalette,
   generateDarkThemePalette,
   roleToKebab,
+  THEME_DEFAULT_BRAND,
   THEME_ROLES,
 } from "../../utils/themePalette";
 import {
@@ -23,8 +24,6 @@ import { cssDeclarations, themeTokens, themeRecipe } from "../../utils/tokens";
 import { readThemeParams, writeThemeParams } from "../../utils/toolParams";
 import styles from "./ThemeColours.module.scss";
 
-const DEFAULT_BASE = "#0d6efd";
-
 const MODE_LABELS: Record<ThemeMode, string> = {
   light: "Light",
   dark: "Dark",
@@ -35,7 +34,7 @@ export const ThemeColours = () => {
   const [initial] = useState(() => readThemeParams(searchParams));
   const [prefix, setPrefix] = useState(initial.prefix);
   const [mode, setMode] = useState<ThemeMode>(initial.mode);
-  const base = useColor(DEFAULT_BASE, initial.brand);
+  const base = useColor(THEME_DEFAULT_BRAND, initial.brand);
   const { copy, copiedKey } = useClipboard();
 
   const palette =
