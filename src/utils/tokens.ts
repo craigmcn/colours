@@ -70,6 +70,46 @@ const recipeComment = (
 const withTrailingSlash = (url: string): string =>
   url.endsWith("/") ? url : `${url}/`;
 
+// Full reproducible links: every input is written, defaults included, so the
+// link survives a future change of defaults.
+export const themeRecipeUrl = ({
+  brand,
+  mode,
+  prefix,
+  appUrl,
+}: {
+  brand: Hex;
+  mode: ThemeMode;
+  prefix: string;
+  appUrl: string;
+}): string => {
+  const params = writeThemeParams(
+    { brand, mode, prefix: toCssIdent(prefix, "theme") },
+    { includeDefaults: true },
+  );
+  return `${withTrailingSlash(appUrl)}theme?${params}`;
+};
+
+export const paletteRecipeUrl = ({
+  base,
+  light,
+  dark,
+  name,
+  appUrl,
+}: {
+  base: Hex;
+  light: Hex;
+  dark: Hex;
+  name: string;
+  appUrl: string;
+}): string => {
+  const params = writePaletteParams(
+    { base, light, dark, name: toCssIdent(name, "colour") },
+    { includeDefaults: true },
+  );
+  return `${withTrailingSlash(appUrl)}palette?${params}`;
+};
+
 export const themeRecipe = ({
   brand,
   mode,
@@ -82,10 +122,6 @@ export const themeRecipe = ({
   appUrl: string;
 }): string => {
   const ident = toCssIdent(prefix, "theme");
-  const params = writeThemeParams(
-    { brand, mode, prefix: ident },
-    { includeDefaults: true },
-  );
   return recipeComment(
     "theme",
     THEME_ALGORITHM_VERSION,
@@ -94,7 +130,7 @@ export const themeRecipe = ({
       ["mode", mode],
       ["prefix", ident],
     ],
-    `${withTrailingSlash(appUrl)}theme?${params}`,
+    themeRecipeUrl({ brand, mode, prefix, appUrl }),
   );
 };
 
@@ -112,10 +148,6 @@ export const paletteRecipe = ({
   appUrl: string;
 }): string => {
   const ident = toCssIdent(name, "colour");
-  const params = writePaletteParams(
-    { base, light, dark, name: ident },
-    { includeDefaults: true },
-  );
   return recipeComment(
     "palette",
     PALETTE_ALGORITHM_VERSION,
@@ -125,6 +157,6 @@ export const paletteRecipe = ({
       ["dark", hex2Str(dark)],
       ["name", ident],
     ],
-    `${withTrailingSlash(appUrl)}palette?${params}`,
+    paletteRecipeUrl({ base, light, dark, name, appUrl }),
   );
 };

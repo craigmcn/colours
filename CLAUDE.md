@@ -2,7 +2,7 @@
 
 ## Project overview
 
-React + TypeScript SPA (Vite) with five colour tools: Contrast Checker, Opacity Calculator, Palette Generator, Colour Blender, and Theme Colours (`/theme`). Deployed to both Netlify (root) and GitHub Pages (`/colours/` subdirectory) — the dual-build distinction matters for routing and asset paths.
+React + TypeScript SPA (Vite) with five colour tools (plus the `colours-tokens` CLI for theme/palette): Contrast Checker, Opacity Calculator, Palette Generator, Colour Blender, and Theme Colours (`/theme`). Deployed to both Netlify (root) and GitHub Pages (`/colours/` subdirectory) — the dual-build distinction matters for routing and asset paths.
 
 ## Commands
 
@@ -14,6 +14,7 @@ yarn format          # format all files with Prettier
 yarn format:check    # check formatting without writing (used in CI)
 yarn build           # production build
 yarn build:netlify   # dual build for Netlify + GitHub Pages
+yarn build:cli       # rebuild the committed CLI bundle bin/colours-tokens.mjs
 ```
 
 Always run `yarn test --run` to verify changes before committing. The pre-commit hook does this automatically, along with `yarn prettier --check`, `yarn lint`, and `tsc -b`.
@@ -48,6 +49,7 @@ src/
 - `tokens.ts` — CSS custom-property output shared by both generators: `toCssIdent`, `themeTokens`, `paletteTokens`, `cssDeclarations`. Pages must stay thin wrappers over these (no colour or formatting logic in components), so the output can be reused outside the UI (#109).
 - `toolParams.ts` — URL query params for `/theme` (`brand`, `mode`, `prefix`) and `/palette` (`base`, `light`, `dark`, `name`). Colours are bare hex (`?brand=3366cc`); defaults and untouched colour inputs are omitted; malformed values are ignored. Pages read them once on mount (`useColor`'s `initialInput` pre-fills the input as if typed) and mirror state back with `useSearchParamsSync` (`replace: true`, so no history entry per keystroke). These URLs are a public contract for downstream docs (#109): don't rename params without a fallback.
 - **Algorithm versions** — `THEME_ALGORITHM_VERSION` (`themePalette.ts`) and `PALETTE_ALGORITHM_VERSION` (`paletteScale.ts`). **Bump the relevant one whenever the same input produces different output.** Golden tests in `themePalette.test.ts` and `paletteScale.test.ts` pin the output for fixed inputs and fail on any change; when that happens, bump the version and then update the expected values (`yarn vitest run <file> -u` for the inline snapshots). Never update the golden values without bumping.
+- **CLI (`colours-tokens`)** — logic in `src/cli/run.ts` (pure `run(argv) → {stdout, stderr, code}`, no Node APIs, unit-tested); `cli/main.ts` is the thin Node entry (type-checked via `tsconfig.node.json`). `vite.cli.config.ts` bundles it into `bin/colours-tokens.mjs`, which **is committed** so `npx github:craigmcn/colours#<tag>` and raw-file downloads need no build, and a tag pins the exact bytes. **After changing anything in `src/utils` or `src/cli`, run `yarn build:cli` and commit `bin/`**; CI rebuilds it and fails on any diff. `bin/` is excluded from ESLint and Prettier and isn't executable in git (npm sets the bit on install). CSS output must stay identical to the page's Copy text (tests enforce this). Defaults are shared through `THEME_DEFAULT_BRAND` and `PALETTE_DEFAULTS`. `prepare: husky` doesn't break git installs (husky only prints a message without `.git`), but its presence makes npm install devDependencies first, so a cold `npx github:` takes about 20s.
 - **Copy recipe header** — the custom-properties Copy button prepends a two-line CSS comment (`themeRecipe` / `paletteRecipe` in `tokens.ts`) recording the tool, algorithm version, every input (defaults included) and a full reproducible URL, so pasted tokens describe how to regenerate them. It's in the copied text only, not the on-screen `<pre>`, and a caption under the button says so. The header is built only from sanitised idents, hex values and URL-encoded params, so user input can't close the comment with `*/`.
 
 ## Conventions

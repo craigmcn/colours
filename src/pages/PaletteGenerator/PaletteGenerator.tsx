@@ -13,7 +13,7 @@ import {
 } from "../../utils/convertColours";
 import { contrastTextColor } from "../../utils/contrastRatio";
 import { nearestNamedColor } from "../../utils/nearestNamedColor";
-import { buildPaletteScale } from "../../utils/paletteScale";
+import { buildPaletteScale, PALETTE_DEFAULTS } from "../../utils/paletteScale";
 import {
   cssDeclarations,
   paletteTokens,
@@ -22,17 +22,13 @@ import {
 import { readPaletteParams, writePaletteParams } from "../../utils/toolParams";
 import styles from "./PaletteGenerator.module.scss";
 
-const DEFAULT_BASE = "#808080";
-const DEFAULT_LIGHT = "#ffffff";
-const DEFAULT_DARK = "#222222";
-
 export const PaletteGenerator = () => {
   const [searchParams] = useSearchParams();
   const [initial] = useState(() => readPaletteParams(searchParams));
   const [name, setName] = useState(initial.name);
-  const base = useColor(DEFAULT_BASE, initial.base);
-  const light = useColor(DEFAULT_LIGHT, initial.light);
-  const dark = useColor(DEFAULT_DARK, initial.dark);
+  const base = useColor(PALETTE_DEFAULTS.base, initial.base);
+  const light = useColor(PALETTE_DEFAULTS.light, initial.light);
+  const dark = useColor(PALETTE_DEFAULTS.dark, initial.dark);
   const { copy, copiedKey } = useClipboard();
 
   const palette = buildPaletteScale(
