@@ -102,6 +102,20 @@ describe("themeRecipe", () => {
     );
   });
 
+  it("adds the trailing slash when appUrl lacks one, keeping any subpath", () => {
+    const at = (appUrl: string) =>
+      themeRecipe({
+        brand: ["33", "66", "cc"],
+        mode: "light",
+        prefix: "theme",
+        appUrl,
+      }).split("\n")[1];
+    expect(at("https://example.com")).toContain("https://example.com/theme?");
+    expect(at("https://example.com/colours")).toContain(
+      "https://example.com/colours/theme?",
+    );
+  });
+
   it("can't be closed early by a hostile prefix", () => {
     const header = recipe("x */ body { display: none } /*");
     expect(header.indexOf("*/")).toBe(header.length - 2);
@@ -122,6 +136,17 @@ describe("paletteRecipe", () => {
       "/* colours palette v1: base #808080, light #ffffff, dark #222222, name grey\n" +
         "   https://example.com/palette?base=808080&light=ffffff&dark=222222&name=grey */",
     );
+  });
+
+  it("adds the trailing slash when appUrl lacks one", () => {
+    const header = paletteRecipe({
+      base: ["80", "80", "80"],
+      light: ["ff", "ff", "ff"],
+      dark: ["22", "22", "22"],
+      name: "grey",
+      appUrl: "https://example.com/colours",
+    });
+    expect(header).toContain("https://example.com/colours/palette?");
   });
 
   it("can't be closed early by a hostile name", () => {

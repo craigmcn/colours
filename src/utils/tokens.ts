@@ -64,7 +64,12 @@ const recipeComment = (
     .map(([label, value]) => `${label} ${value}`)
     .join(", ")}\n   ${url} */`;
 
-// appUrl is the app's root with a trailing slash, e.g. "https://host/colours/".
+// appUrl is the app's root, e.g. "https://host/colours/". The slash is added
+// when missing rather than resolved with new URL(), which would drop a
+// slash-less subpath ("https://host/colours" + "theme" → "https://host/theme").
+const withTrailingSlash = (url: string): string =>
+  url.endsWith("/") ? url : `${url}/`;
+
 export const themeRecipe = ({
   brand,
   mode,
@@ -89,7 +94,7 @@ export const themeRecipe = ({
       ["mode", mode],
       ["prefix", ident],
     ],
-    `${appUrl}theme?${params}`,
+    `${withTrailingSlash(appUrl)}theme?${params}`,
   );
 };
 
@@ -120,6 +125,6 @@ export const paletteRecipe = ({
       ["dark", hex2Str(dark)],
       ["name", ident],
     ],
-    `${appUrl}palette?${params}`,
+    `${withTrailingSlash(appUrl)}palette?${params}`,
   );
 };

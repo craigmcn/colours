@@ -359,7 +359,7 @@ describe("copy recipe header", () => {
       "/* colours theme v1: brand #0d6efd, mode light, prefix theme",
     );
     expect(line2).toMatch(
-      /^ {3}https?:\/\/\S+\/theme\?brand=0d6efd&mode=light&prefix=theme \*\/$/,
+      /^ {3}https?:\/\/[^/\s]+\/(?:colours\/)?theme\?brand=0d6efd&mode=light&prefix=theme \*\/$/,
     );
   });
 

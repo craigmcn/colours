@@ -416,7 +416,7 @@ describe("copy interactions", () => {
       "/* colours palette v1: base #ff0000, light #ffffff, dark #222222, name brand",
     );
     expect(line2).toMatch(
-      /^ {3}https?:\/\/\S+\/palette\?base=ff0000&light=ffffff&dark=222222&name=brand \*\/$/,
+      /^ {3}https?:\/\/[^/\s]+\/(?:colours\/)?palette\?base=ff0000&light=ffffff&dark=222222&name=brand \*\/$/,
     );
   });
 });

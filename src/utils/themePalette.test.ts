@@ -5,7 +5,7 @@ import {
   roleToKebab,
   THEME_ROLES,
 } from "./themePalette";
-import { rgb2Hsl } from "./convertColours";
+import { rgb2Hex, rgb2Hsl } from "./convertColours";
 import { contrastRatio } from "./contrastRatio";
 import type { RGB } from "../types/colour";
 
@@ -318,10 +318,7 @@ describe("roleToKebab", () => {
 describe("golden output (THEME_ALGORITHM_VERSION)", () => {
   const hexes = (palette: Record<string, RGB>) =>
     Object.fromEntries(
-      Object.entries(palette).map(([role, rgb]) => [
-        role,
-        "#" + rgb.map((c) => c.toString(16).padStart(2, "0")).join(""),
-      ]),
+      Object.entries(palette).map(([role, rgb]) => [role, rgb2Hex(rgb, true)]),
     );
 
   it("is version 1", () => {
