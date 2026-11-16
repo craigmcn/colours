@@ -340,14 +340,17 @@ var paletteTokens = (scale, name) => {
 };
 var cssDeclarations = (tokens) => tokens.map(({ name, value }) => `${name}: ${value};`);
 var recipeComment = (tool, version, inputs, url) => `/* colours ${tool} v${version}: ${inputs.map(([label, value]) => `${label} ${value}`).join(", ")}\n   ${url} */`;
-var withTrailingSlash = (url) => url.endsWith("/") ? url : `${url}/`;
+var normaliseAppUrl = (url) => {
+	const safe = url.replace(/[\r\n]/g, "").replace(/\*\//g, "*%2F");
+	return safe.endsWith("/") ? safe : `${safe}/`;
+};
 var themeRecipeUrl = ({ brand, mode, prefix, appUrl }) => {
 	const params = writeThemeParams({
 		brand,
 		mode,
 		prefix: toCssIdent(prefix, "theme")
 	}, { includeDefaults: true });
-	return `${withTrailingSlash(appUrl)}theme?${params}`;
+	return `${normaliseAppUrl(appUrl)}theme?${params}`;
 };
 var paletteRecipeUrl = ({ base, light, dark, name, appUrl }) => {
 	const params = writePaletteParams({
@@ -356,7 +359,7 @@ var paletteRecipeUrl = ({ base, light, dark, name, appUrl }) => {
 		dark,
 		name: toCssIdent(name, "colour")
 	}, { includeDefaults: true });
-	return `${withTrailingSlash(appUrl)}palette?${params}`;
+	return `${normaliseAppUrl(appUrl)}palette?${params}`;
 };
 var themeRecipe = ({ brand, mode, prefix, appUrl }) => {
 	const ident = toCssIdent(prefix, "theme");
@@ -455,6 +458,14 @@ var parseColour = (flag, value, fallback) => {
 	const hex = readColourParam(value);
 	return hex ? splitHex(hex) : `--${flag} must be a hex colour, got "${value}"`;
 };
+var isHttpUrl = (value) => {
+	if (/[\r\n]/.test(value)) return false;
+	try {
+		return ["http:", "https:"].includes(new URL(value).protocol);
+	} catch {
+		return false;
+	}
+};
 var isError = (value) => typeof value === "string";
 var render = (format, header, tokens, json) => format === "json" ? `${JSON.stringify({
 	...json,
@@ -537,6 +548,7 @@ var run = (argv) => {
 	const unknown = Object.keys(flags).find((key) => !COMMAND_FLAGS[command].includes(key));
 	if (unknown) return fail(`unknown option --${unknown} for ${command}`);
 	if (flags.format !== void 0 && !["css", "json"].includes(flags.format)) return fail(`--format must be css or json, got "${flags.format}"`);
+	if (flags["app-url"] !== void 0 && !isHttpUrl(flags["app-url"])) return fail(`--app-url must be an http(s) URL, got ${JSON.stringify(flags["app-url"])}`);
 	return command === "theme" ? runTheme(flags) : runPalette(flags);
 };
 // cli/main.ts

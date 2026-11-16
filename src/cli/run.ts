@@ -102,6 +102,17 @@ const parseColour = (
   return hex ? splitHex(hex) : `--${flag} must be a hex colour, got "${value}"`;
 };
 
+// Rejects typos and non-web schemes early; the header escapes "*/" separately
+// because new URL() happily keeps it in a path.
+const isHttpUrl = (value: string): boolean => {
+  if (/[\r\n]/.test(value)) return false;
+  try {
+    return ["http:", "https:"].includes(new URL(value).protocol);
+  } catch {
+    return false;
+  }
+};
+
 const isError = (value: Hex | string): value is string =>
   typeof value === "string";
 
@@ -206,6 +217,10 @@ export const run = (argv: string[]): CliResult => {
   if (unknown) return fail(`unknown option --${unknown} for ${command}`);
   if (flags.format !== undefined && !["css", "json"].includes(flags.format))
     return fail(`--format must be css or json, got "${flags.format}"`);
+  if (flags["app-url"] !== undefined && !isHttpUrl(flags["app-url"]))
+    return fail(
+      `--app-url must be an http(s) URL, got ${JSON.stringify(flags["app-url"])}`,
+    );
 
   return command === "theme" ? runTheme(flags) : runPalette(flags);
 };

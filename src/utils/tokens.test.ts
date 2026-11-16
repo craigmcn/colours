@@ -116,6 +116,18 @@ describe("themeRecipe", () => {
     );
   });
 
+  it("can't be closed early by a hostile appUrl", () => {
+    const header = themeRecipe({
+      brand: ["33", "66", "cc"],
+      mode: "light",
+      prefix: "theme",
+      appUrl: "https://x.com/a*/ body{}\n/* b/",
+    });
+    expect(header.indexOf("*/")).toBe(header.length - 2);
+    expect(header.split("\n")).toHaveLength(2);
+    expect(header).toContain("https://x.com/a*%2F body{}/* b/theme?");
+  });
+
   it("can't be closed early by a hostile prefix", () => {
     const header = recipe("x */ body { display: none } /*");
     expect(header.indexOf("*/")).toBe(header.length - 2);
@@ -147,6 +159,18 @@ describe("paletteRecipe", () => {
       appUrl: "https://example.com/colours",
     });
     expect(header).toContain("https://example.com/colours/palette?");
+  });
+
+  it("can't be closed early by a hostile appUrl", () => {
+    const header = paletteRecipe({
+      base: ["80", "80", "80"],
+      light: ["ff", "ff", "ff"],
+      dark: ["22", "22", "22"],
+      name: "grey",
+      appUrl: "https://x.com/*/\r\n",
+    });
+    expect(header.indexOf("*/")).toBe(header.length - 2);
+    expect(header.split("\n")).toHaveLength(2);
   });
 
   it("can't be closed early by a hostile name", () => {

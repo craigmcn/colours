@@ -77,6 +77,21 @@ describe("theme", () => {
     );
   });
 
+  it("keeps the header comment intact for an app URL containing */", () => {
+    const header = ok([
+      "theme",
+      "--brand",
+      "3366cc",
+      "--app-url",
+      "https://x.com/a*/b/",
+    ])
+      .split("\n")
+      .slice(0, 2)
+      .join("\n");
+    expect(header.indexOf("*/")).toBe(header.length - 2);
+    expect(header).toContain("https://x.com/a*%2Fb/theme?");
+  });
+
   it("emits JSON with inputs, version, URL and ordered tokens", () => {
     const out = JSON.parse(
       ok([
@@ -111,6 +126,18 @@ describe("theme", () => {
     );
     fails(["theme", "--brand"], /--brand needs a value/);
     fails(["theme", "--brand", "36c", "--format", "xml"], /--format must be/);
+    fails(
+      ["theme", "--brand", "36c", "--app-url", "colours"],
+      /--app-url must be/,
+    );
+    fails(
+      ["theme", "--brand", "36c", "--app-url", "javascript:alert(1)"],
+      /--app-url must be an http\(s\) URL/,
+    );
+    fails(
+      ["theme", "--brand", "36c", "--app-url", "https://x.com/\n*/"],
+      /--app-url must be/,
+    );
   });
 });
 
