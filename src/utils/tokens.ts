@@ -29,6 +29,12 @@ export const themeTokens = (
 };
 
 export const paletteTokens = (scale: RGB[], name: string): CssToken[] => {
+  // Step names are positional, so a scale of the wrong length would silently
+  // mislabel tokens (or emit "--x-undefined") rather than fail.
+  if (scale.length !== PALETTE_STEPS.length)
+    throw new RangeError(
+      `paletteTokens expects ${PALETTE_STEPS.length} colours, got ${scale.length}`,
+    );
   const ident = toCssIdent(name, "colour");
   return scale.map((rgb, index) => ({
     name: `--${ident}-${PALETTE_STEPS[index]}`,

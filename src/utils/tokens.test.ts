@@ -64,6 +64,13 @@ describe("paletteTokens", () => {
   it("falls back to the 'colour' prefix", () => {
     expect(paletteTokens(scale, "")[0].name).toBe("--colour-0");
   });
+
+  it("throws when the scale doesn't have one colour per step", () => {
+    expect(() => paletteTokens(scale.slice(1), "grey")).toThrow(RangeError);
+    expect(() => paletteTokens([...scale, scale[0]], "grey")).toThrow(
+      RangeError,
+    );
+  });
 });
 
 describe("cssDeclarations", () => {

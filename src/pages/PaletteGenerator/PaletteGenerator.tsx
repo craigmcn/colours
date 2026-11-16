@@ -32,7 +32,8 @@ export const PaletteGenerator = () => {
     dark.color.rgb,
   );
   const colorName =
-    name || (base.inputValue ? nearestNamedColor(base.color.rgb) : "grey");
+    name.trim() ||
+    (base.inputValue ? nearestNamedColor(base.color.rgb) : "grey");
   const variables = cssDeclarations(paletteTokens(palette, colorName));
   const variablesText = variables.join("\n");
 
