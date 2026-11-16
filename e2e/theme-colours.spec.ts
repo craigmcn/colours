@@ -80,3 +80,23 @@ test("switching to Dark mode re-derives the palette and swaps light/dark surface
   await expect(page.getByText(`--theme-white: ${lightBlack}`)).toBeVisible();
   await expect(page.getByText(`--theme-black: ${lightWhite}`)).toBeVisible();
 });
+
+test("restores the theme from URL params and keeps the URL in sync", async ({
+  page,
+}) => {
+  await page.goto("/theme?brand=3366cc&prefix=brand");
+
+  await expect(page.getByLabel("Brand colour")).toHaveValue("#3366cc");
+  await expect(page.getByText("--brand-primary: #3366cc;")).toBeVisible();
+
+  await page.locator('label[for="theme-mode-dark"]').click();
+  await expect(page).toHaveURL(/[?&]mode=dark/);
+
+  await page.getByLabel("Brand colour").fill("#ff6600");
+  await expect(page).toHaveURL(/[?&]brand=ff6600/);
+
+  // Reloading the synced URL reproduces the same output.
+  await page.reload();
+  await expect(page.getByLabel("Brand colour")).toHaveValue("#ff6600");
+  await expect(page.getByRole("radio", { name: "Dark" })).toBeChecked();
+});

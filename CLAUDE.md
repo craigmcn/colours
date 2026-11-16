@@ -46,6 +46,7 @@ src/
 - `themePalette.ts` — Theme Colours generator (`generateThemePalette` / `generateDarkThemePalette`, 13 roles)
 - `paletteScale.ts` — Palette Generator's 12-step scale (`buildPaletteScale`, `PALETTE_STEPS`)
 - `tokens.ts` — CSS custom-property output shared by both generators: `toCssIdent`, `themeTokens`, `paletteTokens`, `cssDeclarations`. Pages must stay thin wrappers over these (no colour or formatting logic in components), so the output can be reused outside the UI (#109).
+- `toolParams.ts` — URL query params for `/theme` (`brand`, `mode`, `prefix`) and `/palette` (`base`, `light`, `dark`, `name`). Colours are bare hex (`?brand=3366cc`); defaults and untouched colour inputs are omitted; malformed values are ignored. Pages read them once on mount (`useColor`'s `initialInput` pre-fills the input as if typed) and mirror state back with `useSearchParamsSync` (`replace: true`, so no history entry per keystroke). These URLs are a public contract for downstream docs (#109): don't rename params without a fallback.
 
 ## Conventions
 

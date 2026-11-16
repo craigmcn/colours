@@ -10,21 +10,32 @@ const defaultColor = (defaultHex: string): ColorValue => {
   return { hex, rgb, hsl };
 };
 
-export const useColor = (initialHex: string) => {
+const parsedColor = (text: string, defaultHex: string): ColorValue => {
+  const [hex, rgb, hsl] = parseText(text, defaultHex);
+  return { hex, rgb, hsl };
+};
+
+// initialInput pre-fills the input (e.g. from a URL param) as if typed, so
+// the page behaves exactly as it would after the user entered that value.
+export const useColor = (initialHex: string, initialInput = "") => {
   const [color, setColor] = useState<ColorValue>(() =>
-    defaultColor(initialHex),
+    initialInput
+      ? parsedColor(initialInput, initialHex)
+      : defaultColor(initialHex),
   );
   const [sourceColor, setSourceColor] = useState<ColorValue>(() =>
-    defaultColor(initialHex),
+    initialInput
+      ? parsedColor(initialInput, initialHex)
+      : defaultColor(initialHex),
   );
-  const [inputValue, setInputValue] = useState("");
+  const [inputValue, setInputValue] = useState(initialInput);
 
   const update = useCallback(
     (text: string) => {
       setInputValue(text);
-      const [hex, rgb, hsl] = parseText(text, initialHex);
-      setColor({ hex, rgb, hsl });
-      setSourceColor({ hex, rgb, hsl });
+      const value = parsedColor(text, initialHex);
+      setColor(value);
+      setSourceColor(value);
     },
     [initialHex],
   );
