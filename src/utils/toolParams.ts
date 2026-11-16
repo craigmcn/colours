@@ -26,19 +26,25 @@ export const readThemeParams = (params: URLSearchParams): ThemeParams => ({
 
 // Defaults are omitted so an untouched page keeps a clean URL. A colour is
 // only written once the user has entered one (hex is undefined otherwise).
-export const writeThemeParams = ({
-  brand,
-  mode,
-  prefix,
-}: {
-  brand?: Hex;
-  mode: ThemeMode;
-  prefix: string;
-}): URLSearchParams => {
+// includeDefaults writes every value, for links that must survive a future
+// change of defaults (the copied-output recipe header).
+export const writeThemeParams = (
+  {
+    brand,
+    mode,
+    prefix,
+  }: {
+    brand?: Hex;
+    mode: ThemeMode;
+    prefix: string;
+  },
+  { includeDefaults = false } = {},
+): URLSearchParams => {
   const params = new URLSearchParams();
   if (brand) params.set("brand", brand.join(""));
-  if (mode !== "light") params.set("mode", mode);
-  if (prefix !== THEME_DEFAULT_PREFIX) params.set("prefix", prefix);
+  if (includeDefaults || mode !== "light") params.set("mode", mode);
+  if (includeDefaults || prefix !== THEME_DEFAULT_PREFIX)
+    params.set("prefix", prefix);
   return params;
 };
 
@@ -56,21 +62,24 @@ export const readPaletteParams = (params: URLSearchParams): PaletteParams => ({
   name: params.get("name") ?? "",
 });
 
-export const writePaletteParams = ({
-  base,
-  light,
-  dark,
-  name,
-}: {
-  base?: Hex;
-  light?: Hex;
-  dark?: Hex;
-  name: string;
-}): URLSearchParams => {
+export const writePaletteParams = (
+  {
+    base,
+    light,
+    dark,
+    name,
+  }: {
+    base?: Hex;
+    light?: Hex;
+    dark?: Hex;
+    name: string;
+  },
+  { includeDefaults = false } = {},
+): URLSearchParams => {
   const params = new URLSearchParams();
   if (base) params.set("base", base.join(""));
   if (light) params.set("light", light.join(""));
   if (dark) params.set("dark", dark.join(""));
-  if (name) params.set("name", name);
+  if (includeDefaults || name) params.set("name", name);
   return params;
 };

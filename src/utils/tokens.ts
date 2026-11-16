@@ -1,7 +1,14 @@
-import type { RGB } from "../types/colour";
-import { rgb2Hex } from "./convertColours";
-import { PALETTE_STEPS } from "./paletteScale";
-import { roleToKebab, THEME_ROLES, type ThemePalette } from "./themePalette";
+import type { Hex, RGB } from "../types/colour";
+import { hex2Str, rgb2Hex } from "./convertColours";
+import { PALETTE_ALGORITHM_VERSION, PALETTE_STEPS } from "./paletteScale";
+import {
+  roleToKebab,
+  THEME_ALGORITHM_VERSION,
+  THEME_ROLES,
+  type ThemeMode,
+  type ThemePalette,
+} from "./themePalette";
+import { writePaletteParams, writeThemeParams } from "./toolParams";
 
 export interface CssToken {
   name: string;
@@ -44,3 +51,80 @@ export const paletteTokens = (scale: RGB[], name: string): CssToken[] => {
 
 export const cssDeclarations = (tokens: CssToken[]): string[] =>
   tokens.map(({ name, value }) => `${name}: ${value};`);
+
+// The header only ever contains sanitised idents, hex and URL-encoded params,
+// so user input can't close the comment early with "*/".
+const recipeComment = (
+  tool: string,
+  version: number,
+  inputs: [string, string][],
+  url: string,
+): string =>
+  `/* colours ${tool} v${version}: ${inputs
+    .map(([label, value]) => `${label} ${value}`)
+    .join(", ")}\n   ${url} */`;
+
+// appUrl is the app's root, e.g. "https://host/colours/". The slash is added
+// when missing rather than resolved with new URL(), which would drop a
+// slash-less subpath ("https://host/colours" + "theme" → "https://host/theme").
+const withTrailingSlash = (url: string): string =>
+  url.endsWith("/") ? url : `${url}/`;
+
+export const themeRecipe = ({
+  brand,
+  mode,
+  prefix,
+  appUrl,
+}: {
+  brand: Hex;
+  mode: ThemeMode;
+  prefix: string;
+  appUrl: string;
+}): string => {
+  const ident = toCssIdent(prefix, "theme");
+  const params = writeThemeParams(
+    { brand, mode, prefix: ident },
+    { includeDefaults: true },
+  );
+  return recipeComment(
+    "theme",
+    THEME_ALGORITHM_VERSION,
+    [
+      ["brand", hex2Str(brand)],
+      ["mode", mode],
+      ["prefix", ident],
+    ],
+    `${withTrailingSlash(appUrl)}theme?${params}`,
+  );
+};
+
+export const paletteRecipe = ({
+  base,
+  light,
+  dark,
+  name,
+  appUrl,
+}: {
+  base: Hex;
+  light: Hex;
+  dark: Hex;
+  name: string;
+  appUrl: string;
+}): string => {
+  const ident = toCssIdent(name, "colour");
+  const params = writePaletteParams(
+    { base, light, dark, name: ident },
+    { includeDefaults: true },
+  );
+  return recipeComment(
+    "palette",
+    PALETTE_ALGORITHM_VERSION,
+    [
+      ["base", hex2Str(base)],
+      ["light", hex2Str(light)],
+      ["dark", hex2Str(dark)],
+      ["name", ident],
+    ],
+    `${withTrailingSlash(appUrl)}palette?${params}`,
+  );
+};

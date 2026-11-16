@@ -313,7 +313,7 @@ describe("copy interactions", () => {
     );
   });
 
-  it("clicking the Copy button copies all 13 CSS variable lines", async () => {
+  it("clicking the Copy button copies the recipe header plus all 13 CSS variable lines", async () => {
     const mockCopy = vi.fn() as (text: string, key: string) => void;
     vi.mocked(useClipboard).mockReturnValue({
       copy: mockCopy,
@@ -329,10 +329,60 @@ describe("copy interactions", () => {
       string,
       string,
     ];
-    expect(text.split("\n")).toHaveLength(13);
+    // 2-line recipe comment, then the 13 variables
+    expect(text.split("\n")).toHaveLength(15);
     expect(text).toMatch(/--theme-primary: #0d6efd;/);
     expect(text).not.toMatch(/\n$/);
     expect(text).not.toMatch(/;;/);
+  });
+});
+
+describe("copy recipe header", () => {
+  it("records the default inputs explicitly, even though the URL omits them", async () => {
+    const mockCopy = vi.fn() as (text: string, key: string) => void;
+    vi.mocked(useClipboard).mockReturnValue({
+      copy: mockCopy,
+      copiedKey: null,
+      isSupported: true,
+    });
+    const user = userEvent.setup();
+    renderComponent();
+
+    await user.click(screen.getByRole("button", { name: /copy/i }));
+
+    const [text] = (mockCopy as ReturnType<typeof vi.fn>).mock.calls[0] as [
+      string,
+      string,
+    ];
+    const [line1, line2] = text.split("\n");
+    expect(line1).toBe(
+      "/* colours theme v1: brand #0d6efd, mode light, prefix theme",
+    );
+    expect(line2).toMatch(
+      /^ {3}https?:\/\/[^/\s]+\/(?:colours\/)?theme\?brand=0d6efd&mode=light&prefix=theme \*\/$/,
+    );
+  });
+
+  it("reflects the current mode and sanitised prefix", async () => {
+    const mockCopy = vi.fn() as (text: string, key: string) => void;
+    vi.mocked(useClipboard).mockReturnValue({
+      copy: mockCopy,
+      copiedKey: null,
+      isSupported: true,
+    });
+    const user = userEvent.setup();
+    renderComponent("?brand=3366cc&mode=dark&prefix=My%20Brand");
+
+    await user.click(screen.getByRole("button", { name: /copy/i }));
+
+    const [text] = (mockCopy as ReturnType<typeof vi.fn>).mock.calls[0] as [
+      string,
+      string,
+    ];
+    expect(text.split("\n")[0]).toBe(
+      "/* colours theme v1: brand #3366cc, mode dark, prefix my-brand",
+    );
+    expect(text).toMatch(/theme\?brand=3366cc&mode=dark&prefix=my-brand \*\//);
   });
 });
 

@@ -14,7 +14,11 @@ import {
 import { contrastTextColor } from "../../utils/contrastRatio";
 import { nearestNamedColor } from "../../utils/nearestNamedColor";
 import { buildPaletteScale } from "../../utils/paletteScale";
-import { cssDeclarations, paletteTokens } from "../../utils/tokens";
+import {
+  cssDeclarations,
+  paletteTokens,
+  paletteRecipe,
+} from "../../utils/tokens";
 import { readPaletteParams, writePaletteParams } from "../../utils/toolParams";
 import styles from "./PaletteGenerator.module.scss";
 
@@ -40,7 +44,18 @@ export const PaletteGenerator = () => {
     name.trim() ||
     (base.inputValue ? nearestNamedColor(base.color.rgb) : "grey");
   const variables = cssDeclarations(paletteTokens(palette, colorName));
-  const variablesText = variables.join("\n");
+  // The copied text leads with a comment recording the inputs, algorithm
+  // version and a link, so pasted tokens say how to regenerate them (#109).
+  const copyText = [
+    paletteRecipe({
+      base: base.color.hex,
+      light: light.color.hex,
+      dark: dark.color.hex,
+      name: colorName,
+      appUrl: `${window.location.origin}${import.meta.env.BASE_URL}`,
+    }),
+    ...variables,
+  ].join("\n");
 
   useSearchParamsSync(
     writePaletteParams({
@@ -158,10 +173,14 @@ export const PaletteGenerator = () => {
             </pre>
             <button
               className={`button button--sm${copiedKey === "variables" ? " button--success" : ""}`}
-              onClick={() => copy(variablesText, "variables")}
+              onClick={() => copy(copyText, "variables")}
             >
               <span className="fad fa-copy" /> Copy
             </button>
+            <p className="text--small m-t-xs m-b-0">
+              Copied text starts with a comment recording the inputs, algorithm
+              version and a link to reproduce this result.
+            </p>
           </div>
         </div>
       </div>

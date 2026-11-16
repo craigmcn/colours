@@ -7,6 +7,10 @@ export const PALETTE_STEPS = [
   0, 50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000,
 ] as const;
 
+// Bump whenever the same input produces a different scale; see
+// THEME_ALGORITHM_VERSION and the golden test in paletteScale.test.ts.
+export const PALETTE_ALGORITHM_VERSION = 1;
+
 export type PaletteStep = (typeof PALETTE_STEPS)[number];
 
 export const buildPaletteScale = (base: RGB, light: RGB, dark: RGB): RGB[] => {

@@ -1,4 +1,8 @@
-import { buildPaletteScale, PALETTE_STEPS } from "./paletteScale";
+import {
+  buildPaletteScale,
+  PALETTE_ALGORITHM_VERSION,
+  PALETTE_STEPS,
+} from "./paletteScale";
 import { rgb2Hex } from "./convertColours";
 import type { RGB } from "../types/colour";
 
@@ -22,6 +26,12 @@ describe("buildPaletteScale", () => {
   it("puts the base colour at step 500", () => {
     const scale = buildPaletteScale(GREY, WHITE, DARK);
     expect(scale[PALETTE_STEPS.indexOf(500)]).toEqual(GREY);
+  });
+
+  // Golden test: if this fails, the algorithm's output changed. Bump
+  // PALETTE_ALGORITHM_VERSION (copied tokens record it), then update the values.
+  it("is version 1", () => {
+    expect(PALETTE_ALGORITHM_VERSION).toBe(1);
   });
 
   it("produces the expected default grey scale", () => {

@@ -1,6 +1,8 @@
 import {
   cssDeclarations,
+  paletteRecipe,
   paletteTokens,
+  themeRecipe,
   themeTokens,
   toCssIdent,
 } from "./tokens";
@@ -81,5 +83,80 @@ describe("cssDeclarations", () => {
         { name: "--a-50", value: "#f9f9f9" },
       ]),
     ).toEqual(["--a-0: #ffffff;", "--a-50: #f9f9f9;"]);
+  });
+});
+
+describe("themeRecipe", () => {
+  const recipe = (prefix: string) =>
+    themeRecipe({
+      brand: ["33", "66", "cc"],
+      mode: "dark",
+      prefix,
+      appUrl: "https://example.com/colours/",
+    });
+
+  it("records tool, version, inputs and a full reproducible URL", () => {
+    expect(recipe("brand")).toBe(
+      "/* colours theme v1: brand #3366cc, mode dark, prefix brand\n" +
+        "   https://example.com/colours/theme?brand=3366cc&mode=dark&prefix=brand */",
+    );
+  });
+
+  it("adds the trailing slash when appUrl lacks one, keeping any subpath", () => {
+    const at = (appUrl: string) =>
+      themeRecipe({
+        brand: ["33", "66", "cc"],
+        mode: "light",
+        prefix: "theme",
+        appUrl,
+      }).split("\n")[1];
+    expect(at("https://example.com")).toContain("https://example.com/theme?");
+    expect(at("https://example.com/colours")).toContain(
+      "https://example.com/colours/theme?",
+    );
+  });
+
+  it("can't be closed early by a hostile prefix", () => {
+    const header = recipe("x */ body { display: none } /*");
+    expect(header.indexOf("*/")).toBe(header.length - 2);
+  });
+});
+
+describe("paletteRecipe", () => {
+  it("records every input, including defaults", () => {
+    expect(
+      paletteRecipe({
+        base: ["80", "80", "80"],
+        light: ["ff", "ff", "ff"],
+        dark: ["22", "22", "22"],
+        name: "Grey",
+        appUrl: "https://example.com/",
+      }),
+    ).toBe(
+      "/* colours palette v1: base #808080, light #ffffff, dark #222222, name grey\n" +
+        "   https://example.com/palette?base=808080&light=ffffff&dark=222222&name=grey */",
+    );
+  });
+
+  it("adds the trailing slash when appUrl lacks one", () => {
+    const header = paletteRecipe({
+      base: ["80", "80", "80"],
+      light: ["ff", "ff", "ff"],
+      dark: ["22", "22", "22"],
+      name: "grey",
+      appUrl: "https://example.com/colours",
+    });
+    expect(header).toContain("https://example.com/colours/palette?");
+  });
+
+  it("can't be closed early by a hostile name", () => {
+    const header = paletteRecipe({
+      base: ["80", "80", "80"],
+      light: ["ff", "ff", "ff"],
+      dark: ["22", "22", "22"],
+      name: "*/ evil /*",
+      appUrl: "https://example.com/",
+    });
+    expect(header.indexOf("*/")).toBe(header.length - 2);
   });
 });

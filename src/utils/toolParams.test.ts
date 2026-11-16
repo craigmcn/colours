@@ -60,6 +60,15 @@ describe("writeThemeParams", () => {
     ).toBe("brand=3366cc&mode=dark&prefix=my+brand");
   });
 
+  it("writes every value with includeDefaults", () => {
+    expect(
+      writeThemeParams(
+        { brand: ["0d", "6e", "fd"], mode: "light", prefix: "theme" },
+        { includeDefaults: true },
+      ).toString(),
+    ).toBe("brand=0d6efd&mode=light&prefix=theme");
+  });
+
   it("round-trips through readThemeParams", () => {
     const written = writeThemeParams({
       brand: ["33", "66", "cc"],
@@ -92,6 +101,12 @@ describe("readPaletteParams / writePaletteParams", () => {
         name: "red",
       }).toString(),
     ).toBe("base=ff0000&dark=111111&name=red");
+  });
+
+  it("writes an empty name with includeDefaults", () => {
+    expect(
+      writePaletteParams({ name: "" }, { includeDefaults: true }).toString(),
+    ).toBe("name=");
   });
 
   it("round-trips", () => {
