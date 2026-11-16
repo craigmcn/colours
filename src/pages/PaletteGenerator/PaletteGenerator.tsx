@@ -1,9 +1,7 @@
 import { useState } from "react";
-import type { RGB } from "../../types/colour";
 import { useColor } from "../../hooks/useColor";
 import { ColorInput } from "../../components/ColorInput/ColorInput";
 import { useClipboard } from "../../hooks/useClipboard";
-import { calculateColorArray } from "../../utils/calculate";
 import {
   rgb2Hex,
   rgb2Hsl,
@@ -13,21 +11,13 @@ import {
 } from "../../utils/convertColours";
 import { contrastTextColor } from "../../utils/contrastRatio";
 import { nearestNamedColor } from "../../utils/nearestNamedColor";
+import { buildPaletteScale } from "../../utils/paletteScale";
+import { cssDeclarations, paletteTokens } from "../../utils/tokens";
 import styles from "./PaletteGenerator.module.scss";
 
 const DEFAULT_BASE = "#808080";
 const DEFAULT_LIGHT = "#ffffff";
 const DEFAULT_DARK = "#222222";
-
-const buildPalette = (base: RGB, light: RGB, dark: RGB): RGB[] => {
-  const result: RGB[] = [];
-  for (let i = 0; i < 5; i++)
-    result.push(calculateColorArray(i / 5, light, base));
-  for (let i = 0; i < 6; i++)
-    result.push(calculateColorArray(i / 5, base, dark));
-  result.splice(1, 0, calculateColorArray(0.05, light, base));
-  return result;
-};
 
 export const PaletteGenerator = () => {
   const [name, setName] = useState("");
@@ -36,21 +26,15 @@ export const PaletteGenerator = () => {
   const dark = useColor(DEFAULT_DARK);
   const { copy, copiedKey } = useClipboard();
 
-  const palette = buildPalette(base.color.rgb, light.color.rgb, dark.color.rgb);
-  const toCssIdent = (s: string): string =>
-    s
-      .toLowerCase()
-      .replace(/\s+/g, "-")
-      .replace(/[^a-z0-9-]/g, "") || "colour";
-
-  const colorName = toCssIdent(
-    name || (base.inputValue ? nearestNamedColor(base.color.rgb) : "grey"),
+  const palette = buildPaletteScale(
+    base.color.rgb,
+    light.color.rgb,
+    dark.color.rgb,
   );
-
-  const variables = palette.map((rgb, index) => {
-    const i = index === 0 ? 0 : index === 1 ? 50 : (index - 1) * 100;
-    return `--${colorName}-${i}: ${rgb2Hex(rgb, true)};`;
-  });
+  const colorName =
+    name.trim() ||
+    (base.inputValue ? nearestNamedColor(base.color.rgb) : "grey");
+  const variables = cssDeclarations(paletteTokens(palette, colorName));
   const variablesText = variables.join("\n");
 
   return (

@@ -175,6 +175,13 @@ describe("CSS variable prefix", () => {
     expect(preText()).toMatch(/--primary-/);
     expect(preText()).not.toMatch(/--red-/);
   });
+
+  it("treats a whitespace-only Name as empty and keeps the default prefix", async () => {
+    const user = userEvent.setup();
+    renderComponent();
+    await user.type(screen.getByLabelText("Name"), "   ");
+    expect(preText()).toMatch(/--gr[ae]y-0:/);
+  });
 });
 
 // ─── Base colour input ────────────────────────────────────────────────────────
