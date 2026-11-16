@@ -19,6 +19,11 @@ export type ThemeRole =
 
 export type ThemeMode = "light" | "dark";
 
+// Recorded in copied output so downstream token files say which algorithm made
+// them. Bump whenever the same input produces different output (the golden
+// test in themePalette.test.ts fails when that happens).
+export const THEME_ALGORITHM_VERSION = 1;
+
 export type ThemePalette = Record<ThemeRole, RGB>;
 
 export const THEME_ROLES: ThemeRole[] = [

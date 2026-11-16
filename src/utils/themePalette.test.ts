@@ -1,4 +1,5 @@
 import {
+  THEME_ALGORITHM_VERSION,
   generateThemePalette,
   generateDarkThemePalette,
   roleToKebab,
@@ -309,5 +310,62 @@ describe("roleToKebab", () => {
   it("converts camelCase roles to kebab-case", () => {
     expect(roleToKebab("grayLight")).toBe("gray-light");
     expect(roleToKebab("grayDark")).toBe("gray-dark");
+  });
+});
+
+// If this fails, the algorithm's output changed: bump THEME_ALGORITHM_VERSION
+// (copied tokens record it) and then update the expected values here.
+describe("golden output (THEME_ALGORITHM_VERSION)", () => {
+  const hexes = (palette: Record<string, RGB>) =>
+    Object.fromEntries(
+      Object.entries(palette).map(([role, rgb]) => [
+        role,
+        "#" + rgb.map((c) => c.toString(16).padStart(2, "0")).join(""),
+      ]),
+    );
+
+  it("is version 1", () => {
+    expect(THEME_ALGORITHM_VERSION).toBe(1);
+  });
+
+  it("light mode for #0d6efd is unchanged", () => {
+    expect(hexes(generateThemePalette([13, 110, 253]))).toMatchInlineSnapshot(`
+      {
+        "accent": "#fd9d0d",
+        "black": "#1a1a1a",
+        "danger": "#e72336",
+        "dark": "#132949",
+        "grayDark": "#595959",
+        "grayLight": "#d1d1d1",
+        "info": "#1dcaed",
+        "light": "#f2f4f8",
+        "primary": "#0d6efd",
+        "secondary": "#455772",
+        "success": "#17cf42",
+        "warning": "#fdc10d",
+        "white": "#fafafa",
+      }
+    `);
+  });
+
+  it("dark mode for #0d6efd is unchanged", () => {
+    expect(hexes(generateDarkThemePalette([13, 110, 253])))
+      .toMatchInlineSnapshot(`
+      {
+        "accent": "#fda31c",
+        "black": "#fafafa",
+        "danger": "#e23647",
+        "dark": "#f2f4f8",
+        "grayDark": "#d1d1d1",
+        "grayLight": "#595959",
+        "info": "#30c9e8",
+        "light": "#132949",
+        "primary": "#1c76fd",
+        "secondary": "#495c79",
+        "success": "#36e25e",
+        "warning": "#fdc41c",
+        "white": "#1a1a1a",
+      }
+    `);
   });
 });

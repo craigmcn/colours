@@ -19,7 +19,7 @@ import {
   hex2Str,
 } from "../../utils/convertColours";
 import { contrastTextColor } from "../../utils/contrastRatio";
-import { cssDeclarations, themeTokens } from "../../utils/tokens";
+import { cssDeclarations, themeTokens, themeRecipe } from "../../utils/tokens";
 import { readThemeParams, writeThemeParams } from "../../utils/toolParams";
 import styles from "./ThemeColours.module.scss";
 
@@ -43,7 +43,17 @@ export const ThemeColours = () => {
       ? generateThemePalette(base.color.rgb)
       : generateDarkThemePalette(base.color.rgb);
   const variables = cssDeclarations(themeTokens(palette, prefix));
-  const variablesText = variables.join("\n");
+  // The copied text leads with a comment recording the inputs, algorithm
+  // version and a link, so pasted tokens say how to regenerate them (#109).
+  const copyText = [
+    themeRecipe({
+      brand: base.color.hex,
+      mode,
+      prefix,
+      appUrl: `${window.location.origin}${import.meta.env.BASE_URL}`,
+    }),
+    ...variables,
+  ].join("\n");
 
   useSearchParamsSync(
     writeThemeParams({
@@ -178,10 +188,14 @@ export const ThemeColours = () => {
             </pre>
             <button
               className={`button button--sm${copiedKey === "variables" ? " button--success" : ""}`}
-              onClick={() => copy(variablesText, "variables")}
+              onClick={() => copy(copyText, "variables")}
             >
               <span className="fad fa-copy" aria-hidden="true" /> Copy
             </button>
+            <p className="text--small m-t-xs m-b-0">
+              Copied text starts with a comment recording the inputs, algorithm
+              version and a link to reproduce this result.
+            </p>
           </div>
         </div>
       </div>

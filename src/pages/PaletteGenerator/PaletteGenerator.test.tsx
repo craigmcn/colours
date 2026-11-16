@@ -351,7 +351,7 @@ describe("copy interactions", () => {
     );
   });
 
-  it("clicking the Copy button copies all 12 CSS variable lines", async () => {
+  it("clicking the Copy button copies the recipe header plus all 12 CSS variable lines", async () => {
     const mockCopy = vi.fn() as (text: string, key: string) => void;
     vi.mocked(useClipboard).mockReturnValue({
       copy: mockCopy,
@@ -367,8 +367,8 @@ describe("copy interactions", () => {
       string,
       string,
     ];
-    // variablesText = variables.join('\n') → 12 lines joined by newline
-    expect(text.split("\n")).toHaveLength(12);
+    // 2-line recipe comment, then the 12 variables joined by newline
+    expect(text.split("\n")).toHaveLength(14);
     expect(text).toMatch(/--gr[ae]y-0: #ffffff;/);
     expect(text).toMatch(/--gr[ae]y-500: #808080;/);
     expect(text).not.toMatch(/\n$/); // joined, not terminated
@@ -393,6 +393,31 @@ describe("copy interactions", () => {
       string,
     ];
     expect(text).toMatch(/--brand-500:/);
+  });
+
+  it("the copied text starts with a recipe header recording every input", async () => {
+    const mockCopy = vi.fn() as (text: string, key: string) => void;
+    vi.mocked(useClipboard).mockReturnValue({
+      copy: mockCopy,
+      copiedKey: null,
+      isSupported: true,
+    });
+    const user = userEvent.setup();
+    renderComponent("?base=ff0000&name=brand");
+
+    await user.click(screen.getByRole("button", { name: /copy/i }));
+
+    const [text] = (mockCopy as ReturnType<typeof vi.fn>).mock.calls[0] as [
+      string,
+      string,
+    ];
+    const [line1, line2] = text.split("\n");
+    expect(line1).toBe(
+      "/* colours palette v1: base #ff0000, light #ffffff, dark #222222, name brand",
+    );
+    expect(line2).toMatch(
+      /^ {3}https?:\/\/\S+\/palette\?base=ff0000&light=ffffff&dark=222222&name=brand \*\/$/,
+    );
   });
 });
 
