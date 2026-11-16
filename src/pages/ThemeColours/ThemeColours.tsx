@@ -17,6 +17,7 @@ import {
   hex2Str,
 } from "../../utils/convertColours";
 import { contrastTextColor } from "../../utils/contrastRatio";
+import { cssDeclarations, themeTokens } from "../../utils/tokens";
 import styles from "./ThemeColours.module.scss";
 
 const DEFAULT_BASE = "#0d6efd";
@@ -25,13 +26,6 @@ const MODE_LABELS: Record<ThemeMode, string> = {
   light: "Light",
   dark: "Dark",
 };
-
-const toCssIdent = (s: string): string =>
-  s
-    .trim()
-    .toLowerCase()
-    .replace(/\s+/g, "-")
-    .replace(/[^a-z0-9-]/g, "") || "theme";
 
 export const ThemeColours = () => {
   const [prefix, setPrefix] = useState("theme");
@@ -43,12 +37,7 @@ export const ThemeColours = () => {
     mode === "light"
       ? generateThemePalette(base.color.rgb)
       : generateDarkThemePalette(base.color.rgb);
-  const varPrefix = toCssIdent(prefix);
-
-  const variables = THEME_ROLES.map(
-    (role) =>
-      `--${varPrefix}-${roleToKebab(role)}: ${rgb2Hex(palette[role], true)};`,
-  );
+  const variables = cssDeclarations(themeTokens(palette, prefix));
   const variablesText = variables.join("\n");
 
   return (

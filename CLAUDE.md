@@ -2,7 +2,7 @@
 
 ## Project overview
 
-React + TypeScript SPA (Vite) with four colour tools: Contrast Checker, Opacity Calculator, Palette Generator, and Colour Blender. Deployed to both Netlify (root) and GitHub Pages (`/colours/` subdirectory) — the dual-build distinction matters for routing and asset paths.
+React + TypeScript SPA (Vite) with five colour tools: Contrast Checker, Opacity Calculator, Palette Generator, Colour Blender, and Theme Colours (`/theme`). Deployed to both Netlify (root) and GitHub Pages (`/colours/` subdirectory) — the dual-build distinction matters for routing and asset paths.
 
 ## Commands
 
@@ -43,6 +43,9 @@ src/
 - `contrastRatio.ts` — WCAG contrast ratio calculation and `contrastTextColor` (returns accessible text colour for a given background). **`contrastRatio()` returns an unrounded float** — rounding to 2dp happens only at the display layer (`ContrastResult`). Do not round elsewhere; pass/fail and search-loop comparisons must use the precise value.
 - `calculate.ts` — opacity blending maths (`calculateColorArray`, `calculateFg`, `calculateBg`, `calculateOpacity`)
 - `passFail.ts` — WCAG pass/fail logic
+- `themePalette.ts` — Theme Colours generator (`generateThemePalette` / `generateDarkThemePalette`, 13 roles)
+- `paletteScale.ts` — Palette Generator's 12-step scale (`buildPaletteScale`, `PALETTE_STEPS`)
+- `tokens.ts` — CSS custom-property output shared by both generators: `toCssIdent`, `themeTokens`, `paletteTokens`, `cssDeclarations`. Pages must stay thin wrappers over these (no colour or formatting logic in components), so the output can be reused outside the UI (#109).
 
 ## Conventions
 
