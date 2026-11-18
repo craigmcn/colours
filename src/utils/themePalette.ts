@@ -175,8 +175,8 @@ const DARK_PRIMARY_BAND: SaturationLightnessBand = {
 // - secondary keeps primary's hue but is desaturated and pushed to a
 //   guaranteed-distinguishable lightness (see ensureSecondaryContrast) so it
 //   reads as "supporting", not as a near-duplicate of primary.
-// - success/danger/warning/info keep the brand's hue/saturation but re-band
-//   their lightness per mode (see STATUS_BANDS).
+// - success/danger/warning/info use fixed hues (SEMANTIC_HUES), with the
+//   brand's saturation and lightness clamped per role and mode (STATUS_BANDS).
 // - light/dark are brand-tinted "surface" endpoints and invert between modes
 //   — light mode's near-white "light" surface becomes dark mode's near-black
 //   one, and vice versa.
