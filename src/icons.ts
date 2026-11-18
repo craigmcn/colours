@@ -5,4 +5,8 @@ import "@fortawesome/fontawesome-svg-core/styles.css";
 // CSS is bundled from this import instead of injected as a <style> at runtime.
 config.autoAddCss = false;
 
-export { faBars, faCircleInfo, faCopy } from "@fortawesome/pro-light-svg-icons";
+export {
+  faBars,
+  faCircleInfo,
+  faCopy,
+} from "@fortawesome/duotone-light-svg-icons";

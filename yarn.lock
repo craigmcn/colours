@@ -359,6 +359,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@fortawesome/duotone-light-svg-icons@npm:^7.3.1":
+  version: 7.3.1
+  resolution: "@fortawesome/duotone-light-svg-icons@npm:7.3.1"
+  dependencies:
+    "@fortawesome/fontawesome-common-types": "npm:7.3.1"
+  checksum: 10c0/91d44404fe361aeb5ca1716acf0c6ade827bc79f472409fa6353253133bdf76db257372cffc55d3204d23ddacb733de8d8cbf036d15375103a072d346dac9feb
+  languageName: node
+  linkType: hard
+
 "@fortawesome/fontawesome-common-types@npm:7.3.1":
   version: 7.3.1
   resolution: "@fortawesome/fontawesome-common-types@npm:7.3.1"
@@ -372,15 +381,6 @@ __metadata:
   dependencies:
     "@fortawesome/fontawesome-common-types": "npm:7.3.1"
   checksum: 10c0/07c84a5751999d13d875f63e059ec2b0ab6dbed9cfe363fe8a870fd64e045c049367ae55bdee18973b38255967593d6eef403170a1e70cf4400de8216a932654
-  languageName: node
-  linkType: hard
-
-"@fortawesome/pro-light-svg-icons@npm:^7.3.1":
-  version: 7.3.1
-  resolution: "@fortawesome/pro-light-svg-icons@npm:7.3.1"
-  dependencies:
-    "@fortawesome/fontawesome-common-types": "npm:7.3.1"
-  checksum: 10c0/9dc810b9a989206bac0ed31dcc85c112e87b2de56443514c17e8f87718b2144d675220a45690fa4d8f7647b23dc52ea1e49503a401bdf9001ba3ec476593bbbd
   languageName: node
   linkType: hard
 
@@ -1585,8 +1585,8 @@ __metadata:
   resolution: "colours@workspace:."
   dependencies:
     "@eslint/js": "npm:^9.39.4"
+    "@fortawesome/duotone-light-svg-icons": "npm:^7.3.1"
     "@fortawesome/fontawesome-svg-core": "npm:^7.3.1"
-    "@fortawesome/pro-light-svg-icons": "npm:^7.3.1"
     "@fortawesome/react-fontawesome": "npm:^3.5.0"
     "@playwright/test": "npm:^1.61.1"
     "@testing-library/dom": "npm:^10"
