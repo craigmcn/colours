@@ -1,7 +1,7 @@
 {
   "//": "The build:netlify script builds the app twice: once for the root and once for the /colours/ subdirectory. This is necessary because Netlify serves the app from the root, but GitHub Pages (craigmcn.com) serves it from the /colours/ subdirectory.",
   "name": "colours",
-  "version": "3.1.0",
+  "version": "3.2.0",
   "repository": "github:craigmcn/colours",
   "description": "Colour manipulator and contrast checker",
   "type": "module",

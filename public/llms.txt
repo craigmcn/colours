@@ -1,0 +1,86 @@
+# colours
+
+> Colour tools for web design: a WCAG contrast checker, an opacity calculator, a colour blender, a palette generator and a theme colour generator. The Theme Colours and Palette Generator tools output CSS custom properties that can be regenerated deterministically from their inputs, through a URL or offline with the `colours-tokens` CLI.
+
+The app is a client-side single-page app: fetching a tool's URL returns an empty HTML shell, not the result. To get tokens without a browser, use the CLI (see "Regenerating tokens offline"). The canonical app URL is https://www.craigmcn.com/colours/ and the source is https://github.com/craigmcn/colours.
+
+Current algorithm versions: theme algorithm v1, palette algorithm v1. A version is bumped whenever the same input starts producing different output.
+
+## Tools
+
+- [Theme Colours](https://www.craigmcn.com/colours/theme): one brand colour in, a 13-role Bootstrap-style theme out, for light or dark mode.
+- [Palette Generator](https://www.craigmcn.com/colours/palette): base, light and dark colours in, a 12-step scale (0, 50, 100…1000) out.
+- [Contrast Checker](https://www.craigmcn.com/colours/): WCAG 2 contrast ratios and AA/AAA pass/fail for background, text and link colours. No URL params.
+- [Opacity Calculator](https://www.craigmcn.com/colours/opacity): the solid colour a semi-transparent foreground produces over a background, or solve for the foreground, background or opacity. No URL params.
+- [Colour Blender](https://www.craigmcn.com/colours/blender): evenly spaced steps between two colours. No URL params.
+
+## URL params
+
+Colours are bare hex without "#", 3 or 6 digits. Invalid values are ignored and the tool's default is used. The app keeps the address bar in sync as inputs change and omits defaults.
+
+- Theme Colours: `brand` (default 0d6efd), `mode` (`light` or `dark`, default `light`), `prefix` (default `theme`).
+  Example: https://www.craigmcn.com/colours/theme?brand=3366cc&mode=dark&prefix=brand
+- Palette Generator: `base` (default 808080), `light` (default ffffff), `dark` (default 222222), `name` (default: the nearest CSS named colour to `base`, or `grey` when no base was entered).
+  Example: https://www.craigmcn.com/colours/palette?base=3366cc&name=blue
+
+## Output format
+
+One CSS custom property per line, `--<prefix>-<role>: #rrggbb;` for the theme and `--<name>-<step>: #rrggbb;` for the palette. Prefixes and names are lowercased, whitespace becomes "-", and other characters outside a-z, 0-9 and "-" are removed. Theme roles are kebab-cased (grayLight becomes gray-light).
+
+The app's Copy button, and the CLI, start the output with a two-line recipe comment. It records the tool, algorithm version, every input (defaults included) and a link to the exact result:
+
+```css
+/* colours theme v1: brand #3366cc, mode dark, prefix brand
+   https://www.craigmcn.com/colours/theme?brand=3366cc&mode=dark&prefix=brand */
+--brand-primary: #4775d1;
+--brand-secondary: #4e576a;
+--brand-accent: #d1a347;
+```
+
+To regenerate tokens from an existing file, read the inputs from this comment and pass them to the CLI. Pin the release whose algorithm version matches the "v" number in the comment.
+
+## Regenerating tokens offline
+
+`colours-tokens` runs on Node 20 or later, has no dependencies, and gives output identical to the Copy button (plus a trailing newline). Pin a release tag (v3.2.0 or later; see https://github.com/craigmcn/colours/releases) so the algorithm can't change underneath you.
+
+```bash
+npx github:craigmcn/colours#v3.2.0 theme --brand 3366cc --mode dark --prefix brand
+npx github:craigmcn/colours#v3.2.0 palette --base 3366cc --name blue --format json
+```
+
+Without installing anything (no npm, about 150 kB):
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/craigmcn/colours/v3.2.0/bin/colours-tokens.mjs | node --input-type=module - theme --brand 3366cc
+```
+
+- `theme`: `--brand <hex>` (required), `--mode light|dark` (default light), `--prefix <name>` (default theme).
+- `palette`: `--base <hex>` (required), `--light <hex>` (default ffffff), `--dark <hex>` (default 222222), `--name <name>` (default: nearest CSS named colour to the base).
+- Both: `--format css|json` (default css), `--app-url <http(s) url>` (base of the recipe link), `--help`, `--version`.
+- JSON output: `{ "tool", "version", "inputs", "url", "tokens" }`, where `tokens` maps each property name to its hex value in output order.
+- Invalid input exits with code 1 and a message on stderr.
+
+## Theme algorithm (v1)
+
+Input: one brand colour, converted to HSL (hue H, saturation S, lightness L, as integer percentages). "Banded" below means clamped into a [min, max] range.
+
+- primary: the brand colour unchanged in light mode. In dark mode, H with S banded to 50–100 and L banded to 55–70, so it stays legible on a near-black background.
+- accent: the complementary hue (H + 180°). Light mode keeps S and L; dark mode bands them like dark primary.
+- secondary: hue H at S × 0.25, starting from L banded to 35–55 (light) or 60–75 (dark). Lightness is then stepped away from primary until the two have a contrast ratio of at least 1.6:1, within 10–92%.
+- success, danger, warning, info: fixed hues 134°, 354°, 45° and 190° (Bootstrap's status hues), with the brand's S and L banded per role and mode:
+  - Light mode: success S 45–80, L 30–45; danger S 45–80, L 40–55; warning S 70–100, L 45–60; info S 45–85, L 40–60.
+  - Dark mode: success, danger and info S 40–75 (info 40–80), L 55–70; warning S 65–100, L 55–70.
+- light and dark: brand-tinted surfaces. Near-white is H, S × 0.3, L 96; near-black is H, S × 0.6, L 18. Light mode: light = near-white, dark = near-black. Dark mode swaps them.
+- white, gray-light, gray-dark, black: fixed neutral greys at L 98, 82, 35 and 10 (off-white and off-black to avoid harsh pure #fff/#000). Dark mode swaps them end for end: white becomes L 10, gray-light becomes L 35, and so on.
+
+Output order: primary, secondary, accent, success, danger, warning, info, light, dark, white, gray-light, gray-dark, black.
+
+## Palette algorithm (v1)
+
+Inputs: base, light and dark colours in RGB. Each step mixes two colours per channel, rounding to the nearest integer: mix(a, b, t) = round((1 − t) × a + t × b).
+
+- Steps 0, 100, 200, 300, 400: mix(light, base, t) for t = 0, 0.2, 0.4, 0.6, 0.8. Step 0 equals light.
+- Step 50: mix(light, base, 0.05), a near-light tint.
+- Steps 500 to 1000: mix(base, dark, t) for t = 0, 0.2, 0.4, 0.6, 0.8, 1. Step 500 equals base and step 1000 equals dark.
+
+Output order: 0, 50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000.
