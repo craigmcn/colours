@@ -9,4 +9,4 @@ export {
   faBars,
   faCircleInfo,
   faCopy,
-} from "@fortawesome/duotone-light-svg-icons";
+} from "@fortawesome/sharp-duotone-light-svg-icons";
