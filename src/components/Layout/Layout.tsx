@@ -1,4 +1,6 @@
 import { NavLink } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBars } from "../../icons";
 
 interface Props {
   children: React.ReactNode;
@@ -102,7 +104,7 @@ export const Layout = ({ children }: Props) => (
         aria-expanded="false"
         aria-label="Toggle navigation"
       >
-        <span className="far fa-bars fa-fw" />
+        <FontAwesomeIcon icon={faBars} />
         <span className="visually-hidden">Menu</span>
       </button>
     </header>

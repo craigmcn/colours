@@ -359,6 +359,41 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@fortawesome/fontawesome-common-types@npm:7.3.1":
+  version: 7.3.1
+  resolution: "@fortawesome/fontawesome-common-types@npm:7.3.1"
+  checksum: 10c0/f443a0109773e57ceab3c35021c4f26baf8c29afc79efbea2324bcd9f7dd326f5ac415e46ead17eaf6e935bc23fce83993d4211a4cff375c19100ee65ea9e5cc
+  languageName: node
+  linkType: hard
+
+"@fortawesome/fontawesome-svg-core@npm:^7.3.1":
+  version: 7.3.1
+  resolution: "@fortawesome/fontawesome-svg-core@npm:7.3.1"
+  dependencies:
+    "@fortawesome/fontawesome-common-types": "npm:7.3.1"
+  checksum: 10c0/07c84a5751999d13d875f63e059ec2b0ab6dbed9cfe363fe8a870fd64e045c049367ae55bdee18973b38255967593d6eef403170a1e70cf4400de8216a932654
+  languageName: node
+  linkType: hard
+
+"@fortawesome/react-fontawesome@npm:^3.5.0":
+  version: 3.5.0
+  resolution: "@fortawesome/react-fontawesome@npm:3.5.0"
+  peerDependencies:
+    "@fortawesome/fontawesome-svg-core": ~6 || ~7
+    react: ^18.0.0 || ^19.0.0
+  checksum: 10c0/b1b854095f9cbd52fe18f02461e594452fc70e3977ceab5fd1c9206ac98f89e40500e7fb5625426fa0cc2dc7e65d3d86bd07b70171d58dc5d54b0c74878d3b44
+  languageName: node
+  linkType: hard
+
+"@fortawesome/sharp-duotone-light-svg-icons@npm:^7.3.1":
+  version: 7.3.1
+  resolution: "@fortawesome/sharp-duotone-light-svg-icons@npm:7.3.1"
+  dependencies:
+    "@fortawesome/fontawesome-common-types": "npm:7.3.1"
+  checksum: 10c0/63f42bdb56f165552ce28d41fe087e8a839efd7082df7f97ee6919ca53c898020fa14b22aa59a2130ef88ae1ca3dbf1f720ffcd3dc76df89863792235c2efaf8
+  languageName: node
+  linkType: hard
+
 "@humanfs/core@npm:^0.19.2":
   version: 0.19.2
   resolution: "@humanfs/core@npm:0.19.2"
@@ -1550,6 +1585,9 @@ __metadata:
   resolution: "colours@workspace:."
   dependencies:
     "@eslint/js": "npm:^9.39.4"
+    "@fortawesome/fontawesome-svg-core": "npm:^7.3.1"
+    "@fortawesome/react-fontawesome": "npm:^3.5.0"
+    "@fortawesome/sharp-duotone-light-svg-icons": "npm:^7.3.1"
     "@playwright/test": "npm:^1.61.1"
     "@testing-library/dom": "npm:^10"
     "@testing-library/jest-dom": "npm:^6.9.1"
@@ -1577,6 +1615,13 @@ __metadata:
     vite: "npm:^8"
     vitest: "npm:^4.1.12"
     vitest-axe: "npm:1.0.0-pre.5"
+  dependenciesMeta:
+    "@fortawesome/fontawesome-svg-core":
+      optional: true
+    "@fortawesome/react-fontawesome":
+      optional: true
+    "@fortawesome/sharp-duotone-light-svg-icons":
+      optional: true
   bin:
     colours-tokens: bin/colours-tokens.mjs
   languageName: unknown

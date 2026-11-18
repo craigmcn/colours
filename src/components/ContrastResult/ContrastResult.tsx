@@ -1,5 +1,7 @@
 import type { PassFailResult } from "../../utils/passFail";
 import styles from "./ContrastResult.module.scss";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCircleInfo } from "../../icons";
 
 interface Link2BodyProps {
   type: "link2Body";
@@ -41,7 +43,7 @@ export const ContrastResult = (props: Props) => {
             </p>
             {props.results.A === "Fail" && (
               <p className="label--warn text--info">
-                <i className="fa-light fa-circle-info m-r-xs" />
+                <FontAwesomeIcon icon={faCircleInfo} className="m-r-xs" />
                 Use another method for differentiating links and text (e.g.,
                 underline)
               </p>

@@ -13,6 +13,8 @@ import {
 } from "../../utils/convertColours";
 import { contrastTextColor } from "../../utils/contrastRatio";
 import styles from "./ColourBlender.module.scss";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCopy } from "../../icons";
 
 const DEFAULT_START = "#005b99";
 const DEFAULT_END = "#ffffff";
@@ -93,7 +95,7 @@ export const ColourBlender = () => {
                   </div>
                   <div className="flex flex__item--as-center m-l-auto m-b-0">
                     <div>
-                      <span className="fad fa-copy m-r-xs" aria-hidden="true" />
+                      <FontAwesomeIcon icon={faCopy} className="m-r-xs" />
                       <span className="visually-hidden">Copy</span>
                       <button
                         className={`button button--sm${copiedKey === `${key}-hex` ? " button--success" : ""}`}
