@@ -16,8 +16,11 @@ export default defineConfig({
       use: { ...devices["Desktop Chrome"] },
     },
   ],
+  // Calls Vite's bin through node rather than `yarn dev`: the nested yarn run
+  // inside Playwright's child process sometimes failed with "command not
+  // found: vite" locally (#125), and this path needs no bin lookup.
   webServer: {
-    command: "yarn dev",
+    command: "node node_modules/vite/bin/vite.js --port 3060 --strictPort",
     url: "http://localhost:3060",
     reuseExistingServer: !process.env.CI,
   },
