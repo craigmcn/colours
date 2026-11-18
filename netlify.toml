@@ -1,0 +1,15 @@
+[build]
+  command = "yarn build:netlify"
+  publish = "netlify"
+
+# script-src allows index.html's inline trailing-slash redirect by hash, once
+# per build base (Vite bakes %BASE_URL% into it); it must run before relative
+# URLs resolve, so it can't be a file. src/securityHeaders.test.ts guards both.
+# albertcss serves its CSS and nav JS from its own host and @imports Google Fonts.
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'sha256-qmvRx2nxF9O/VnTMuvMMN3wESLIkGU6/MMzdQVZvWJw=' 'sha256-ibrLrmBTPqTdtSIMlSwVyd9CMqxbqlgxNaAqW7Ql1WM=' https://albertcss.craigmcn.com; style-src 'self' https://albertcss.craigmcn.com https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=(), payment=(), usb=(), browsing-topics=()"

@@ -2,6 +2,8 @@ import type { Hex, RGB, HSL } from "../../types/colour";
 import { hex2Str, rgb2Str, hsl2Str } from "../../utils/convertColours";
 import { useClipboard } from "../../hooks/useClipboard";
 import styles from "./CopyButtons.module.scss";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCopy } from "../../icons";
 
 interface Props {
   hex: Hex;
@@ -24,7 +26,7 @@ export const CopyButtons = ({ hex, rgb, hsl, id = "copy" }: Props) => {
     <div
       className={`flex flex--ai-center flex--jc-center p-t-xs ${styles.copyButtons}`}
     >
-      <span className="fad fa-copy" aria-hidden="true" />
+      <FontAwesomeIcon icon={faCopy} />
       <span className="visually-hidden">Copy</span>
       <button
         className={`m-t-0 m-l-xs button button--sm${copiedKey === `${prefix}-hex` ? " button--success" : ""}`}

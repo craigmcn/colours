@@ -53,6 +53,10 @@ src/
 - **`public/llms.txt`** — hand-written docs for agents: tools, URL params, output format, CLI usage and the theme/palette algorithms in prose. Vite copies it into both builds, and Netlify serves it as a static file ahead of the SPA rewrite. `src/llmsTxt.test.ts` runs every documented CLI command, checks the example CSS against real output, and checks the version line; `e2e/llms-txt.spec.ts` opens each example URL. **When an algorithm changes, update its prose section along with the version bump.** The pinned release tag in the CLI examples isn't tested, so update it when publishing a release that changes output.
 - **Copy recipe header** — the custom-properties Copy button prepends a two-line CSS comment (`themeRecipe` / `paletteRecipe` in `tokens.ts`) recording the tool, algorithm version, every input (defaults included) and a full reproducible URL, so pasted tokens describe how to regenerate them. It's in the copied text only, not the on-screen `<pre>`, and a caption under the button says so. The header is built only from sanitised idents, hex values, URL-encoded params and a normalised `appUrl` (line breaks dropped, `*/` encoded as `*%2F`), so no input, including the CLI's `--app-url`, can close the comment with `*/`. The CLI also rejects a non-http(s) `--app-url`.
 
+## Security headers
+
+`netlify.toml` sets a strict CSP (no `'unsafe-inline'` or `'unsafe-eval'`) plus `nosniff`, `Referrer-Policy` and `Permissions-Policy`. These apply on Netlify only; GitHub Pages can't set headers. `www.craigmcn.com/colours/` proxies Netlify, so it gets them too. The only external origins are albertcss (CSS and nav JS) and Google Fonts. Adding a CDN, a runtime `<style>` injector or a new fetch target needs a CSP change. Vite bakes `%BASE_URL%` into `index.html`'s inline redirect script, so the CSP allows one hash per build base. `src/securityHeaders.test.ts` fails if the script changes without updating both hashes.
+
 ## Conventions
 
 - **Spelling**: "colour" in UI-facing text and filenames (e.g. `ColourBlender`), "color" in React/CSS convention filenames (e.g. `ColorInput`, `useColor`).
@@ -169,5 +173,5 @@ Open TODOs (including the former cross-repo carry-forward list, now confirmed re
 ## External dependencies
 
 - **albertcss** (`https://www.craigmcn.com/albertcss/`) — external CSS framework loaded via `index.html`; provides `.form__group`, `.form__label`, `.form__control`, `.button`, `.nav__*`, `.card`, `.alert`, etc. Do not replicate these styles locally.
-- **Font Awesome** — loaded via kit script in `index.html`; use `<span className="far fa-* fa-fw" />` pattern.
+- **Font Awesome 7 Pro** — npm SVG packages, light style only (`@fortawesome/pro-light-svg-icons`). Re-export each icon from `src/icons.ts` (which also sets `autoAddCss = false` and bundles the CSS) and render it with `<FontAwesomeIcon icon={faX} />`; don't bring back the kit or add other icon styles. Installing needs `FONTAWESOME_NPM_AUTH_TOKEN` (`.yarnrc.yml`), set locally, as a GitHub Actions secret and on the Netlify site.
 - **React Router** (`BrowserRouter`) — basename is set at runtime from `import.meta.env.BASE_URL` to support both deployments. Use `NavLink`/`Link` for in-app navigation. The brand logo `<a href="/">` is intentionally a plain anchor (links to deployed root, not the SPA root).

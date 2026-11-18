@@ -23,6 +23,8 @@ import { contrastTextColor } from "../../utils/contrastRatio";
 import { cssDeclarations, themeTokens, themeRecipe } from "../../utils/tokens";
 import { readThemeParams, writeThemeParams } from "../../utils/toolParams";
 import styles from "./ThemeColours.module.scss";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCopy } from "../../icons";
 
 const MODE_LABELS: Record<ThemeMode, string> = {
   light: "Light",
@@ -144,7 +146,7 @@ export const ThemeColours = () => {
                   </div>
                   <div className="flex flex__item--as-center m-l-auto m-b-0">
                     <div>
-                      <span className="fad fa-copy m-r-xs" aria-hidden="true" />
+                      <FontAwesomeIcon icon={faCopy} className="m-r-xs" />
                       <span className="visually-hidden">Copy</span>
                       <button
                         className={`button button--sm${copiedKey === `${key}-hex` ? " button--success" : ""}`}
@@ -189,7 +191,7 @@ export const ThemeColours = () => {
               className={`button button--sm${copiedKey === "variables" ? " button--success" : ""}`}
               onClick={() => copy(copyText, "variables")}
             >
-              <span className="fad fa-copy" aria-hidden="true" /> Copy
+              <FontAwesomeIcon icon={faCopy} /> Copy
             </button>
             <p className="text--small m-t-xs m-b-0">
               Copied text starts with a comment recording the inputs, algorithm
