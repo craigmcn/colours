@@ -265,7 +265,7 @@ The Theme Colours (`/theme`) and Palette Generator (`/palette`) results can be r
 **CLI.** `colours-tokens` produces the same output offline (e.g. in CI). Pin a tag or commit to keep the algorithm fixed:
 
 ```bash
-# Install from GitHub and run
+# Install from GitHub and run (about 20s the first time, since npm installs the dev toolchain)
 npx github:craigmcn/colours#<tag> theme --brand 3366cc --mode dark --prefix brand
 
 # Or run the single committed file with no install

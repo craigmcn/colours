@@ -1,16 +1,16 @@
 import { describe, expect, it } from "vitest";
 import pkg from "../package.json";
 
-// `npx github:craigmcn/colours` installs `dependencies` from the public npm
-// registry, and a `prepare` script would make it install devDependencies too.
-// Private packages (Font Awesome Pro) would 404 and break the CLI install.
+// `npx github:craigmcn/colours` makes npm install every dependency type from
+// the public registry (a `build` script triggers a full install). Font Awesome
+// Pro would 404 there, so it must be optional: npm skips it, Yarn installs it.
 describe("package.json (npm git install of the colours-tokens CLI)", () => {
-  it("keeps Font Awesome Pro packages out of dependencies", () => {
-    const deps = Object.keys(pkg.dependencies);
-    expect(deps.filter((name) => name.startsWith("@fortawesome/"))).toEqual([]);
-  });
+  const fontAwesome = (deps: Record<string, string> = {}) =>
+    Object.keys(deps).filter((name) => name.startsWith("@fortawesome/"));
 
-  it("has no prepare script", () => {
-    expect(pkg.scripts).not.toHaveProperty("prepare");
+  it("lists Font Awesome Pro packages only as optionalDependencies", () => {
+    expect(fontAwesome(pkg.dependencies)).toEqual([]);
+    expect(fontAwesome(pkg.devDependencies)).toEqual([]);
+    expect(fontAwesome(pkg.optionalDependencies)).not.toEqual([]);
   });
 });
