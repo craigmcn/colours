@@ -70,7 +70,7 @@ src/
 
 ## CI
 
-A GitHub Actions workflow (`.github/workflows/test.yml`) runs `yarn format:check` and `yarn test --run` on every push to `main` and on every pull request. The pre-commit hook runs prettier check + lint + type-check + tests locally before each commit, so CI failures on a PR should be rare.
+A GitHub Actions workflow (`.github/workflows/test.yml`) runs `yarn format:check` and `yarn test --run` on every pull request, plus a weekly scheduled run on `main` (no push-to-`main` run: branch protection requires PRs to be up to date). The pre-commit hook runs prettier check + lint + type-check + tests locally before each commit, so CI failures on a PR should be rare.
 
 ## Repository protection
 
